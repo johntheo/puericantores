@@ -1,0 +1,83 @@
+{
+  "_leia": "IDs do Google Drive extraídos da planilha de cadastro da federação. As chaves 'estatuto' e 'ata' existem APENAS para documentar que foram deliberadamente excluídas (documentos internos, decisão de LGPD no BRIEFING.md secao 3). O script de download IGNORA essas chaves. Não remova essa marcação.",
+  "_planilha": "https://docs.google.com/spreadsheets/d/12RG2R7Zs382CDu9tr0YiHP9lmPMk6qLX5lkquU4aSMo",
+  "_baixar": ["historico", "foto", "logo"],
+  "_nunca_baixar": ["estatuto", "ata"],
+
+  "corais": {
+    "canarinhos-de-petropolis": {
+      "historico": "1On4fwB3mrkgvZh4l83PuIBrETUM4urJC",
+      "foto": "1IawRHJI5KqR3d3_RGVke7OZ4gzWLvcQE",
+      "estatuto": "BLOQUEADO",
+      "ata": "BLOQUEADO"
+    },
+    "coral-dom-silverio": {
+      "historico": "1JelGaUwDhi9BlBK4wgBuKVHgOFMGqW_h",
+      "foto": "1FZ-S_BhXJOwLk2KDE44V-XMCQEA694QN",
+      "estatuto": "BLOQUEADO",
+      "ata": "BLOQUEADO"
+    },
+    "pequenos-cantores-de-cassia": {
+      "historico": "15Sd0Cs7_0tKzC9EtgievOlKDX7KImejG",
+      "foto": "1s4P7t545kBwwIK4V7Iupw1nmUyDcu_2D",
+      "estatuto": "BLOQUEADO",
+      "ata": "BLOQUEADO"
+    },
+    "arautos-do-grande-rei": {
+      "historico": "1aVAjsZgF_QqntFYX4QKyzjzrK73ZMd-V",
+      "foto": "1MG5jdsod42h5QsRGNIwYimau8PK4VpXO",
+      "estatuto": "BLOQUEADO",
+      "ata": "BLOQUEADO"
+    },
+    "canarinhos-de-itabirito": {
+      "historico": "1rmyU2koGg63rMFF1prHwYhfnCmN9Vfnj",
+      "foto": "1WOC9Y6epRxatlB6mYJXb8QEgCZGE5SbT",
+      "estatuto": "BLOQUEADO",
+      "ata": "BLOQUEADO"
+    },
+    "coro-carpe-diem": {
+      "historico": "1ad8CA6xZAN2OXlyEwnJcexr6zqHDqHXl",
+      "foto": "1n3pMbI4rjycmWMrxzcGRLycQZJce9zJ3",
+      "estatuto": "BLOQUEADO",
+      "ata": "BLOQUEADO"
+    },
+    "coral-das-meninas-dos-canarinhos-de-petropolis": {
+      "historico": "1zynWoeg_uMC2ZlzZZh9Ur3RgfusU9M4A",
+      "foto": "1st4m8YS2gbiwwKWy6T6skzusJp3iJto6",
+      "logo": "17VMJKjdqtoH-ZPnL9HjVBVqjtfrIGYxj",
+      "estatuto": "BLOQUEADO",
+      "ata": "BLOQUEADO"
+    },
+    "canarinhos-de-campo-largo": {
+      "historico": "1x5GBXikKxK9-X9ULBy1bTA-VacoZo_Fp",
+      "foto": "1SF9SW4bjLnbdQKNKmnP0wf32JazRQxc8",
+      "estatuto": "BLOQUEADO",
+      "ata": "BLOQUEADO"
+    },
+    "meninos-cantores-de-novo-hamburgo": {
+      "historico": "18hQjJc2ivy58yEYn09MGGD0GjhPQDWAH",
+      "foto": "1AKqe5mPGmNM_fEstwIV-9qG5w7RjuYGY",
+      "estatuto": "BLOQUEADO",
+      "ata": "BLOQUEADO"
+    },
+    "pequenos-cantores-de-passos": {
+      "historico": "18omgpmCyYGriRX2q9M6GBFj_3kZ2z30R",
+      "foto": "1xz3i24j27DVwb9QNK6GuTNokRJXZW6po",
+      "logo": "1Ts29RHjGK9t--FHUw8e1c7gPl1wdU6ns",
+      "estatuto": "BLOQUEADO",
+      "ata": "BLOQUEADO"
+    },
+    "psalette-de-santo-ivo": {
+      "historico": "16HhfzgfAqg7BLjf8kTSUAHZBqXlOY8lC",
+      "foto": "1EQ7KwDQm941QhnzWYjBDxPpBFrTfyfDh",
+      "estatuto": "BLOQUEADO",
+      "ata": "BLOQUEADO"
+    },
+    "coro-regina-angelorum": {
+      "historico": "1MDh6EKtdp7cYri-rAdfpRMh18bKUYPdC",
+      "foto": "1t4MQqJ6SVivyJWiIxitFDztfoWefbysV",
+      "estatuto": "BLOQUEADO",
+      "ata": "BLOQUEADO"
+    }
+  }
+}

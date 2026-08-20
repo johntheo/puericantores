@@ -1,0 +1,98 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '~/layouts/Base.astro';
+import CardCoral from '~/components/CardCoral.astro';
+
+const corais = (await getCollection('corais')).sort((a, b) => a.data.fundacao - b.data.fundacao);
+
+const ufs = [...new Set(corais.map((c) => c.data.uf))].sort();
+---
+
+<Base
+  titulo="Os corais"
+  descricao={`Os ${corais.length} coros de meninos e meninas filiados à federação, em ${ufs.length} estados brasileiros.`}
+>
+  <section class="quadro pt-20 pb-14 sm:pt-28">
+    <h1 class="text-(length:--text-titulo)">Os corais filiados</h1>
+
+    <p class="mt-5 text-tinta-tenue">{corais.length} corais · {ufs.length} estados</p>
+
+    {/* Filtro puramente client-side sobre um grid já renderizado: nenhum
+        conteúdo depende de JS para existir, só a ocultação. */}
+    <div class="mt-12 flex flex-wrap gap-2" role="group" aria-label="Filtrar por estado" id="filtro">
+      <button
+        type="button"
+        data-uf="todos"
+        aria-pressed="true"
+        class="filtro-btn border border-tinta bg-tinta px-4 py-2 text-sm text-papel"
+      >
+        Todos
+      </button>
+      {
+        ufs.map((uf) => (
+          <button
+            type="button"
+            data-uf={uf}
+            aria-pressed="false"
+            class="filtro-btn border border-papel-borda px-4 py-2 text-sm transition-colors hover:border-tinta"
+          >
+            {uf}
+          </button>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="quadro pb-(--spacing-secao)">
+    <div class="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3" id="grade">
+      {
+        corais.map((coral) => (
+          <div data-uf={coral.data.uf}>
+            <CardCoral coral={coral} />
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="mt-14 text-sm text-tinta-tenue" role="status" id="contagem"></p>
+  </section>
+</Base>
+
+<script>
+  const filtro = document.querySelector<HTMLElement>('#filtro');
+  const grade = document.querySelector<HTMLElement>('#grade');
+  const contagem = document.querySelector<HTMLElement>('#contagem');
+
+  if (filtro && grade && contagem) {
+    const botoes = [...filtro.querySelectorAll<HTMLButtonElement>('.filtro-btn')];
+    const itens = [...grade.querySelectorAll<HTMLElement>('[data-uf]')];
+
+    const aplicar = (uf: string) => {
+      let visiveis = 0;
+
+      for (const item of itens) {
+        const mostra = uf === 'todos' || item.dataset.uf === uf;
+        item.hidden = !mostra;
+        if (mostra) visiveis++;
+      }
+
+      for (const b of botoes) {
+        const ativo = b.dataset.uf === uf;
+        b.setAttribute('aria-pressed', String(ativo));
+        b.classList.toggle('bg-tinta', ativo);
+        b.classList.toggle('text-papel', ativo);
+        b.classList.toggle('border-tinta', ativo);
+        b.classList.toggle('border-papel-borda', !ativo);
+      }
+
+      contagem.textContent =
+        uf === 'todos'
+          ? ''
+          : `${visiveis} ${visiveis === 1 ? 'coral' : 'corais'} em ${uf}.`;
+    };
+
+    for (const b of botoes) {
+      b.addEventListener('click', () => aplicar(b.dataset.uf ?? 'todos'));
+    }
+  }
+</script>

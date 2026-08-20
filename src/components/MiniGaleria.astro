@@ -1,0 +1,47 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+/**
+ * Fotos adicionais de um coral.
+ *
+ * Só renderiza com duas ou mais imagens. Com uma só não há galeria — há uma
+ * foto —, e uma grade de item único parece defeito. O componente some por
+ * conta própria em vez de exigir que a página saiba disso.
+ */
+interface Props {
+  fotos: ImageMetadata[];
+  nomeCoral: string;
+}
+
+const { fotos, nomeCoral } = Astro.props;
+const suficiente = fotos.length >= 2;
+---
+
+{
+  suficiente && (
+    <section class="quadro pt-(--spacing-secao)">
+      <span class="fio" data-fio-scroll aria-hidden="true" />
+
+      <div class="mt-10 grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-20">
+        <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">Em imagens</h2>
+
+        {/* Campo uniforme: larguras alternadas dentro de um grid abrem vãos
+            brancos quando o item largo não cabe na linha. */}
+        <ul class="grid grid-cols-2 gap-4">
+          {fotos.map((foto, i) => (
+            <li>
+              <Image
+                src={foto}
+                alt={`${nomeCoral} — fotografia ${i + 1}`}
+                widths={[400, 800, 1200]}
+                sizes="(min-width: 768px) 32vw, 46vw"
+                class="foto aspect-4/3 w-full object-cover"
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}

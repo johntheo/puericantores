@@ -1,0 +1,23 @@
+{
+  "nome": "Coral Canarinhos de Itabirito",
+  "nomeCurto": "Canarinhos de Itabirito",
+  "cidade": "Itabirito",
+  "uf": "MG",
+  "fundacao": 1973,
+  "filiacao": 1976,
+  "resumo": "Trezentos alunos em cinco polos de ensino gratuito, sete grupos corais e mais de cinco décadas de estrada.",
+  "historico": "PENDENTE — reescrever a partir do PDF anexado ao cadastro.",
+  "historicoPendente": true,
+  "foto": "../../assets/corais/canarinhos-de-itabirito.jpg",
+  "equipe": [
+    { "nome": "Éric Vinícius de Aguiar Lana", "cargo": "Regente" },
+    { "nome": "Fernando Xavier Nazareno", "cargo": "Presidente" },
+    { "nome": "Thays Lana Peneda Simões", "cargo": "Preparação vocal" }
+  ],
+  "contato": {
+    "site": "https://www.canarinhosdeitabirito.org.br",
+    "instagram": "https://www.instagram.com/canarinhositabirito/",
+    "youtube": "https://www.youtube.com/@CoralCanarinhosDeItabiritoMg"
+  },
+  "destaque": true
+}

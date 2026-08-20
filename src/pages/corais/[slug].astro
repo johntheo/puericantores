@@ -1,0 +1,186 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '~/layouts/Base.astro';
+import MiniGaleria from '~/components/MiniGaleria.astro';
+import CarrosselCorais from '~/components/CarrosselCorais.astro';
+import Icone, { type NomeIcone } from '~/components/Icone.astro';
+
+export async function getStaticPaths() {
+  const corais = (await getCollection('corais')).sort((a, b) => a.data.fundacao - b.data.fundacao);
+
+  return corais.map((coral) => ({
+    params: { slug: coral.id },
+    props: { coral, corais },
+  }));
+}
+
+interface Props {
+  coral: CollectionEntry<'corais'>;
+  corais: CollectionEntry<'corais'>[];
+}
+
+const { coral, corais } = Astro.props;
+const {
+  nome,
+  nomeCurto,
+  cidade,
+  uf,
+  fundacao,
+  filiacao,
+  historico,
+  historicoPendente,
+  resumo,
+  foto,
+  fotoCredito,
+  galeria,
+  equipe,
+  contato,
+} = coral.data;
+
+const paragrafos = historico.split('\n\n').filter(Boolean);
+
+/* Os canais do coral sobem para o cabeçalho, junto de cidade e datas: é
+   informação de identificação, não uma seção de conteúdo. A antiga secção
+   "Onde encontrar" carregava dois links no meio de um vazio enorme. */
+const canais = [
+  { icone: 'site' as const, rotulo: 'Site', href: contato.site },
+  { icone: 'instagram' as const, rotulo: 'Instagram', href: contato.instagram },
+  { icone: 'facebook' as const, rotulo: 'Facebook', href: contato.facebook },
+  { icone: 'twitter' as const, rotulo: 'X', href: contato.twitter },
+  { icone: 'youtube' as const, rotulo: 'YouTube', href: contato.youtube },
+  {
+    icone: 'email' as const,
+    rotulo: 'E-mail',
+    href: contato.email ? `mailto:${contato.email}` : undefined,
+  },
+].filter((c): c is { icone: NomeIcone; rotulo: string; href: string } => Boolean(c.href));
+---
+
+<Base titulo={nome} descricao={resumo} cabecalhoSobreposto>
+  <section class="relative min-h-[92svh] overflow-hidden bg-tinta">
+    <div class="absolute inset-0 -top-[5%] h-[110%]" data-motion="parallax">
+      <Image
+        src={foto}
+        alt={`${nome}, em ${cidade}`}
+        widths={[800, 1400, 2000, 2400]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="foto h-full w-full object-cover"
+      />
+    </div>
+
+    {/* A de baixo sustenta o contraste do nome; a de cima existe porque o
+        cabeçalho é branco e várias fotos têm céu ou parede clara ali. */}
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-tinta via-tinta/55 to-transparent"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-tinta/70 to-transparent"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="quadro relative flex min-h-[92svh] flex-col justify-end pb-14 text-papel sm:pb-20">
+      <h1 class="max-w-[16ch] text-(length:--text-titulo)">{nomeCurto ?? nome}</h1>
+
+      <p class="mt-5 text-papel/75">{cidade} · {uf}</p>
+
+      <dl class="mt-10 flex flex-wrap gap-x-14 gap-y-5">
+        <div>
+          <dt class="text-sm text-papel/60">Fundado em</dt>
+          <dd data-numerico class="mt-1 font-display text-3xl">{fundacao}</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-papel/60">Filiado desde</dt>
+          <dd data-numerico class="mt-1 font-display text-3xl">{filiacao}</dd>
+        </div>
+      </dl>
+
+      {
+        canais.length > 0 && (
+          <ul class="mt-10 flex flex-wrap items-center gap-3">
+            {canais.map((canal) => (
+              <li>
+                <a
+                  href={canal.href}
+                  rel="noopener noreferrer"
+                  target={canal.href.startsWith('mailto:') ? undefined : '_blank'}
+                  title={canal.rotulo}
+                  class="grid size-11 place-items-center border border-papel/30 text-papel/85 transition-colors hover:border-papel hover:text-papel"
+                >
+                  <Icone nome={canal.icone} />
+                  <span class="sr-only">{canal.rotulo}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+
+      {fotoCredito && <p class="mt-10 text-xs text-papel/50">Fotografia: {fotoCredito}</p>}
+    </div>
+  </section>
+
+  {/* QUEM CONDUZ — apenas nome e cargo. Contato pessoal fica no cadastro da
+      federação e não é publicável (BRIEFING.md, seção 3). */}
+  {
+    equipe.length > 0 && (
+      <section class="quadro pt-16">
+        <span class="fio" data-fio-scroll aria-hidden="true" />
+
+        <div class="mt-10 grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-20">
+          <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">Quem conduz</h2>
+
+          <ul class="grid gap-x-10 gap-y-8 sm:grid-cols-2">
+            {equipe.map((pessoa) => (
+              <li>
+                <p class="font-display text-2xl leading-tight">{pessoa.nome}</p>
+                <p class="mt-1 text-sm text-tinta-tenue">{pessoa.cargo}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  {/* HISTÓRIA */}
+  <section class="quadro pt-(--spacing-secao)">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <div class="mt-10 grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-20">
+      <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">História</h2>
+
+      <div>
+        {
+          historicoPendente ? (
+            /* Nunca inventar história de coral. Enquanto o documento do
+               cadastro não for reescrito e revisado pelo próprio coro, a
+               página diz isso com todas as letras. */
+            <div class="border border-papel-borda px-6 py-5">
+              <p class="font-medium">Histórico em preparação.</p>
+              <p class="mt-2 max-w-[52ch] text-sm leading-relaxed text-tinta-suave">
+                O texto será redigido a partir do documento que o coral enviou à federação e
+                revisado pela própria regência antes de ir ao ar.
+              </p>
+            </div>
+          ) : (
+            <div class="medida space-y-6 text-lg leading-relaxed text-tinta-suave">
+              {paragrafos.map((p) => (
+                <p>{p}</p>
+              ))}
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <MiniGaleria fotos={galeria} nomeCoral={nomeCurto ?? nome} />
+
+  <CarrosselCorais corais={corais} atual={coral.id} />
+</Base>

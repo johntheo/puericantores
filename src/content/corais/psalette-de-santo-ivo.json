@@ -1,0 +1,18 @@
+{
+  "nome": "Psalette de Santo Ivo",
+  "cidade": "Florianópolis",
+  "uf": "SC",
+  "fundacao": 2019,
+  "filiacao": 2025,
+  "resumo": "Ligado ao Mosteiro Santo Ivo, reúne quarenta cantores a partir dos cinco anos de idade.",
+  "historico": "PENDENTE — reescrever a partir do PDF anexado ao cadastro.",
+  "historicoPendente": true,
+  "foto": "../../assets/corais/psalette-de-santo-ivo.jpg",
+  "equipe": [
+    { "nome": "Luiz Henrique Fontão", "cargo": "Regente" },
+    { "nome": "Pe. Luiz Harding Chang", "cargo": "Presidente" },
+    { "nome": "Acácio Gomes Silvestre", "cargo": "Pianista" }
+  ],
+  "contato": {},
+  "destaque": false
+}

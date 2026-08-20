@@ -1,0 +1,54 @@
+# Publica o preview da diretoria no GitHub Pages.
+#
+# É um endereço provisório, para a diretoria da federação validar o protótipo.
+# O site definitivo vai para o Firebase da federação, no domínio
+# puericantores.com.br — por isso o build aqui usa DEPLOY_ALVO=pages, que
+# liga o caminho de subpasta, e PUBLIC_PREVIEW, que marca as páginas como
+# noindex enquanto houver material sem autorização.
+name: Preview para a diretoria
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          DEPLOY_ALVO: pages
+          PUBLIC_PREVIEW: 'true'
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

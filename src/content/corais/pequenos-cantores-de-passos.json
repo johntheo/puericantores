@@ -1,0 +1,20 @@
+{
+  "nome": "Pequenos Cantores de Passos",
+  "cidade": "Passos",
+  "uf": "MG",
+  "fundacao": 2012,
+  "filiacao": 2017,
+  "resumo": "Sessenta cantores no coro principal e sessenta e cinco no preparatório — o maior coro de aprendizes da federação.",
+  "historico": "PENDENTE — reescrever a partir do PDF anexado ao cadastro.",
+  "historicoPendente": true,
+  "foto": "../../assets/corais/pequenos-cantores-de-passos.jpg",
+  "equipe": [
+    { "nome": "Messias Faleiros", "cargo": "Regente" },
+    { "nome": "Arilson Parreira da Silveira", "cargo": "Presidente" },
+    { "nome": "Yuri Menezes", "cargo": "Pianista" }
+  ],
+  "contato": {
+    "instagram": "https://instagram.com/pequenoscantorespassos"
+  },
+  "destaque": true
+}

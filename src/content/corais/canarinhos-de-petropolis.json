@@ -1,0 +1,20 @@
+{
+  "nome": "Coral dos Canarinhos de Petrópolis",
+  "nomeCurto": "Canarinhos de Petrópolis",
+  "cidade": "Petrópolis",
+  "uf": "RJ",
+  "fundacao": 1942,
+  "filiacao": 1967,
+  "resumo": "O coro de meninos mais antigo do Brasil ainda em atividade. Oitenta e três anos, dezoito álbuns e turnês por oito países.",
+  "historico": "Fundado em 15 de agosto de 1942 por Frei Leto Bienias, o Coral dos Canarinhos de Petrópolis é o coro de meninos mais antigo do Brasil ainda em atividade. Em oito décadas tornou-se referência do canto coral brasileiro, defendendo com igual empenho o repertório nacional e o grande repertório internacional.\n\nO trabalho artístico é inseparável do social. Meninos de todas as classes recebem gratuitamente formação musical, acompanhamento humano e alimentação. São dezoito álbuns gravados, entre eles Reflexos do Brasil, dedicado à música sacra contemporânea, e uma coletânea de canções natalinas alemãs editada na Alemanha em trezentas mil cópias.\n\nOs Canarinhos cantaram para o Papa João Paulo II no Brasil e no Vaticano, e ocuparam palcos como a Sala São Paulo, a Sala Cecília Meireles e o Theatro Municipal do Rio de Janeiro. Interpretaram a Paixão segundo São João e o Oratório de Natal, de Bach, e a Nona Sinfonia de Beethoven. Em turnê, já se apresentaram na Venezuela, Argentina, Portugal, Alemanha, República Tcheca, Áustria, Itália e Estados Unidos.\n\nSob direção do maestro Marco Aurélio Lischt desde 1998, o coral integra as obras da Província Franciscana da Imaculada Conceição do Brasil.",
+  "historicoPendente": false,
+  "foto": "../../assets/corais/canarinhos-de-petropolis.jpg",
+  "equipe": [
+    { "nome": "Marco Aurélio Lischt", "cargo": "Regente" },
+    { "nome": "Frei Marcos Antônio de Andrade", "cargo": "Presidente" }
+  ],
+  "contato": {
+    "instagram": "https://instagram.com/canarinhosdepetropolis"
+  },
+  "destaque": true
+}

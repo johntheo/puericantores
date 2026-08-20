@@ -1,0 +1,52 @@
+---
+import { site, navegacao, rota } from '~/config/site';
+import Brasao from '~/components/Brasao.astro';
+
+interface Props {
+  /** Sobre foto de tela cheia o cabeçalho fica branco e sem fundo. */
+  sobreposto?: boolean;
+}
+
+const { sobreposto = false } = Astro.props;
+const atual = Astro.url.pathname;
+---
+
+<header
+  class:list={[
+    'top-0 z-40 w-full',
+    sobreposto ? 'absolute text-papel' : 'sticky bg-papel/85 text-tinta backdrop-blur-sm',
+  ]}
+>
+  <div class="quadro flex items-center justify-between gap-6 py-5">
+    <a href={rota("/")} class="flex items-center gap-3" aria-label={`${site.assinatura} — início`}>
+      <Brasao tamanho={44} titulo="" />
+      <span class="font-display text-lg leading-none tracking-tight sm:text-xl">
+        {site.assinatura}
+      </span>
+    </a>
+
+    <nav aria-label="Navegação principal" class="hidden items-center gap-8 md:flex">
+      {
+        navegacao.map(({ href, rotulo }) => {
+          const ativo = atual === href || atual.startsWith(`${href}/`);
+          return (
+            <a
+              href={rota(href)}
+              aria-current={ativo ? 'page' : undefined}
+              class:list={[
+                'text-sm transition-opacity hover:opacity-60',
+                ativo && 'underline decoration-acento decoration-2 underline-offset-8',
+              ]}
+            >
+              {rotulo}
+            </a>
+          );
+        })
+      }
+    </nav>
+
+    {/* Fase 1 não tem menu mobile: as rotas ainda não existem. Entra na fase 2
+        junto com /federacao, /filiacao e /contato. */}
+    <a href={rota("/corais")} class="text-sm underline underline-offset-4 md:hidden">Os corais</a>
+  </div>
+</header>

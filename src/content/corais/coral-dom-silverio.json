@@ -1,0 +1,18 @@
+{
+  "nome": "Coral Dom Silvério",
+  "cidade": "Sete Lagoas",
+  "uf": "MG",
+  "fundacao": 1963,
+  "filiacao": 1968,
+  "resumo": "Coro exclusivamente masculino ligado à Matriz Cristo Redentor, em atividade há mais de sessenta anos.",
+  "historico": "PENDENTE — reescrever a partir do PDF anexado ao cadastro.",
+  "historicoPendente": true,
+  "foto": "../../assets/corais/coral-dom-silverio.jpg",
+  "equipe": [
+    { "nome": "Cleber Geraldo Vieira de Castro", "cargo": "Regente" },
+    { "nome": "Amauri Artimos da Matta", "cargo": "Presidente" },
+    { "nome": "Daniel da Conceição Souza", "cargo": "Preparação vocal" }
+  ],
+  "contato": {},
+  "destaque": false
+}

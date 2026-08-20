@@ -1,0 +1,14 @@
+{
+  "nome": "Coro Carpe Diem",
+  "cidade": "Itajaí",
+  "uf": "SC",
+  "fundacao": 1986,
+  "filiacao": 1992,
+  "resumo": "Filiou-se durante o Congresso Nacional de 1992, em Petrópolis. Canta na Capela Nossa Senhora da Paz, na Vila Operária.",
+  "historico": "PENDENTE — reescrever a partir do PDF anexado ao cadastro.",
+  "historicoPendente": true,
+  "foto": "../../assets/corais/coro-carpe-diem.jpg",
+  "equipe": [{ "nome": "Paulo Sezerino", "cargo": "Regente" }],
+  "contato": {},
+  "destaque": false
+}

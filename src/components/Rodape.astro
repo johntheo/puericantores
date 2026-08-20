@@ -1,0 +1,44 @@
+---
+import { site, navegacao, rota } from '~/config/site';
+import Brasao from '~/components/Brasao.astro';
+
+const ano = new Date().getFullYear();
+---
+
+<footer class="mt-(--spacing-secao) border-t border-papel-borda bg-papel-fundo">
+  <div class="quadro grid gap-12 py-16 md:grid-cols-[1fr_auto]">
+    <div class="max-w-md">
+      <Brasao tamanho={72} titulo="" />
+
+      <p class="mt-6 font-display text-2xl leading-tight">{site.assinatura}</p>
+
+      {/* A razão social vive aqui: o site comunica como Pueri Cantores Brasil,
+          mas a entidade registrada é a FNMCB. Decisão no BRIEFING.md. */}
+      <p class="mt-2 text-sm text-tinta-suave">{site.razaoSocial}</p>
+
+      <a
+        href={`mailto:${site.contato.email}`}
+        class="mt-6 inline-block text-sm underline underline-offset-4 hover:text-acento-profundo"
+      >
+        {site.contato.email}
+      </a>
+    </div>
+
+    <nav aria-label="Rodapé" class="flex flex-col gap-3 md:text-right">
+      {
+        navegacao.map(({ href, rotulo }) => (
+          <a href={rota(href)} class="text-sm transition-opacity hover:opacity-60">
+            {rotulo}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+
+  <div class="quadro border-t border-papel-borda py-6">
+    <p class="text-xs text-tinta-tenue">
+      © {ano} {site.razaoSocial}. Membro da Pueri Cantores, federação internacional de pueris
+      cantores reconhecida pela Santa Sé.
+    </p>
+  </div>
+</footer>

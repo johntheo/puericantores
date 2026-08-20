@@ -1,0 +1,10 @@
+dist/
+node_modules/
+.astro/
+tmp/
+.DS_Store
+.env
+.firebase/
+
+# ferramentas de design (estado local)
+.impeccable/

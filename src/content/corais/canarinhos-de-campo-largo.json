@@ -1,0 +1,22 @@
+{
+  "nome": "Coral Pueri dos Canarinhos de Campo Largo",
+  "nomeCurto": "Canarinhos de Campo Largo",
+  "cidade": "Campo Largo",
+  "uf": "PR",
+  "fundacao": 1989,
+  "filiacao": 1994,
+  "resumo": "Fundado em 1989 em Campo Largo, reúne vinte e três cantores dos sete aos dezoito anos.",
+  "historico": "PENDENTE — reescrever a partir do PDF anexado ao cadastro.",
+  "historicoPendente": true,
+  "foto": "../../assets/corais/canarinhos-de-campo-largo.jpg",
+  "equipe": [
+    { "nome": "Giulia Leal", "cargo": "Regente" },
+    { "nome": "Jocira Terezinha Sierpinski de Souza", "cargo": "Presidente" },
+    { "nome": "Johnatan Théo Sierpinski de Souza", "cargo": "Direção" },
+    { "nome": "Marina Lima", "cargo": "Pianista" }
+  ],
+  "contato": {
+    "email": "canarinhosdecampolargo@gmail.com"
+  },
+  "destaque": true
+}

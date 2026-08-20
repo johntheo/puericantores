@@ -1,0 +1,205 @@
+---
+import { rota } from '~/config/site';
+import { getCollection } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Base from '~/layouts/Base.astro';
+import Lightbox from '~/components/Lightbox.astro';
+
+const corais = (await getCollection('corais')).sort((a, b) => a.data.fundacao - b.data.fundacao);
+
+/* As fotos do congresso vivem soltas em src/assets/congresso/ porque não
+   pertencem a nenhum coral — são da federação reunida. O glob evita ter de
+   registrar cada arquivo à mão quando chegarem as dos próximos congressos. */
+const arquivosCongresso = import.meta.glob<{ default: ImageMetadata }>(
+  '~/assets/congresso/*.{jpg,jpeg,png}',
+  { eager: true }
+);
+
+const congresso = Object.entries(arquivosCongresso)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, mod]) => mod.default);
+
+/* Versão grande de cada foto, para o visualizador em tela cheia. Gerada no
+   build junto das miniaturas: nada de servir o original de 5 MB só porque
+   alguém clicou. */
+const grande = async (src: ImageMetadata) =>
+  (await getImage({ src, width: 1800, format: 'webp', quality: 82 })).src;
+
+const fotosCorais = await Promise.all(
+  corais.map(async (coral) => ({
+    id: coral.id,
+    nome: coral.data.nomeCurto ?? coral.data.nome,
+    cidade: coral.data.cidade,
+    uf: coral.data.uf,
+    miniatura: coral.data.foto,
+    full: await grande(coral.data.foto),
+    legenda: `${coral.data.nomeCurto ?? coral.data.nome} · ${coral.data.cidade}, ${coral.data.uf}`,
+  }))
+);
+
+const fotosCongresso = await Promise.all(
+  congresso.map(async (foto) => ({
+    miniatura: foto,
+    full: await grande(foto),
+    // Sem "(n de N)": o contador do visualizador já mostra a posição.
+    legenda: 'XVII Congresso Nacional Pueri Cantores · Passos, Minas Gerais, 2022',
+  }))
+);
+
+const total = fotosCorais.length + fotosCongresso.length;
+---
+
+<Base
+  titulo="Galeria"
+  descricao={`Fotografias dos ${corais.length} corais filiados e dos congressos da federação.`}
+>
+  <section class="quadro pt-20 pb-14 sm:pt-28">
+    <h1 class="text-(length:--text-titulo)">Galeria</h1>
+
+    <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
+      Os corais filiados e os encontros que os reúnem. As fotografias são enviadas pelos próprios
+      coros e pela federação. Clique em qualquer imagem para vê-la em tela cheia.
+    </p>
+  </section>
+
+  {/* CORAIS ---------------------------------------------------------------
+      A imagem abre o visualizador; o nome abaixo leva à página do coral.
+      Separar os dois destinos evita ter de escolher entre ver a foto grande e
+      conhecer o coro — a galeria serve aos dois. */}
+  <section class="quadro pb-(--spacing-secao)">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <h2 class="mt-10 text-(length:--text-secao)">Os corais</h2>
+
+    <figure class="mt-10">
+      <button
+        type="button"
+        data-lightbox
+        data-grupo="corais"
+        data-full={fotosCorais[0]!.full}
+        data-legenda={fotosCorais[0]!.legenda}
+        class="group block w-full cursor-zoom-in overflow-hidden bg-papel-fundo"
+      >
+        <Image
+          src={fotosCorais[0]!.miniatura}
+          alt={fotosCorais[0]!.legenda}
+          widths={[900, 1400, 2000]}
+          sizes="(min-width: 1440px) 84rem, 100vw"
+          class="foto aspect-16/9 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+        />
+      </button>
+      <figcaption class="mt-3 text-sm">
+        <a href={`/corais/${fotosCorais[0]!.id}`} class="hover:text-acento-profundo">
+          {fotosCorais[0]!.nome}
+        </a>
+        <span class="text-tinta-tenue">
+          {' · '}{fotosCorais[0]!.cidade} · {fotosCorais[0]!.uf}
+        </span>
+      </figcaption>
+    </figure>
+
+    <ul class="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-3">
+      {
+        fotosCorais.slice(1).map((f) => (
+          <li>
+            <figure>
+              <button
+                type="button"
+                data-lightbox
+                data-grupo="corais"
+                data-full={f.full}
+                data-legenda={f.legenda}
+                class="group block w-full cursor-zoom-in overflow-hidden bg-papel-fundo"
+              >
+                <Image
+                  src={f.miniatura}
+                  alt={f.legenda}
+                  widths={[400, 800, 1200]}
+                  sizes="(min-width: 1024px) 28vw, 46vw"
+                  class="foto aspect-4/3 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                />
+              </button>
+              <figcaption class="mt-3 text-sm">
+                <a href={rota(`/corais/${f.id}`)} class="hover:text-acento-profundo">{f.nome}</a>
+                <span class="text-tinta-tenue">{' · '}{f.cidade} · {f.uf}</span>
+              </figcaption>
+            </figure>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {/* CONGRESSOS */}
+  {
+    fotosCongresso.length > 0 && (
+      <section class="quadro pb-(--spacing-secao)">
+        <span class="fio" data-fio-scroll aria-hidden="true" />
+
+        <h2 class="mt-10 text-(length:--text-secao)">Congressos</h2>
+
+        <p class="medida mt-5 text-tinta-suave">
+          XVII Congresso Nacional Pueri Cantores, em Passos, Minas Gerais, outubro de 2022.
+        </p>
+
+        <button
+          type="button"
+          data-lightbox
+          data-grupo="congresso"
+          data-full={fotosCongresso[0]!.full}
+          data-legenda={fotosCongresso[0]!.legenda}
+          class="mt-10 block w-full cursor-zoom-in overflow-hidden bg-papel-fundo"
+        >
+          <Image
+            src={fotosCongresso[0]!.miniatura}
+            alt={fotosCongresso[0]!.legenda}
+            widths={[900, 1280]}
+            sizes="(min-width: 1440px) 84rem, 100vw"
+            class="foto aspect-16/9 w-full object-cover"
+          />
+        </button>
+
+        <ul class="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-3">
+          {fotosCongresso.slice(1).map((f) => (
+            <li>
+              <button
+                type="button"
+                data-lightbox
+                data-grupo="congresso"
+                data-full={f.full}
+                data-legenda={f.legenda}
+                class="block w-full cursor-zoom-in overflow-hidden bg-papel-fundo"
+              >
+                <Image
+                  src={f.miniatura}
+                  alt={f.legenda}
+                  widths={[400, 800, 1200]}
+                  sizes="(min-width: 1024px) 28vw, 46vw"
+                  class="foto aspect-4/3 w-full object-cover"
+                />
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        {/* Estas nove fotos são da Província Franciscana e ainda não têm
+            autorização. Ver ATIVOS-EXTERNOS.md. */}
+        <p class="mt-8 text-xs text-tinta-tenue">
+          Fotografias da Província Franciscana da Imaculada Conceição do Brasil.
+        </p>
+      </section>
+    )
+  }
+
+  <section class="quadro pb-(--spacing-secao)">
+    <span class="fio" aria-hidden="true"></span>
+    <p class="mt-8 max-w-[60ch] text-sm leading-relaxed text-tinta-suave">
+      São {total} fotografias. A federação reúne material novo a cada congresso e a cada envio dos
+      corais filiados — se o seu coro tem fotos para acrescentar,
+      <a href={rota("/contato")} class="underline hover:text-acento-profundo">fale com a gente</a>.
+    </p>
+  </section>
+
+  <Lightbox />
+</Base>

@@ -1,0 +1,19 @@
+{
+  "nome": "Pequenos Cantores de Cássia",
+  "cidade": "Cássia",
+  "uf": "MG",
+  "fundacao": 1972,
+  "filiacao": 1972,
+  "resumo": "Filiado desde a fundação, em 1972. Ensaia quatro dias por semana e mantém coro preparatório de vinte e seis cantores.",
+  "historico": "PENDENTE — reescrever a partir do PDF anexado ao cadastro.",
+  "historicoPendente": true,
+  "foto": "../../assets/corais/pequenos-cantores-de-cassia.jpg",
+  "equipe": [
+    { "nome": "Humberto Patrik Pampanini França", "cargo": "Regente" },
+    { "nome": "Gustavo Lemos da Silva", "cargo": "Presidente" }
+  ],
+  "contato": {
+    "email": "centromusical.cassia@gmail.com"
+  },
+  "destaque": false
+}

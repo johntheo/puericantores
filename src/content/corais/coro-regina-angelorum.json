@@ -1,0 +1,21 @@
+{
+  "nome": "Coro Regina Angelorum",
+  "cidade": "Ponta Grossa",
+  "uf": "PR",
+  "fundacao": 2023,
+  "filiacao": 2026,
+  "resumo": "O mais novo filiado da federação. Canta mais de cinco missas por mês na Capela São Paulo.",
+  "historico": "PENDENTE — reescrever a partir do PDF anexado ao cadastro.",
+  "historicoPendente": true,
+  "foto": "../../assets/corais/coro-regina-angelorum.jpg",
+  "equipe": [
+    { "nome": "Pe. André Luiz de Moura", "cargo": "Regente" },
+    { "nome": "Alan Fernande Pedrollo", "cargo": "Presidente" },
+    { "nome": "João Vitor Lira Bezerra", "cargo": "Pianista" },
+    { "nome": "Angelina Staveski", "cargo": "Preparação vocal" }
+  ],
+  "contato": {
+    "email": "puericantorespg@gmail.com"
+  },
+  "destaque": true
+}

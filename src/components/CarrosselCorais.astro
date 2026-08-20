@@ -1,0 +1,213 @@
+---
+import { rota } from '~/config/site';
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Seta from '~/components/Seta.astro';
+
+/**
+ * Carrossel com todos os corais filiados, no pé da página de cada coral.
+ *
+ * Substitui o antigo bloco "próximo coral", que só oferecia uma saída e
+ * obrigava a percorrer a federação inteira em sequência para chegar num coro
+ * específico. Aqui os doze estão à mão.
+ *
+ * A rolagem é nativa, com scroll-snap: funciona sem JavaScript, com o dedo no
+ * celular, com a roda do mouse e com Tab, porque cada item é um link de
+ * verdade. Os botões são um atalho para quem usa mouse, não o mecanismo.
+ */
+interface Props {
+  corais: CollectionEntry<'corais'>[];
+  /** Coral da página atual, excluído da lista. */
+  atual: string;
+}
+
+const { corais, atual } = Astro.props;
+const outros = corais.filter((c) => c.id !== atual);
+---
+
+<section class="pt-(--spacing-secao) pb-20" aria-labelledby="titulo-carrossel">
+  <div class="quadro">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <div class="mt-10 mb-8 flex flex-wrap items-end justify-between gap-6">
+      <h2 id="titulo-carrossel" class="text-(length:--text-secao)">Os outros corais</h2>
+
+      <div class="flex gap-2">
+        <button
+          type="button"
+          data-carrossel-anterior
+          class="grid size-11 place-items-center border border-papel-borda transition-colors hover:border-tinta disabled:opacity-30 disabled:hover:border-papel-borda"
+        >
+          <Seta sentido="esquerda" />
+          <span class="sr-only">Corais anteriores</span>
+        </button>
+        <button
+          type="button"
+          data-carrossel-proximo
+          class="grid size-11 place-items-center border border-papel-borda transition-colors hover:border-tinta disabled:opacity-30 disabled:hover:border-papel-borda"
+        >
+          <Seta />
+          <span class="sr-only">Próximos corais</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {/* A pista sangra até a borda da tela de propósito: um carrossel que termina
+      alinhado ao texto parece uma lista que não coube. Sangrando, o corte no
+      lado direito comunica que há mais adiante.
+
+      O `scroll-pl` não é decoração: com snap-start, o navegador alinha a borda
+      do item ao início do scrollport, que ignora o padding. Sem ele a pista
+      rola sozinha exatamente o valor do padding já no carregamento, o primeiro
+      card encosta na borda da tela e o alinhamento com o título se perde. */}
+  <ul
+    data-carrossel
+    tabindex="0"
+    aria-label="Corais filiados à federação"
+    class="flex cursor-grab snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth px-[clamp(1.25rem,5vw,4rem)] scroll-pl-[clamp(1.25rem,5vw,4rem)] scroll-pr-[clamp(1.25rem,5vw,4rem)] pb-4 [scrollbar-width:none] select-none active:cursor-grabbing [&::-webkit-scrollbar]:hidden"
+  >
+    {
+      outros.map((coral) => (
+        <li class="w-[76vw] shrink-0 snap-start sm:w-[42vw] lg:w-[26vw] xl:w-[22rem]">
+          <a href={rota(`/corais/${coral.id}`)} class="group block">
+            <div class="overflow-hidden bg-papel-fundo">
+              <Image
+                src={coral.data.foto}
+                alt={`${coral.data.nome}, em ${coral.data.cidade}`}
+                widths={[400, 800]}
+                sizes="(min-width: 1280px) 22rem, (min-width: 640px) 42vw, 76vw"
+                class="foto aspect-4/3 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+              />
+            </div>
+            <h3 class="mt-4 text-xl leading-tight">{coral.data.nomeCurto ?? coral.data.nome}</h3>
+            <p class="mt-1 text-sm text-tinta-tenue">
+              {coral.data.cidade} · {coral.data.uf} · desde {coral.data.fundacao}
+            </p>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  {/* Com a barra de rolagem escondida, nada indicava que a pista rola — e
+      quem usa mouse sem trackpad não tem gesto horizontal. Esta régua mostra
+      a posição e é o único sinal visual de que há mais adiante. */}
+  <div class="quadro mt-2">
+    <div class="h-px w-full bg-papel-borda" aria-hidden="true">
+      <div data-carrossel-progresso class="h-px w-0 bg-tinta transition-[width,transform] duration-150">
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const pista = document.querySelector<HTMLElement>('[data-carrossel]');
+  const anterior = document.querySelector<HTMLButtonElement>('[data-carrossel-anterior]');
+  const proximo = document.querySelector<HTMLButtonElement>('[data-carrossel-proximo]');
+
+  if (pista && anterior && proximo) {
+    const passo = () => {
+      const item = pista.querySelector<HTMLElement>('li');
+      // Um item mais o intervalo do flex; sem item, cai numa fração da pista.
+      return item ? item.offsetWidth + 24 : pista.clientWidth * 0.8;
+    };
+
+    /* Desabilitar nos extremos é o que impede o botão morto: clicar e nada
+       acontecer é pior que o botão estar visivelmente indisponível. */
+    const sincronizar = () => {
+      const fim = pista.scrollWidth - pista.clientWidth;
+      anterior.disabled = pista.scrollLeft <= 2;
+      proximo.disabled = pista.scrollLeft >= fim - 2;
+    };
+
+    anterior.addEventListener('click', () => pista.scrollBy({ left: -passo() }));
+    proximo.addEventListener('click', () => pista.scrollBy({ left: passo() }));
+
+    pista.addEventListener('scroll', sincronizar, { passive: true });
+    window.addEventListener('resize', sincronizar);
+    sincronizar();
+
+    /* Arraste com o ponteiro.
+       Sem isto, quem usa mouse sem trackpad não tem como percorrer a pista:
+       a roda vertical não rola contêiner horizontal e a barra está escondida.
+       Restavam só os botões, no alto e longe das imagens. */
+    let arrastando = false;
+    let partiuEm = 0;
+    let scrollInicial = 0;
+    let percorrido = 0;
+
+    /* Arrastar sobre uma imagem dentro de um link dispara o drag-and-drop
+       nativo do navegador — a "imagem fantasma" —, que engole os eventos de
+       ponteiro e faz o arraste do carrossel simplesmente não acontecer.
+       Cancelar o dragstart é o que devolve o gesto. */
+    pista.addEventListener('dragstart', (e) => e.preventDefault());
+
+    pista.addEventListener('pointerdown', (e) => {
+      // Só o botão principal do mouse. Toque e caneta já rolam nativamente, e
+      // interferir neles só atrapalharia o gesto do sistema.
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+
+      arrastando = true;
+      partiuEm = e.clientX;
+      scrollInicial = pista.scrollLeft;
+      percorrido = 0;
+      // O snap suave briga com o arraste: cada ajuste viraria uma animação.
+      pista.style.scrollBehavior = 'auto';
+      pista.style.scrollSnapType = 'none';
+    });
+
+    /* O movimento é ouvido na janela, e NÃO via setPointerCapture.
+       A captura de ponteiro redireciona para o elemento que capturou todos os
+       eventos seguintes — inclusive o `click` —, então o clique deixava de
+       chegar ao link do card e nenhum coral abria. Ouvir na janela mantém o
+       alvo natural do clique e ainda acompanha o cursor para fora da pista. */
+    window.addEventListener('pointermove', (e) => {
+      if (!arrastando) return;
+      const delta = e.clientX - partiuEm;
+      percorrido = Math.abs(delta);
+      pista.scrollLeft = scrollInicial - delta;
+    });
+
+    const soltar = () => {
+      if (!arrastando) return;
+      arrastando = false;
+      pista.style.scrollBehavior = '';
+      pista.style.scrollSnapType = '';
+    };
+
+    window.addEventListener('pointerup', soltar);
+    window.addEventListener('pointercancel', soltar);
+
+    /* Um arraste que termina sobre um card não pode virar navegação. O limiar
+       distingue arrastar de clicar; abaixo dele o clique no link continua
+       funcionando normalmente. */
+    pista.addEventListener(
+      'click',
+      (e) => {
+        if (percorrido > 6) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      },
+      true
+    );
+
+    /* Régua de progresso. */
+    const progresso = document.querySelector<HTMLElement>('[data-carrossel-progresso]');
+
+    const desenharProgresso = () => {
+      if (!progresso) return;
+      const rolavel = pista.scrollWidth - pista.clientWidth;
+      const visivel = pista.clientWidth / pista.scrollWidth;
+      const posicao = rolavel > 0 ? pista.scrollLeft / rolavel : 0;
+
+      progresso.style.width = `${visivel * 100}%`;
+      progresso.style.transform = `translateX(${(posicao * (1 - visivel) * 100) / visivel}%)`;
+    };
+
+    pista.addEventListener('scroll', desenharProgresso, { passive: true });
+    window.addEventListener('resize', desenharProgresso);
+    desenharProgresso();
+  }
+</script>

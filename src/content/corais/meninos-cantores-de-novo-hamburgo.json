@@ -1,0 +1,18 @@
+{
+  "nome": "Meninos Cantores de Novo Hamburgo",
+  "cidade": "Novo Hamburgo",
+  "uf": "RS",
+  "fundacao": 2005,
+  "filiacao": 2005,
+  "resumo": "Único filiado do Rio Grande do Sul. Ligado à Paróquia Nossa Senhora da Piedade, filiou-se no ano em que nasceu.",
+  "historico": "PENDENTE — reescrever a partir do PDF anexado ao cadastro.",
+  "historicoPendente": true,
+  "foto": "../../assets/corais/meninos-cantores-de-novo-hamburgo.jpg",
+  "equipe": [
+    { "nome": "Djeison Engelke Borges", "cargo": "Regente" },
+    { "nome": "José Isaias Camaratta da Costa", "cargo": "Presidente" },
+    { "nome": "Damiana Zago", "cargo": "Preparação vocal" }
+  ],
+  "contato": {},
+  "destaque": false
+}

@@ -1,0 +1,38 @@
+---
+import { rota } from '~/config/site';
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  coral: CollectionEntry<'corais'>;
+}
+
+const { coral } = Astro.props;
+const { nome, nomeCurto, cidade, uf, fundacao, resumo, foto } = coral.data;
+
+const rotulo = nomeCurto ?? nome;
+---
+
+<a href={rota(`/corais/${coral.id}`)} class="group block">
+  <div class="relative overflow-hidden bg-papel-fundo">
+    <Image
+      src={foto}
+      alt={`${nome}, em ${cidade}`}
+      widths={[400, 800, 1200]}
+      sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 92vw"
+      class="foto aspect-4/3 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+    />
+
+    {/* O acento vermelho da marca aparece só neste traço, que cresce no hover.
+        É o único momento de cor da interface fora do brasão. */}
+    <span
+      class="absolute bottom-0 left-0 h-[3px] w-0 bg-acento transition-[width] duration-500 ease-out group-hover:w-full"
+      aria-hidden="true"></span>
+  </div>
+
+  <div class="mt-5">
+    <h3 class="text-2xl leading-tight sm:text-[1.75rem]">{rotulo}</h3>
+    <p class="mt-2 text-sm text-tinta-tenue">{cidade} · {uf} · desde {fundacao}</p>
+    <p class="mt-3 text-sm leading-relaxed text-tinta-suave">{resumo}</p>
+  </div>
+</a>

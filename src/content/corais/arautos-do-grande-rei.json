@@ -1,0 +1,17 @@
+{
+  "nome": "Arautos do Grande Rei",
+  "cidade": "Xaxim",
+  "uf": "SC",
+  "fundacao": 1972,
+  "filiacao": 1979,
+  "resumo": "Vinculado à Paróquia São Luiz Gonzaga, reúne cantores dos sete aos quarenta e três anos em Xaxim.",
+  "historico": "PENDENTE — reescrever a partir do PDF anexado ao cadastro.",
+  "historicoPendente": true,
+  "foto": "../../assets/corais/arautos-do-grande-rei.jpg",
+  "equipe": [
+    { "nome": "Giseli Linhares Felix", "cargo": "Regente" },
+    { "nome": "Daniela Zanella Abido", "cargo": "Presidente" }
+  ],
+  "contato": {},
+  "destaque": true
+}

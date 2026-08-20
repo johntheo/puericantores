@@ -1,0 +1,85 @@
+---
+import '~/styles/global.css';
+import { site, rota } from '~/config/site';
+import Cabecalho from '~/components/Cabecalho.astro';
+import Rodape from '~/components/Rodape.astro';
+
+interface Props {
+  titulo: string;
+  descricao?: string;
+  /** Cabeçalho sobreposto a uma foto de tela cheia, em vez de sobre papel. */
+  cabecalhoSobreposto?: boolean;
+}
+
+const { titulo, descricao = site.descricao, cabecalhoSobreposto = false } = Astro.props;
+
+const tituloCompleto = titulo === site.assinatura ? titulo : `${titulo} · ${site.assinatura}`;
+const canonica = new URL(Astro.url.pathname, Astro.site ?? site.dominio);
+
+const ehPreview = import.meta.env.PUBLIC_PREVIEW === 'true';
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloCompleto}</title>
+    <meta name="description" content={descricao} />
+    <link rel="canonical" href={canonica} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.assinatura} />
+    <meta property="og:title" content={tituloCompleto} />
+    <meta property="og:description" content={descricao} />
+    <meta property="og:locale" content="pt_BR" />
+
+    {/* Só o escudo, sem a faixa: na aba do navegador a faixa vira um borrão. */}
+    <link rel="icon" href={rota('/favicon.svg')} type="image/svg+xml" />
+    <meta name="theme-color" content="#faf8f4" />
+
+    {/* No preview da diretoria o site fica fora dos buscadores. Ele carrega
+        fotografias de terceiro ainda sem autorização e conteúdo institucional
+        não validado — nada disso deve ser indexado antes do lançamento. */}
+    {ehPreview && <meta name="robots" content="noindex, nofollow" />}
+
+    {/* Prepara o frontispício antes da primeira pintura, para que ele se
+        componha em vez de piscar.
+
+        O temporizador cobre o caso de o script de movimento nunca chegar a
+        carregar — rede ruim, erro, bloqueador. O caso em que ele carrega mas
+        a animação congela é coberto por outra rede, dentro do próprio
+        motion.ts, porque aí só remover a classe não basta: os estilos inline
+        do GSAP vencem o CSS. Em nenhuma hipótese o nome da federação pode
+        ficar invisível. */}
+    <script is:inline>
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('js');
+        setTimeout(function () {
+          document.documentElement.classList.remove('js');
+        }, 4000);
+      }
+    </script>
+  </head>
+
+  <body>
+    <a
+      href="#conteudo"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-tinta focus:px-4 focus:py-2 focus:text-papel"
+    >
+      Pular para o conteúdo
+    </a>
+
+    <Cabecalho sobreposto={cabecalhoSobreposto} />
+
+    <main id="conteudo">
+      <slot />
+    </main>
+
+    <Rodape />
+
+    <script>
+      import '~/scripts/motion';
+    </script>
+  </body>
+</html>
