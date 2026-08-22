@@ -90,7 +90,7 @@ const total = fotosCorais.length + fotosCongresso.length;
         />
       </button>
       <figcaption class="mt-3 text-sm">
-        <a href={`/corais/${fotosCorais[0]!.id}`} class="hover:text-acento-profundo">
+        <a href={rota(`/corais/${fotosCorais[0]!.id}`)} class="hover:text-acento-profundo">
           {fotosCorais[0]!.nome}
         </a>
         <span class="text-tinta-tenue">
