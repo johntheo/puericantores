@@ -5,15 +5,22 @@
   "fundacao": 1972,
   "filiacao": 1972,
   "resumo": "Filiado desde a fundação, em 1972. Ensaia quatro dias por semana e mantém coro preparatório de vinte e seis cantores.",
-  "historico": "PENDENTE — reescrever a partir do PDF anexado ao cadastro.",
-  "historicoPendente": true,
+  "historico": "O Coral Pequenos Cantores de Cássia foi fundado em 5 de março de 1972 pelo professor e maestro Heitor Geraldo Magella Combat, no sudoeste de Minas. Está na federação desde então e participou de todos os congressos nacionais e regionais realizados desde aquele ano.\n\nDesde 1994 o coral integra o Centro Musical Heitor Combat, entidade sem fins lucrativos que hoje atende diariamente cento e oitenta crianças e jovens, dos oito aos dezoito anos, com canto coral, teoria musical, solfejo, flauta doce e instrumentos de corda, percussão, palheta e bocal.\n\nO repertório já levou o coro ao Palácio das Artes, em Belo Horizonte, com o Messias de Händel, em 1992, e ao Teatro Francisco Nunes com o Réquiem de Fauré, em 1995. Grava discos desde 1999, entre eles o Tributo a Santa Rita de Cássia, e em 2017 esteve no congresso internacional dos Pueri Cantores no Rio de Janeiro. Em 2022 cantou na missa de sagração do novo santuário diocesano de Santa Rita — o maior do mundo dedicado à padroeira da cidade.\n\nEm 2018 o coral foi inventariado como patrimônio histórico imaterial de Cássia e, em 2024, reconhecido de relevante interesse cultural pelo Estado de Minas Gerais. Em julho de 2028 sediará o 19º Congresso Nacional da federação.",
+  "historicoPendente": false,
   "foto": "../../assets/corais/pequenos-cantores-de-cassia.jpg",
   "equipe": [
-    { "nome": "Humberto Patrik Pampanini França", "cargo": "Regente" },
-    { "nome": "Gustavo Lemos da Silva", "cargo": "Presidente" }
+    {
+      "nome": "Humberto Patrik Pampanini França",
+      "cargo": "Regente"
+    },
+    {
+      "nome": "Gustavo Lemos da Silva",
+      "cargo": "Presidente"
+    }
   ],
   "contato": {
-    "email": "centromusical.cassia@gmail.com"
+    "email": "centromusical.cassia@gmail.com",
+    "instagram": "https://www.instagram.com/pequenoscantoresdecassia/"
   },
   "destaque": false
 }

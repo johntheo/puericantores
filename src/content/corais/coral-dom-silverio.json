@@ -5,13 +5,22 @@
   "fundacao": 1963,
   "filiacao": 1968,
   "resumo": "Coro exclusivamente masculino ligado à Matriz Cristo Redentor, em atividade há mais de sessenta anos.",
-  "historico": "PENDENTE — reescrever a partir do PDF anexado ao cadastro.",
-  "historicoPendente": true,
+  "historico": "No dia 19 de março de 1963, na Capela de Santa Terezinha do Menino Jesus, dentro do Colégio Dom Silvério, em Sete Lagoas, um grupo de alunos cantou sua primeira missa. Estava fundado o coral de meninos do colégio, sob a regência do professor e maestro João Lucas Rodrigues — que seria também um dos fundadores da Federação Nacional dos Meninos Cantores do Brasil e levaria o coro ao primeiro congresso nacional promovido por ela.\n\nNas seis décadas seguintes o Dom Silvério apresentou-se por todo o país, em congressos, festivais, encontros e concursos, tornando-se um dos corais mais antigos em atividade na federação.\n\nEm 2013 o coro foi desativado. Ficou dez anos em silêncio. Em 2023 os meninos voltaram a ensaiar e, no mesmo movimento, nasceu o Coro das Meninas Cantoras do Dom Silvério.\n\nA regência hoje é do maestro Cleber Geraldo Vieira de Castro, ele próprio ex-menino cantor da casa. A presidência é de Amauri Artimos da Matta.",
+  "historicoPendente": false,
   "foto": "../../assets/corais/coral-dom-silverio.jpg",
   "equipe": [
-    { "nome": "Cleber Geraldo Vieira de Castro", "cargo": "Regente" },
-    { "nome": "Amauri Artimos da Matta", "cargo": "Presidente" },
-    { "nome": "Daniel da Conceição Souza", "cargo": "Preparação vocal" }
+    {
+      "nome": "Cleber Geraldo Vieira de Castro",
+      "cargo": "Regente"
+    },
+    {
+      "nome": "Amauri Artimos da Matta",
+      "cargo": "Presidente"
+    },
+    {
+      "nome": "Daniel da Conceição Souza",
+      "cargo": "Preparação vocal"
+    }
   ],
   "contato": {},
   "destaque": false

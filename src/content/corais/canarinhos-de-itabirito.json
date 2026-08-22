@@ -6,13 +6,22 @@
   "fundacao": 1973,
   "filiacao": 1976,
   "resumo": "Trezentos alunos em cinco polos de ensino gratuito, sete grupos corais e mais de cinco décadas de estrada.",
-  "historico": "PENDENTE — reescrever a partir do PDF anexado ao cadastro.",
-  "historicoPendente": true,
+  "historico": "Fundado em 1973 pelo padre, maestro e compositor Francisco Xavier Gomes, o Coral Canarinhos de Itabirito construiu ao longo de cinco décadas um modo próprio de se apresentar: o canto vem acompanhado de movimento e de elementos cênicos, e a preparação técnica é parte declarada do trabalho.\n\nO coro já percorreu onze estados brasileiros e fez turnê internacional no Chile, ocupando teatros, catedrais e espaços culturais com um repertório que vai do sagrado à música brasileira e às obras de referência do canto coral. Na passagem do cinquentenário esteve em Brasília, em 2023, e em São Paulo, em 2024, com concertos e celebrações nas catedrais metropolitanas das duas cidades.\n\nPor trás do coro que viaja há uma associação que ensina. Música, educação e arte chegam gratuitamente a trezentos alunos e alunas, em cinco polos espalhados por Itabirito. O corpo artístico reúne hoje sete grupos corais e três grupos instrumentais, de faixas etárias e repertórios distintos.\n\nA direção artística e a regência são do maestro Éric Lana; a preparação vocal e a direção cênica, da professora Thays Simões.",
+  "historicoPendente": false,
   "foto": "../../assets/corais/canarinhos-de-itabirito.jpg",
   "equipe": [
-    { "nome": "Éric Vinícius de Aguiar Lana", "cargo": "Regente" },
-    { "nome": "Fernando Xavier Nazareno", "cargo": "Presidente" },
-    { "nome": "Thays Lana Peneda Simões", "cargo": "Preparação vocal" }
+    {
+      "nome": "Éric Vinícius de Aguiar Lana",
+      "cargo": "Regente"
+    },
+    {
+      "nome": "Fernando Xavier Nazareno",
+      "cargo": "Presidente"
+    },
+    {
+      "nome": "Thays Lana Peneda Simões",
+      "cargo": "Preparação vocal"
+    }
   ],
   "contato": {
     "site": "https://www.canarinhosdeitabirito.org.br",
