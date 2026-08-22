@@ -26,13 +26,31 @@ npm run dev      # http://localhost:4321
 | Comando | Vai para |
 |---|---|
 | `npm run deploy:preview` | Canal de preview do Firebase, URL temporária que expira em 30 dias |
-| `npm run deploy` | `site-fnpcb.web.app` — o endereço oficial |
+| `npm run deploy` | `puericantores.web.app` — o endereço em uso |
 
 Projeto Firebase: **`site-fnpcb`**. Requer `firebase login` uma vez.
 
+### Os dois sites do projeto
+
+O projeto hospeda **dois** sites, mapeados por apelido em `.firebaserc`:
+
+| Apelido | Site | O que serve |
+|---|---|---|
+| `principal` | `puericantores.web.app` | O site |
+| `antigo` | `site-fnpcb.web.app` | Redirecionamento 301 para o principal, preservando o caminho |
+
+`site-fnpcb.web.app` foi o primeiro endereço publicado e a diretoria já o tem
+no WhatsApp. Ele não serve arquivo nenhum — só encaminha, para que não exista
+uma cópia velha do site viva num endereço que alguém pode abrir.
+
+Cuidado ao mexer nos `redirects`: a captura do Firebase é `:nome*`, **não**
+`:splat` (isso é Netlify, e faz a regra não casar com nada). E `:caminho*` não
+casa com a raiz nua — ela precisa de regra própria.
+
 O build tem três destinos, alternados por `DEPLOY_ALVO`: `firebase` (padrão),
 `pages` (o preview no GitHub, que serve de subpasta) e `dominio` (para quando
-**puericantores.com.br** for registrado — hoje o domínio não existe).
+**puericantores.com.br** for registrado — em 22/08/2026 o nome estava livre no
+Registro.br, ainda não registrado).
 
 ---
 
@@ -41,11 +59,17 @@ O build tem três destinos, alternados por `DEPLOY_ALVO`: `firebase` (padrão),
 | Quero mudar | Arquivo |
 |---|---|
 | Nome, assinatura, e-mail, menu | `src/config/site.ts` |
+| Congressos, fatos da Pueri Cantores, assuntos de e-mail | `src/config/federacao.ts` |
 | Dados de um coral | `src/content/corais/<slug>.json` |
 | Quais campos um coral pode ter | `src/content.config.ts` |
 | Cores, fontes, escalas | `src/styles/global.css` |
 | Animações | `src/scripts/motion.ts` |
-| Brasão | `src/components/Brasao.astro` |
+| Brasão na tela | `src/components/Brasao.astro` |
+| Brasão para download | `public/brasao.svg` |
+
+Os dois brasões são o mesmo desenho em dois lugares: o componente serve às
+páginas, o arquivo em `public/` é o que a imprensa baixa. Alterou um, altere o
+outro.
 
 ### Adicionar um coral novo
 
@@ -80,34 +104,78 @@ repositório para poder repetir quando entrar coral novo.
 node scripts/baixar-fontes.mjs [slug]   # baixa histórico, foto e logo do Drive
 node scripts/processar-fotos.mjs        # redimensiona para src/assets/corais/
 node scripts/extrair-imagem-de-pdf.mjs <entrada.pdf> <saida.jpg>
+node scripts/gerar-revisao-historicos.mjs  # refaz docs/revisao-historicos.md
+node scripts/gerar-pdf.mjs [nome] [--png]  # gera os PDFs de docs/
 ```
 
 Os arquivos brutos caem em `tmp/`, que está no `.gitignore`.
 
+`gerar-revisao-historicos.mjs` monta o documento que vai aos corais lendo os
+próprios JSONs, para que o texto revisado seja sempre igual ao publicado.
+Rode-o de novo depois de qualquer correção de histórico. As perguntas em aberto
+por coral ficam dentro do script — é lá que se acrescenta ou se risca uma.
+
+`gerar-pdf.mjs` converte os documentos de `docs/` em PDF, usando o Chrome e as
+fontes do próprio site — markdown não se envia para uma diretoria de
+voluntários. Depois de editar qualquer documento, rode de novo para refazer os
+anexos; `--png` guarda também uma imagem em `tmp/shots/` para conferir o
+resultado sem abrir leitor de PDF.
+
+O conversor de markdown entra por `npx` na hora de rodar e **não** está no
+`package.json`: o site não usa markdown em lugar nenhum, e uma dependência
+permanente por causa de um script de documento sairia cara demais pelo que
+entrega. A primeira execução baixa; as seguintes usam o cache do npx.
+
+Os PDFs gerados estão no `.gitignore`. São derivados dos `.md`, que são a
+fonte de verdade — versionar os dois deixaria os arquivos divergirem.
+
+### Os documentos em `docs/`
+
+| Arquivo | Para quem |
+|---|---|
+| `o-que-falta.md` | Diretoria — o que falta, por quem resolve, incluindo a explicação do domínio |
+| `revisao-historicos.md` | Cada coral — o texto publicado e as perguntas em aberto |
+| `mensagem-whatsapp.md` | Uso interno — mensagens prontas para enviar |
+
+Os dois primeiros viram PDF. O de WhatsApp não, porque não é para enviar como
+anexo.
+
 ---
 
-## Estado atual — Fase 1
+## Estado atual — Fase 2
 
-**Pronto:** home institucional, diretório dos 12 corais com filtro por estado,
-página individual de cada coral, brasão vetorizado, design system, animações.
+**Pronto:** as sete rotas do escopo existem com conteúdo real. Home
+institucional, diretório dos 12 corais com filtro por estado, página individual
+de cada coral com histórico escrito, galeria, `/federacao`, `/filiacao`,
+`/imprensa` e `/contato`. Menu mobile, brasão vetorizado, design system,
+animações.
 
 **Pendente:**
 
 | # | Item |
 |---|---|
-| 1 | Histórico reescrito de 11 corais (só Petrópolis está pronto) |
-| 2 | Conteúdo institucional: `/federacao`, `/filiacao`, `/imprensa`, `/contato` |
-| 3 | Ano de fundação da federação |
+| 1 | **Revisão dos históricos pelos corais** — os 12 textos estão no ar; `docs/revisao-historicos.md` é o documento a circular, com 12 perguntas em aberto |
+| 2 | Documentos institucionais da diretoria: estatuto, histórico da FNMCB, ata de eleição. Destravam a fundação da federação, a lista completa de congressos, os requisitos de filiação e a seção de diretoria |
+| 3 | CNPJ, endereço da sede e redes sociais da federação |
 | 4 | Confirmação de uso de imagem junto aos 12 corais |
 | ~~4b~~ | ~~Autorização das fotos de terceiro~~ — **concedida em 22/08/2026**. Falta arquivar o documento e pedir os originais em alta |
-| 5 | Menu mobile (entra com as rotas da fase 2) |
-| 6 | **Fotos para as galerias** — existe uma foto por coral. Peça de 4 a 6 por coro: a mini galeria aparece sozinha a partir da segunda, sem precisar de código |
-| 6b | **Duas fotos impróprias**: a da Psalette de Santo Ivo é um print de story do Instagram, com overlay de música, contador "1/10" e ícone de mudo; a do Coro Carpe Diem é uma foto escura de palco. Pedir substitutas |
-| 7 | Serviço de formulário e analítica sem cookies |
-| 8 | Logo do Passos: PDF vetorial, precisa de conversão |
+| 5 | **Fotos para as galerias** — existe uma foto por coral. Peça de 4 a 6 por coro: a mini galeria aparece sozinha a partir da segunda, sem precisar de código |
+| 5b | **Duas fotos impróprias**: a da Psalette de Santo Ivo é um print de story do Instagram, com overlay de música, contador "1/10" e ícone de mudo; a do Coro Carpe Diem é uma foto escura de palco. Pedir substitutas |
+| 6 | Analítica sem cookies (Cloudflare Web Analytics) |
+| 7 | Logo do Passos: PDF vetorial, precisa de conversão |
+| 8 | Manual da marca e brasão em PNG de alta resolução, para `/imprensa` |
 
-As páginas em preparação **dizem que estão em preparação** — nada de texto
-inventado ou lorem ipsum na frente da diretoria.
+Onde falta documento, a página **diz que falta**, diz o que falta e diz quem
+destrava — o componente `Pendencia.astro`. Nada de texto inventado ou lorem
+ipsum na frente da diretoria.
+
+### Formulários
+
+Não há. `/contato` e `/filiacao` usam `mailto:` com assunto e roteiro
+pré-preenchidos, definidos em `src/config/federacao.ts`. Um serviço de
+formulário exigiria conta de terceiro, chave em variável de ambiente e um
+endpoint recebendo dado de menor de idade; o `mailto` entrega no mesmo lugar
+sem nada disso. Se a federação quiser mudar depois, o ponto de troca é um só.
 
 ---
 

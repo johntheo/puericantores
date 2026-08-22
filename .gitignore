@@ -8,3 +8,6 @@ tmp/
 
 # ferramentas de design (estado local)
 .impeccable/
+
+# PDFs sao gerados de docs/*.md por scripts/gerar-pdf.mjs
+docs/*.pdf
