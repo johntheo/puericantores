@@ -1,6 +1,7 @@
 ---
 import { site, navegacao, rota } from '~/config/site';
 import Brasao from '~/components/Brasao.astro';
+import MenuMobile from '~/components/MenuMobile.astro';
 
 interface Props {
   /** Sobre foto de tela cheia o cabeçalho fica branco e sem fundo. */
@@ -45,8 +46,6 @@ const atual = Astro.url.pathname;
       }
     </nav>
 
-    {/* Fase 1 não tem menu mobile: as rotas ainda não existem. Entra na fase 2
-        junto com /federacao, /filiacao e /contato. */}
-    <a href={rota("/corais")} class="text-sm underline underline-offset-4 md:hidden">Os corais</a>
+    <MenuMobile sobreposto={sobreposto} />
   </div>
 </header>

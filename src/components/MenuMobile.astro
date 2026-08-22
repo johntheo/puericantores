@@ -1,0 +1,177 @@
+---
+/**
+ * Navegação em celular.
+ *
+ * Até a fase 1 o cabeçalho estreito trazia um único link solto para /corais,
+ * porque as demais rotas não existiam. Agora existem, e num site institucional
+ * de sete páginas esconder cinco delas do celular não é simplicidade, é
+ * amputação — a maior parte da diretoria abre este site no telefone.
+ *
+ * O painel é uma página de rosto, não uma gaveta: papel inteiro, nomes em
+ * corpo grande, um fio entre cada. É o mesmo vocabulário do resto do site,
+ * numa superfície que só aparece quando chamada.
+ *
+ * Sem dependência de framework nem de GSAP. O menu precisa funcionar mesmo
+ * que o pacote de movimento falhe ao carregar — é a única forma de navegar.
+ */
+import { site, navegacao, rota } from '~/config/site';
+import Brasao from '~/components/Brasao.astro';
+
+interface Props {
+  /** Sobre foto de tela cheia o botão é claro, como o resto do cabeçalho. */
+  sobreposto?: boolean;
+}
+
+const { sobreposto = false } = Astro.props;
+const atual = Astro.url.pathname;
+---
+
+<div class="md:hidden" data-menu>
+  <button
+    type="button"
+    data-menu-abrir
+    aria-expanded="false"
+    aria-controls="menu-mobile"
+    class:list={[
+      'flex items-center gap-2.5 text-sm transition-opacity hover:opacity-60',
+      sobreposto ? 'text-papel' : 'text-tinta',
+    ]}
+  >
+    Menu
+    <span class="grid gap-[5px]" aria-hidden="true">
+      <span class="block h-px w-5 bg-current"></span>
+      <span class="block h-px w-5 bg-current"></span>
+    </span>
+  </button>
+
+  {/* `hidden` em vez de classe utilitária: o painel precisa estar fora da
+      ordem de tabulação enquanto fechado, e `display:none` é a única coisa
+      que o navegador respeita sem gambiarra de inert. */}
+  <div
+    id="menu-mobile"
+    data-menu-painel
+    hidden
+    class="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-papel text-tinta"
+  >
+    <div class="quadro flex items-center justify-between gap-6 py-5">
+      <a href={rota('/')} class="flex items-center gap-3" aria-label={`${site.assinatura} — início`}>
+        <Brasao tamanho={44} titulo="" />
+        <span class="font-display text-lg leading-none tracking-tight">{site.assinatura}</span>
+      </a>
+
+      <button
+        type="button"
+        data-menu-fechar
+        class="-mr-2 grid size-11 place-items-center text-tinta transition-opacity hover:opacity-60"
+      >
+        <span class="sr-only">Fechar menu</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+          <path d="m5 5 14 14M19 5 5 19"></path>
+        </svg>
+      </button>
+    </div>
+
+    <nav aria-label="Navegação principal" class="quadro flex-1 pt-6 pb-12">
+      <ul>
+        {
+          navegacao.map(({ href, rotulo }) => {
+            const ativo = atual === href || atual.startsWith(`${href}/`);
+            return (
+              <li>
+                <span class="fio" aria-hidden="true" />
+                <a
+                  href={rota(href)}
+                  aria-current={ativo ? 'page' : undefined}
+                  class:list={[
+                    'block py-5 font-display text-4xl leading-none tracking-tight',
+                    ativo && 'text-acento-profundo',
+                  ]}
+                >
+                  {rotulo}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <span class="fio" aria-hidden="true"></span>
+
+      <a
+        href={`mailto:${site.contato.email}`}
+        class="mt-10 inline-block text-sm underline underline-offset-4"
+      >
+        {site.contato.email}
+      </a>
+
+      <p class="mt-4 text-xs text-tinta-tenue">{site.razaoSocial}</p>
+    </nav>
+  </div>
+</div>
+
+<script>
+  /**
+   * O painel abre e fecha sem animação de entrada. Um menu de navegação que
+   * demora a aparecer é um menu que atrapalha, e não há nada aqui que uma
+   * transição tornaria mais compreensível.
+   */
+  const raiz = document.querySelector<HTMLElement>('[data-menu]');
+  const abrir = raiz?.querySelector<HTMLButtonElement>('[data-menu-abrir]');
+  const fechar = raiz?.querySelector<HTMLButtonElement>('[data-menu-fechar]');
+  const painel = raiz?.querySelector<HTMLElement>('[data-menu-painel]');
+
+  if (raiz && abrir && fechar && painel) {
+    const focavel = () =>
+      painel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])');
+
+    const definir = (aberto: boolean) => {
+      painel.hidden = !aberto;
+      abrir.setAttribute('aria-expanded', String(aberto));
+      // Trava a rolagem do documento atrás do painel.
+      document.documentElement.style.overflow = aberto ? 'hidden' : '';
+
+      if (aberto) focavel()[0]?.focus();
+      else abrir.focus();
+    };
+
+    abrir.addEventListener('click', () => definir(true));
+    fechar.addEventListener('click', () => definir(false));
+
+    document.addEventListener('keydown', (evento) => {
+      if (painel.hidden) return;
+
+      if (evento.key === 'Escape') {
+        evento.preventDefault();
+        definir(false);
+        return;
+      }
+
+      /* Prende a tabulação dentro do painel. Sem isto o foco continua a
+         percorrer a página coberta, que o usuário de teclado não vê. */
+      if (evento.key === 'Tab') {
+        const itens = focavel();
+        if (itens.length === 0) return;
+
+        const primeiro = itens[0]!;
+        const ultimo = itens[itens.length - 1]!;
+
+        if (evento.shiftKey && document.activeElement === primeiro) {
+          evento.preventDefault();
+          ultimo.focus();
+        } else if (!evento.shiftKey && document.activeElement === ultimo) {
+          evento.preventDefault();
+          primeiro.focus();
+        }
+      }
+    });
+
+    /* Girar o telefone para paisagem pode cruzar o ponto de corte `md`, onde o
+       painel inteiro deixa de ser exibido. Sem isto a rolagem ficaria travada
+       num documento sem nenhum painel visível para destravá-la. */
+    const largo = window.matchMedia('(min-width: 48rem)');
+    largo.addEventListener('change', (evento) => {
+      if (evento.matches && !painel.hidden) definir(false);
+    });
+  }
+</script>
