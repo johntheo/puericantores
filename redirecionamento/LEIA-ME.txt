@@ -1,0 +1,5 @@
+Esta pasta existe porque o Firebase exige um diretório em `public`, mesmo
+quando o site só redireciona. O antigo endereço `site-fnpcb.web.app` não
+serve nenhum arquivo: manda todo mundo para `puericantores.web.app`.
+
+Ver a configuração em `firebase.json`, alvo `antigo`.

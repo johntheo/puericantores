@@ -1,30 +1,53 @@
 {
-  "hosting": {
-    "public": "dist",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-    "cleanUrls": true,
-    "trailingSlash": false,
-    "//headers": "A ordem importa: o Firebase casa a regra com o CAMINHO DA REQUISIÇÃO, não com o arquivo em disco. Com cleanUrls, a home chega como `/` e a lista de corais como `/corais` — nenhuma das duas termina em .html, então uma regra `**/*.html` não pega nada e o HTML acaba servido com o padrão de uma hora. Por isso a regra de página é o catch-all, e a de asset vem depois para sobrescrevê-la.",
-    "headers": [
-      {
-        "//": "Toda página: revalidar sempre. Sem isto, uma correção publicada agora levaria até uma hora para chegar a quem já visitou.",
-        "source": "**",
-        "headers": [
-          { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
-          { "key": "X-Content-Type-Options", "value": "nosniff" },
-          { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-          {
-            "//": "O site não embute nada de terceiros; negar enquadramento evita clickjacking sem custo nenhum.",
-            "key": "X-Frame-Options",
-            "value": "DENY"
-          }
-        ]
-      },
-      {
-        "//": "Os assets do Astro carregam hash no nome e trocam de nome a cada alteração de conteúdo, então podem ser cacheados para sempre. Vem por último para vencer o catch-all acima.",
-        "source": "/_astro/**",
-        "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
-      }
-    ]
-  }
+  "//": "Dois sites no mesmo projeto. `principal` é o site de verdade; `antigo` existe só para não deixar uma cópia velha do site viva num endereço que a diretoria já tem no WhatsApp. Os apelidos são mapeados em .firebaserc.",
+  "hosting": [
+    {
+      "target": "principal",
+      "public": "dist",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "cleanUrls": true,
+      "trailingSlash": false,
+      "//headers": "A ordem importa: o Firebase casa a regra com o CAMINHO DA REQUISIÇÃO, não com o arquivo em disco. Com cleanUrls, a home chega como `/` e a lista de corais como `/corais` — nenhuma das duas termina em .html, então uma regra `**/*.html` não pega nada e o HTML acaba servido com o padrão de uma hora. Por isso a regra de página é o catch-all, e a de asset vem depois para sobrescrevê-la.",
+      "headers": [
+        {
+          "//": "Toda página: revalidar sempre. Sem isto, uma correção publicada agora levaria até uma hora para chegar a quem já visitou.",
+          "source": "**",
+          "headers": [
+            { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
+            { "key": "X-Content-Type-Options", "value": "nosniff" },
+            { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+            {
+              "//": "O site não embute nada de terceiros; negar enquadramento evita clickjacking sem custo nenhum.",
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            }
+          ]
+        },
+        {
+          "//": "Os assets do Astro carregam hash no nome e trocam de nome a cada alteração de conteúdo, então podem ser cacheados para sempre. Vem por último para vencer o catch-all acima.",
+          "source": "/_astro/**",
+          "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+        }
+      ]
+    },
+    {
+      "//": "site-fnpcb.web.app, o primeiro endereço publicado. Redireciona tudo para o novo, preservando o caminho: quem tiver salvo o link de um coral específico continua caindo naquele coral. `public` aponta para uma pasta vazia porque não há arquivo a servir — só redirecionamento.",
+      "target": "antigo",
+      "public": "redirecionamento",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "//redirects": "A captura do Firebase é `:nome*`. NÃO é `:splat`, que é sintaxe do Netlify e faz a regra não casar com nada, devolvendo 404. E `:caminho*` não casa com a raiz nua, por isso ela tem regra própria — sem ela, quem abrisse só `site-fnpcb.web.app` levava 404.",
+      "redirects": [
+        {
+          "source": "/",
+          "destination": "https://puericantores.web.app/",
+          "type": 301
+        },
+        {
+          "source": "/:caminho*",
+          "destination": "https://puericantores.web.app/:caminho*",
+          "type": 301
+        }
+      ]
+    }
+  ]
 }

@@ -1,5 +1,13 @@
 {
   "projects": {
     "default": "site-fnpcb"
+  },
+  "targets": {
+    "site-fnpcb": {
+      "hosting": {
+        "principal": ["puericantores"],
+        "antigo": ["site-fnpcb"]
+      }
+    }
   }
 }

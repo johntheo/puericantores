@@ -15,7 +15,7 @@ const ALVO = process.env.DEPLOY_ALVO ?? 'firebase';
 
 const DESTINOS = {
   pages: { site: 'https://johntheo.github.io', base: '/puericantores' },
-  firebase: { site: 'https://site-fnpcb.web.app', base: undefined },
+  firebase: { site: 'https://puericantores.web.app', base: undefined },
   dominio: { site: 'https://puericantores.com.br', base: undefined },
 };
 
