@@ -8,7 +8,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "shots": "node scripts/capturar.mjs"
+    "shots": "node scripts/capturar.mjs",
+    "deploy:preview": "astro build && firebase hosting:channel:deploy diretoria --expires 30d",
+    "deploy": "astro build && firebase deploy --only hosting"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.6.0",

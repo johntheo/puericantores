@@ -3,16 +3,23 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
-/* Dois destinos.
-   O definitivo é o domínio próprio, servido na raiz. O provisório é o preview
-   da diretoria no GitHub Pages, que serve de uma subpasta — daí `base`, e daí
-   o helper `rota()` em src/config/site.ts, sem o qual todo link interno
-   apontaria para a raiz do domínio e daria 404.
-   Alternar entre os dois é só a variável DEPLOY_ALVO. */
-const ehPages = process.env.DEPLOY_ALVO === 'pages';
+/* Três destinos, alternados pela variável DEPLOY_ALVO.
+   Só o GitHub Pages serve de uma subpasta — daí `base`, e daí o helper
+   `rota()` em src/config/site.ts, sem o qual todo link interno apontaria para
+   a raiz do domínio e daria 404. Firebase e domínio próprio servem na raiz.
 
-const SITE = ehPages ? 'https://johntheo.github.io' : 'https://puericantores.com.br';
-const BASE = ehPages ? '/puericantores' : undefined;
+   O `site` correto importa além da estética: ele gera as URLs canônicas e o
+   sitemap. Apontar para um domínio que ainda não existe faria o Google seguir
+   endereço morto. */
+const ALVO = process.env.DEPLOY_ALVO ?? 'firebase';
+
+const DESTINOS = {
+  pages: { site: 'https://johntheo.github.io', base: '/puericantores' },
+  firebase: { site: 'https://site-fnpcb.web.app', base: undefined },
+  dominio: { site: 'https://puericantores.com.br', base: undefined },
+};
+
+const { site: SITE, base: BASE } = DESTINOS[ALVO] ?? DESTINOS.firebase;
 
 export default defineConfig({
   site: SITE,

@@ -1,13 +1,32 @@
-# Ativos de terceiros — autorização pendente
+# Ativos de terceiros
 
-Registro de todo material neste repositório que **não pertence à federação** e
-não pode ir ao ar sem autorização por escrito. Mantido separado do
-`BRIEFING.md` para que a checagem antes do lançamento seja mecânica: se esta
-lista não estiver zerada, o site não publica.
+Registro de todo material neste repositório que **não pertence à federação**.
+Mantido separado do `BRIEFING.md` para que a checagem antes de publicar seja
+mecânica: material sem autorização nesta lista impede o lançamento.
 
 ---
 
-## 🔴 EM USO NO PROTÓTIPO — bloqueia o lançamento
+## ✅ AUTORIZADO — 22 de agosto de 2026
+
+As **10 fotografias da Província Franciscana** — a do herói e as 9 do XVII
+Congresso Nacional — foram autorizadas. Confirmação repassada por Johnatan
+Théo Sierpinski de Souza em 22/08/2026.
+
+O `noindex` foi removido e o site publicado no Firebase da federação.
+
+**Duas providências que continuam abertas:**
+
+1. **Arquivar a autorização por escrito.** Este arquivo registra que ela
+   existe, não substitui o documento. A federação deve guardar o e-mail ou
+   termo, com data e signatário, junto ao acervo institucional.
+2. **Pedir os originais de câmera.** Os arquivos publicados têm 1280px de
+   largura; o herói em tela cheia fica levemente esticado em monitor grande.
+   Um original de 4000px resolve. Ao recebê-los, reprocesse com
+   `node scripts/processar-fotos.mjs` e regenere o herói.
+
+---
+
+## Histórico — o que estava bloqueado antes
 
 ### `src/assets/hero-home.jpg`
 

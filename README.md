@@ -21,8 +21,18 @@ npm run dev      # http://localhost:4321
 | `npm run check` | Verifica tipos e templates |
 | `npm run shots` | Captura as telas em desktop e celular, e acusa transbordo horizontal e erro de console |
 
-Hospedagem ainda não configurada — vai para o Firebase da federação depois.
-Domínio definido: **puericantores.com.br**.
+### Publicar
+
+| Comando | Vai para |
+|---|---|
+| `npm run deploy:preview` | Canal de preview do Firebase, URL temporária que expira em 30 dias |
+| `npm run deploy` | `site-fnpcb.web.app` — o endereço oficial |
+
+Projeto Firebase: **`site-fnpcb`**. Requer `firebase login` uma vez.
+
+O build tem três destinos, alternados por `DEPLOY_ALVO`: `firebase` (padrão),
+`pages` (o preview no GitHub, que serve de subpasta) e `dominio` (para quando
+**puericantores.com.br** for registrado — hoje o domínio não existe).
 
 ---
 
@@ -89,7 +99,7 @@ página individual de cada coral, brasão vetorizado, design system, animações
 | 2 | Conteúdo institucional: `/federacao`, `/filiacao`, `/imprensa`, `/contato` |
 | 3 | Ano de fundação da federação |
 | 4 | Confirmação de uso de imagem junto aos 12 corais |
-| 4b | 🔴 **Autorização da foto do hero** — é de terceiro. Ver [`ATIVOS-EXTERNOS.md`](./ATIVOS-EXTERNOS.md). Bloqueia o lançamento |
+| ~~4b~~ | ~~Autorização das fotos de terceiro~~ — **concedida em 22/08/2026**. Falta arquivar o documento e pedir os originais em alta |
 | 5 | Menu mobile (entra com as rotas da fase 2) |
 | 6 | **Fotos para as galerias** — existe uma foto por coral. Peça de 4 a 6 por coro: a mini galeria aparece sozinha a partir da segunda, sem precisar de código |
 | 6b | **Duas fotos impróprias**: a da Psalette de Santo Ivo é um print de story do Instagram, com overlay de música, contador "1/10" e ícone de mudo; a do Coro Carpe Diem é uma foto escura de palco. Pedir substitutas |

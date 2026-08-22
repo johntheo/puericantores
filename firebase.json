@@ -1,0 +1,30 @@
+{
+  "hosting": {
+    "public": "dist",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "//headers": "A ordem importa: o Firebase casa a regra com o CAMINHO DA REQUISIÇÃO, não com o arquivo em disco. Com cleanUrls, a home chega como `/` e a lista de corais como `/corais` — nenhuma das duas termina em .html, então uma regra `**/*.html` não pega nada e o HTML acaba servido com o padrão de uma hora. Por isso a regra de página é o catch-all, e a de asset vem depois para sobrescrevê-la.",
+    "headers": [
+      {
+        "//": "Toda página: revalidar sempre. Sem isto, uma correção publicada agora levaria até uma hora para chegar a quem já visitou.",
+        "source": "**",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
+          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+          {
+            "//": "O site não embute nada de terceiros; negar enquadramento evita clickjacking sem custo nenhum.",
+            "key": "X-Frame-Options",
+            "value": "DENY"
+          }
+        ]
+      },
+      {
+        "//": "Os assets do Astro carregam hash no nome e trocam de nome a cada alteração de conteúdo, então podem ser cacheados para sempre. Vem por último para vencer o catch-all acima.",
+        "source": "/_astro/**",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      }
+    ]
+  }
+}
