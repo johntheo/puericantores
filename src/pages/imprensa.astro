@@ -1,15 +1,293 @@
 ---
-import EmPreparacao from '~/components/EmPreparacao.astro';
+import { getCollection } from 'astro:content';
+import Base from '~/layouts/Base.astro';
+import Pendencia from '~/components/Pendencia.astro';
+import Brasao from '~/components/Brasao.astro';
+import Seta from '~/components/Seta.astro';
+import { site, rota } from '~/config/site';
+import { escrever, internacional } from '~/config/federacao';
+
+const corais = (await getCollection('corais')).sort((a, b) => a.data.fundacao - b.data.fundacao);
+
+const totalCorais = corais.length;
+const estados = [...new Set(corais.map((c) => c.data.uf))].sort();
+const maisAntigo = Math.min(...corais.map((c) => c.data.fundacao));
+
+const escreverImprensa = escrever(site.contato.email, 'imprensa');
+
+/* O parágrafo que um jornalista copia e cola. Existir pronto é o que impede
+   que cada matéria descreva a federação de um jeito diferente — e é a única
+   parte de um press kit que realmente muda a cobertura. */
+const boilerplate =
+  `A ${site.razaoSocial} (${site.sigla}) reúne ${totalCorais} coros de meninos e meninas ` +
+  `em ${estados.length} estados brasileiros, que cantam a liturgia e o grande repertório coral ` +
+  `e oferecem formação musical gratuita a crianças e adolescentes. Comunica como ` +
+  `${site.assinatura} e integra a Pueri Cantores, federação internacional fundada em ` +
+  `${internacional.fundacao} e reconhecida pela Santa Sé, presente em ${internacional.paises} países.`;
+
+const numeros = [
+  { valor: totalCorais, rotulo: 'corais filiados' },
+  { valor: estados.length, rotulo: 'estados', nota: estados.join(' · ') },
+  { valor: 700, rotulo: 'cantores', prefixo: 'mais de' },
+  { valor: new Date().getFullYear() - maisAntigo, rotulo: 'anos do coro mais antigo' },
+];
 ---
 
-<EmPreparacao
-  titulo="Imprensa e apoio"
-  descricao="Material para publicação e informações para quem quer apoiar o trabalho dos corais brasileiros."
-  conteudo={[
-    'Números da federação e ficha resumida',
-    'Logos em alta resolução e diretrizes de uso',
-    'Banco de fotografias liberadas para publicação',
-    'Contato para imprensa e para patrocínio',
-  ]}
-  depende="confirmação de uso de imagem junto aos corais e contato institucional de imprensa (pendências 4 e 7 do briefing)."
-/>
+<Base
+  titulo="Imprensa"
+  descricao={`Material para publicação sobre a ${site.razaoSocial}: números, marca, política de imagem e contato.`}
+>
+  <section class="quadro pt-20 pb-14 sm:pt-28">
+    <h1 class="text-(length:--text-titulo)">Imprensa e apoio</h1>
+
+    <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
+      O que você precisa para escrever sobre a federação, com os dados datados e a marca em arquivo
+      vetorial. Para entrevista, foto em alta ou pauta específica, escreva — a federação responde.
+    </p>
+
+    <p class="mt-10">
+      <a
+        href={escreverImprensa}
+        class="group inline-flex items-center gap-3 bg-tinta px-8 py-4 text-papel transition-colors hover:bg-acento-profundo"
+      >
+        Falar com a federação
+        <Seta class="transition-transform duration-500 group-hover:translate-x-1" />
+      </a>
+    </p>
+  </section>
+
+  {/* ── NÚMEROS ─────────────────────────────────────────────────────────── */}
+  <section class="quadro pb-(--spacing-secao)">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <h2 class="mt-10 text-(length:--text-secao)">Os números</h2>
+
+    <dl class="mt-12 grid gap-px bg-papel-borda sm:grid-cols-2 lg:grid-cols-4">
+      {
+        numeros.map((n) => (
+          <div class="bg-papel p-8">
+            <dd class="font-display text-5xl leading-none">
+              {n.prefixo && <span class="block text-base text-tinta-tenue">{n.prefixo}</span>}
+              <span data-numerico>{n.valor}</span>
+            </dd>
+            <dt class="mt-4 text-sm text-tinta-suave">{n.rotulo}</dt>
+            {n.nota && <p class="mt-2 text-xs text-tinta-tenue">{n.nota}</p>}
+          </div>
+        ))
+      }
+    </dl>
+
+    <p class="mt-8 text-xs text-tinta-tenue">
+      Corais, estados e idade são calculados do diretório desta página e acompanham qualquer
+      filiação nova. O total de cantores vem do cadastro dos corais, {site.levantamento}: é somatório
+      informado, não auditado, e por isso publicado arredondado.
+    </p>
+  </section>
+
+  {/* ── COMO NOS CHAMAR ─────────────────────────────────────────────────── */}
+  <section class="quadro pb-(--spacing-secao)">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <h2 class="mt-10 text-(length:--text-secao)">Como nos chamar</h2>
+
+    <dl class="mt-12 grid gap-x-16 gap-y-8 sm:grid-cols-2">
+      <div>
+        <dt class="text-sm text-tinta-tenue">Razão social</dt>
+        <dd class="mt-2 text-lg">{site.razaoSocial}</dd>
+      </div>
+      <div>
+        <dt class="text-sm text-tinta-tenue">Sigla</dt>
+        <dd class="mt-2 text-lg">{site.sigla}</dd>
+      </div>
+      <div>
+        <dt class="text-sm text-tinta-tenue">Assinatura de comunicação</dt>
+        <dd class="mt-2 text-lg">{site.assinatura}</dd>
+      </div>
+      <div>
+        <dt class="text-sm text-tinta-tenue">Federação internacional</dt>
+        <dd class="mt-2 text-lg">Pueri Cantores</dd>
+      </div>
+    </dl>
+
+    <div class="mt-14">
+      <h3 class="text-xl">Parágrafo de apresentação</h3>
+      <p class="mt-4 text-sm text-tinta-tenue">Para copiar ao pé da matéria.</p>
+
+      <blockquote class="mt-6 border-l border-acento bg-papel-fundo px-8 py-7">
+        <p id="boilerplate" class="medida leading-relaxed text-tinta-suave">{boilerplate}</p>
+      </blockquote>
+
+      <button
+        type="button"
+        data-copiar="#boilerplate"
+        class="mt-4 border border-papel-borda px-5 py-2.5 text-sm transition-colors hover:border-tinta"
+      >
+        Copiar parágrafo
+      </button>
+    </div>
+  </section>
+
+  {/* ── MARCA ───────────────────────────────────────────────────────────── */}
+  <section class="quadro pb-(--spacing-secao)">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <h2 class="mt-10 text-(length:--text-secao)">A marca</h2>
+
+    <div class="mt-12 grid items-start gap-12 md:grid-cols-[auto_minmax(0,1fr)] md:gap-20">
+      <div class="border border-papel-borda bg-papel-fundo p-10">
+        <Brasao tamanho={200} titulo="Brasão da Pueri Cantores Brasil" />
+      </div>
+
+      <div>
+        <p class="medida leading-relaxed text-tinta-suave">
+          Escudo vermelho com a cruz de Jerusalém, sobre faixa verde e amarela. O arquivo abaixo é
+          vetorial: use em qualquer tamanho, impresso ou em tela, sem perda.
+        </p>
+
+        <ul class="medida mt-8 space-y-3 text-sm text-tinta-suave">
+          <li>Não altere as cores, as proporções nem a inclinação da faixa.</li>
+          <li>Não acrescente sombra, relevo ou contorno.</li>
+          <li>Reserve em volta ao menos a largura da haste da cruz.</li>
+          <li>Sobre fundo escuro, use o brasão como está — ele tem contraste próprio.</li>
+        </ul>
+
+        <p class="mt-10">
+          <a
+            href={rota('/brasao.svg')}
+            download
+            class="group inline-flex items-center gap-3 border-b border-acento pb-1 transition-colors hover:text-acento-profundo"
+          >
+            Baixar o brasão em SVG
+            <Seta class="transition-transform duration-500 group-hover:translate-x-1" />
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <Pendencia titulo="Falta o manual e os formatos derivados." class="mt-12">
+      Versão em PNG de alta resolução, versão monocromática e o manual de aplicação da marca
+      dependem dos arquivos originais da diretoria. O SVG acima foi redesenhado a partir do logo
+      oficial, preservando forma e cores.
+    </Pendencia>
+  </section>
+
+  {/* ── FOTOGRAFIA ──────────────────────────────────────────────────────── */}
+  <section class="quadro pb-(--spacing-secao)">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <div class="mt-10 grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-20">
+      <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">Fotografia</h2>
+
+      <div>
+        <div class="medida space-y-6 leading-relaxed text-tinta-suave">
+          <p>
+            As fotografias publicadas neste site são enviadas pelos próprios corais e pela
+            federação, e estão na <a href={rota('/galeria')} class="underline hover:text-acento-profundo">galeria</a>
+            em resolução de tela. Para uso editorial em alta resolução, peça à federação: cada
+            pedido é encaminhado ao coral fotografado.
+          </p>
+          <p>
+            A maior parte dos retratados é criança ou adolescente, e isso define as regras. As fotos
+            mostram o coro reunido, nunca um cantor isolado, e nenhuma criança é identificada pelo
+            nome — nem na legenda, nem no texto alternativo. Pedimos que a mesma regra seja mantida
+            na publicação.
+          </p>
+          <p>
+            Crédito: quando a autoria é conhecida, ela aparece na legenda da foto. Reproduza o
+            crédito como publicado.
+          </p>
+        </div>
+
+        <p class="mt-10">
+          <a
+            href={escrever(site.contato.email, 'fotos')}
+            class="border-b border-acento pb-1 transition-colors hover:text-acento-profundo"
+          >
+            Pedir fotografias em alta resolução
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ── OS CORAIS ───────────────────────────────────────────────────────── */}
+  <section class="quadro pb-(--spacing-secao)">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <h2 class="mt-10 text-(length:--text-secao)">Falar com um coral</h2>
+
+    <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
+      Para pauta sobre um coro específico, vá direto à fonte: cada página traz a história do coral,
+      quem o conduz e os canais que ele mantém.
+    </p>
+
+    <ul class="mt-12 grid gap-x-12 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        corais.map((coral) => (
+          <li class="border-t border-papel-borda pt-4">
+            <a href={rota(`/corais/${coral.id}`)} class="group block">
+              <span class="group-hover:text-acento-profundo">
+                {coral.data.nomeCurto ?? coral.data.nome}
+              </span>
+              <span class="mt-1 block text-sm text-tinta-tenue">
+                {coral.data.cidade} · {coral.data.uf} · desde {coral.data.fundacao}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {/* ── APOIO ───────────────────────────────────────────────────────────── */}
+  <section class="quadro pb-(--spacing-secao)">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <h2 class="mt-10 text-(length:--text-secao)">Apoio e patrocínio</h2>
+
+    <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
+      Os corais filiados se sustentam com doações, editais públicos, cachês e o trabalho voluntário
+      de regentes e famílias. Nenhum cobra do cantor. Quem quiser apoiar um coro específico ou a
+      federação pode escrever para o contato institucional.
+    </p>
+
+    <Pendencia titulo="Falta o caminho formal do apoio." class="mt-10">
+      Dados bancários, CNPJ para nota e as leis de incentivo em que a federação está habilitada
+      dependem dos documentos da diretoria.
+    </Pendencia>
+  </section>
+</Base>
+
+<script>
+  /**
+   * Copia o parágrafo de apresentação.
+   *
+   * O botão só aparece funcional se a API existir — em contexto inseguro
+   * (HTTP), `navigator.clipboard` é `undefined`, e um botão que não faz nada é
+   * pior do que nenhum. Nesse caso ele sai da página e resta o texto, que é
+   * selecionável de qualquer jeito.
+   */
+  for (const botao of document.querySelectorAll<HTMLButtonElement>('[data-copiar]')) {
+    const alvo = document.querySelector<HTMLElement>(botao.dataset.copiar ?? '');
+
+    if (!alvo || !navigator.clipboard) {
+      botao.remove();
+      continue;
+    }
+
+    const rotuloOriginal = botao.textContent;
+
+    botao.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(alvo.textContent?.trim() ?? '');
+        botao.textContent = 'Copiado';
+      } catch {
+        botao.textContent = 'Não foi possível copiar';
+      }
+
+      setTimeout(() => {
+        botao.textContent = rotuloOriginal;
+      }, 2000);
+    });
+  }
+</script>

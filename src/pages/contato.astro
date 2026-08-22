@@ -1,15 +1,200 @@
 ---
-import EmPreparacao from '~/components/EmPreparacao.astro';
+import { getCollection } from 'astro:content';
+import Base from '~/layouts/Base.astro';
+import Pendencia from '~/components/Pendencia.astro';
+import Seta from '~/components/Seta.astro';
+import Icone, { type NomeIcone } from '~/components/Icone.astro';
+import { site, rota } from '~/config/site';
+import { escrever } from '~/config/federacao';
+
+const corais = (await getCollection('corais')).sort((a, b) =>
+  (a.data.nomeCurto ?? a.data.nome).localeCompare(b.data.nomeCurto ?? b.data.nome, 'pt-BR')
+);
+
+/* Só os corais que publicam algum canal próprio. Quem não publica não aparece
+   nesta lista com um vazio ao lado — aparece no diretório, como todos. */
+const comCanal = corais.filter((c) => Object.keys(c.data.contato).length > 0);
+
+const caminhos = [
+  {
+    titulo: 'Filiar o meu coro',
+    texto: 'Apresente o coro à federação. A mensagem já abre com o roteiro do que precisamos saber.',
+    href: escrever(site.contato.email, 'filiacao'),
+    secundario: { rotulo: 'Ver os requisitos', href: rota('/filiacao') },
+  },
+  {
+    titulo: 'Imprensa',
+    texto: 'Pauta, entrevista, dados ou fotografia em alta resolução para publicação.',
+    href: escrever(site.contato.email, 'imprensa'),
+    secundario: { rotulo: 'Ver o material pronto', href: rota('/imprensa') },
+  },
+  {
+    titulo: 'Enviar fotografias',
+    texto: 'Fotos novas do seu coro para a galeria. Peça de quatro a seis, do coro reunido.',
+    href: escrever(site.contato.email, 'fotos'),
+    secundario: { rotulo: 'Ver a galeria', href: rota('/galeria') },
+  },
+  {
+    titulo: 'Outro assunto',
+    texto: 'Qualquer coisa que não caiba acima.',
+    href: escrever(site.contato.email, 'geral'),
+  },
+];
+
+const canaisDoCoral = (contato: (typeof corais)[number]['data']['contato']) =>
+  (
+    [
+      { icone: 'site', rotulo: 'Site', href: contato.site },
+      { icone: 'instagram', rotulo: 'Instagram', href: contato.instagram },
+      { icone: 'facebook', rotulo: 'Facebook', href: contato.facebook },
+      { icone: 'twitter', rotulo: 'X', href: contato.twitter },
+      { icone: 'youtube', rotulo: 'YouTube', href: contato.youtube },
+      { icone: 'email', rotulo: 'E-mail', href: contato.email ? `mailto:${contato.email}` : undefined },
+    ] as { icone: NomeIcone; rotulo: string; href?: string }[]
+  ).filter((c): c is { icone: NomeIcone; rotulo: string; href: string } => Boolean(c.href));
 ---
 
-<EmPreparacao
+<Base
   titulo="Contato"
-  descricao="Como falar com a federação — e com cada um dos corais filiados."
-  conteudo={[
-    'Formulário de contato',
-    'E-mail e telefone institucionais da federação',
-    'Endereço da sede',
-    'Redes sociais oficiais',
-  ]}
-  depende="e-mail institucional, endereço da sede e contratação do serviço de formulário (pendências 6 e 7 do briefing)."
-/>
+  descricao={`Como falar com a ${site.razaoSocial} e com cada um dos ${corais.length} corais filiados.`}
+>
+  <section class="quadro pt-20 pb-14 sm:pt-28">
+    <h1 class="text-(length:--text-titulo)">Contato</h1>
+
+    <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
+      A federação é conduzida por voluntários que também regem, ensaiam e viajam com seus coros. A
+      resposta pode não ser imediata — mas escolher o assunto certo abaixo ajuda a mensagem a chegar
+      a quem cuida dele.
+    </p>
+
+    <p class="mt-10 font-display text-3xl">
+      <a href={`mailto:${site.contato.email}`} class="border-b border-acento pb-1 hover:text-acento-profundo">
+        {site.contato.email}
+      </a>
+    </p>
+  </section>
+
+  {/* ── CAMINHOS ────────────────────────────────────────────────────────────
+      Cada cartão abre o cliente de e-mail com assunto e roteiro prontos. A
+      alternativa seria um formulário hospedado por terceiro, que exigiria
+      conta, chave e um endpoint recebendo dado de menor — ver a nota em
+      src/config/federacao.ts. */}
+  <section class="quadro pb-(--spacing-secao)">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <ul class="mt-10 grid gap-px bg-papel-borda sm:grid-cols-2">
+      {
+        caminhos.map((caminho) => (
+          <li class="flex flex-col bg-papel p-8 sm:p-10">
+            <h2 class="text-2xl">{caminho.titulo}</h2>
+
+            <p class="mt-4 flex-1 leading-relaxed text-tinta-suave">{caminho.texto}</p>
+
+            <p class="mt-8">
+              <a
+                href={caminho.href}
+                class="group inline-flex items-center gap-3 border-b border-acento pb-1 transition-colors hover:text-acento-profundo"
+              >
+                Escrever
+                <Seta class="transition-transform duration-500 group-hover:translate-x-1" />
+              </a>
+            </p>
+
+            {caminho.secundario && (
+              <p class="mt-4 text-sm">
+                <a href={caminho.secundario.href} class="text-tinta-tenue underline hover:text-acento-profundo">
+                  {caminho.secundario.rotulo}
+                </a>
+              </p>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="medida mt-10 text-sm leading-relaxed text-tinta-tenue">
+      Os botões abrem o seu programa de e-mail com o assunto preenchido. Se nada acontecer ao
+      clicar, escreva direto para {site.contato.email}.
+    </p>
+  </section>
+
+  {/* ── FALAR COM UM CORAL ──────────────────────────────────────────────── */}
+  <section class="quadro pb-(--spacing-secao)">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <h2 class="mt-10 text-(length:--text-secao)">Falar com um coral</h2>
+
+    <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
+      Aula, audição, convite para cantar: fale direto com o coro. Estes são os canais que cada um
+      mantém — os demais estão no <a href={rota('/corais')} class="underline hover:text-acento-profundo">diretório</a>.
+    </p>
+
+    <ul class="mt-12 grid gap-x-12 gap-y-8 sm:grid-cols-2">
+      {
+        comCanal.map((coral) => (
+          <li class="border-t border-papel-borda pt-5">
+            <a href={rota(`/corais/${coral.id}`)} class="hover:text-acento-profundo">
+              {coral.data.nomeCurto ?? coral.data.nome}
+            </a>
+            <p class="mt-1 text-sm text-tinta-tenue">
+              {coral.data.cidade} · {coral.data.uf}
+            </p>
+
+            <ul class="mt-4 flex flex-wrap items-center gap-2">
+              {canaisDoCoral(coral.data.contato).map((canal) => (
+                <li>
+                  <a
+                    href={canal.href}
+                    rel="noopener noreferrer"
+                    target={canal.href.startsWith('mailto:') ? undefined : '_blank'}
+                    title={`${coral.data.nomeCurto ?? coral.data.nome} — ${canal.rotulo}`}
+                    class="grid size-10 place-items-center border border-papel-borda text-tinta-suave transition-colors hover:border-tinta hover:text-tinta"
+                  >
+                    <Icone nome={canal.icone} tamanho={18} />
+                    <span class="sr-only">{canal.rotulo}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {/* ── INSTITUCIONAL ───────────────────────────────────────────────────── */}
+  <section class="quadro pb-(--spacing-secao)">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <h2 class="mt-10 text-(length:--text-secao)">Dados institucionais</h2>
+
+    <dl class="mt-12 grid gap-x-16 gap-y-8 sm:grid-cols-2">
+      <div>
+        <dt class="text-sm text-tinta-tenue">Razão social</dt>
+        <dd class="mt-2 text-lg">{site.razaoSocial}</dd>
+      </div>
+      <div>
+        <dt class="text-sm text-tinta-tenue">Assinatura</dt>
+        <dd class="mt-2 text-lg">{site.assinatura}</dd>
+      </div>
+      <div>
+        <dt class="text-sm text-tinta-tenue">E-mail</dt>
+        <dd class="mt-2 text-lg">
+          <a href={`mailto:${site.contato.email}`} class="underline hover:text-acento-profundo">
+            {site.contato.email}
+          </a>
+        </dd>
+      </div>
+      <div>
+        <dt class="text-sm text-tinta-tenue">Federação internacional</dt>
+        <dd class="mt-2 text-lg">Pueri Cantores</dd>
+      </div>
+    </dl>
+
+    <Pendencia titulo="Faltam CNPJ, sede e redes da federação." class="mt-12">
+      O e-mail acima é o canal que a federação usa hoje. CNPJ, endereço da sede e os perfis
+      institucionais em redes sociais entram assim que a diretoria os confirmar — e o e-mail
+      definitivo, se for outro, troca em um só lugar do código.
+    </Pendencia>
+  </section>
+</Base>

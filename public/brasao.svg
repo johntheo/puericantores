@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="40 100 520 380" width="520" height="380">
+  <title>Brasão da Federação Nacional dos Meninos Cantores do Brasil</title>
+  <!-- Faixa: verde em cima, amarela embaixo, ondulando por trás do escudo -->
+  <path d="M 40 262 C 150 238 250 288 360 262 C 470 236 520 236 560 248 L 560 316 C 520 304 470 304 360 330 C 250 356 150 306 40 330 Z" fill="#009448"/>
+  <path d="M 40 330 C 150 306 250 356 360 330 C 470 304 520 304 560 316 L 560 394 C 520 382 470 382 360 408 C 250 434 150 384 40 408 Z" fill="#FFCE00"/>
+  <!-- Escudo -->
+  <path d="M 158 118 H 442 A 6 6 0 0 1 448 124 V 300 C 448 380 390 435 300 468 C 210 435 152 380 152 300 V 124 A 6 6 0 0 1 158 118 Z" fill="#ED1C24"/>
+  <!-- Cruz de Jerusalém -->
+  <clipPath id="escudo">
+    <path d="M 158 118 H 442 A 6 6 0 0 1 448 124 V 300 C 448 380 390 435 300 468 C 210 435 152 380 152 300 V 124 A 6 6 0 0 1 158 118 Z"/>
+  </clipPath>
+  <g clip-path="url(#escudo)" fill="#FFFFFF">
+    <rect x="277" y="118" width="46" height="350"/>
+    <rect x="152" y="237" width="296" height="46"/>
+    <rect x="192" y="172" width="44" height="15"/><rect x="206.5" y="157.5" width="15" height="44"/>
+    <rect x="364" y="172" width="44" height="15"/><rect x="378.5" y="157.5" width="15" height="44"/>
+    <rect x="192" y="329" width="44" height="15"/><rect x="206.5" y="314.5" width="15" height="44"/>
+    <rect x="364" y="329" width="44" height="15"/><rect x="378.5" y="314.5" width="15" height="44"/>
+  </g>
+</svg>

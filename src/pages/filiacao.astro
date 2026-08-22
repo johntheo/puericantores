@@ -1,15 +1,187 @@
 ---
-import EmPreparacao from '~/components/EmPreparacao.astro';
+import { getCollection } from 'astro:content';
+import Base from '~/layouts/Base.astro';
+import Pendencia from '~/components/Pendencia.astro';
+import Seta from '~/components/Seta.astro';
+import { site, rota } from '~/config/site';
+import { escrever } from '~/config/federacao';
+import { porExtenso } from '~/config/extenso';
+
+const corais = await getCollection('corais');
+
+const totalCorais = corais.length;
+const estados = new Set(corais.map((c) => c.data.uf)).size;
+
+/* A distância entre fundar e filiar-se, medida nos próprios filiados. É o dado
+   que responde à pergunta que todo coro interessado faz primeiro — "é cedo
+   demais para nós?" — e ele sai da coleção, não de opinião. */
+const esperas = corais.map((c) => c.data.filiacao - c.data.fundacao);
+const filiaramNoMesmoAno = esperas.filter((n) => n <= 0).length;
+const esperaMaxima = Math.max(...esperas);
+
+const escreverFiliacao = escrever(site.contato.email, 'filiacao');
+
+/* Observado nos 12 filiados, não extraído de estatuto. A página diz isso com
+   todas as letras: enquanto o documento não chega, descrever o que os coros
+   têm em comum é honesto; chamar isso de "requisito" não seria. */
+const emComum = [
+  {
+    titulo: 'Um coro de crianças e jovens',
+    texto:
+      'Coros de meninos, de meninas ou mistos. A faixa etária varia bastante entre os filiados — há coros que recebem a partir dos cinco anos e coros em que ex-cantores adultos continuam nos naipes graves.',
+  },
+  {
+    titulo: 'Canto na liturgia',
+    texto:
+      'Todos os filiados cantam regularmente na missa. Alguns assumem a parte musical de celebrações duas vezes por mês, outros cantam toda semana. É o que distingue um coro Pueri Cantores de um coro infantil de concerto.',
+  },
+  {
+    titulo: 'Ensino musical gratuito',
+    texto:
+      'Nenhum dos corais filiados cobra do cantor. O ensino se sustenta por instituição mantenedora, editais públicos, cachês, doações ou pelas próprias famílias.',
+  },
+  {
+    titulo: 'Uma instituição por trás',
+    texto:
+      'Paróquia, província religiosa, colégio, associação cultural ou instituto de música. Vários filiados são reconhecidos de utilidade pública no município ou no estado.',
+  },
+];
 ---
 
-<EmPreparacao
+<Base
   titulo="Filiação"
-  descricao="O que muda para um coro ao entrar na federação, quais são os requisitos e como iniciar o processo."
-  conteudo={[
-    'O que a federação oferece aos corais filiados',
-    'Requisitos para filiação',
-    'Passo a passo do processo',
-    'Formulário de manifestação de interesse',
-  ]}
-  depende="definição dos requisitos formais pela diretoria e do e-mail institucional que receberá os formulários."
-/>
+  descricao="Como um coro de meninos ou meninas se filia à Federação Nacional dos Meninos Cantores do Brasil."
+>
+  <section class="quadro pt-20 pb-14 sm:pt-28">
+    <h1 class="text-(length:--text-titulo)">Filiar-se à federação</h1>
+
+    <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
+      A federação recebe coros de crianças e jovens que cantam a liturgia. São hoje {totalCorais} em
+      {estados} estados — e a porta continua aberta.
+    </p>
+  </section>
+
+  {/* ── O QUE MUDA ──────────────────────────────────────────────────────── */}
+  <section class="quadro pb-(--spacing-secao)">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <div class="mt-10 grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-20">
+      <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">
+        O que muda<br />para o seu coro
+      </h2>
+
+      <div class="medida space-y-6 text-lg leading-relaxed text-tinta-suave">
+        <p>
+          O congresso, principalmente. De três em três anos os coros filiados se reúnem numa cidade
+          anfitriã, ensaiam juntos por alguns dias e cantam uma celebração comum. Para um coro
+          pequeno do interior, é a diferença entre cantar sempre para a mesma comunidade e cantar ao
+          lado de centenas de outras crianças que fazem a mesma coisa.
+        </p>
+        <p>
+          Depois, a rede. Os históricos dos filiados estão cheios de visitas de um coro a outro,
+          regentes que se formaram em cursos oferecidos por corais mais antigos, coros que nasceram
+          porque alguém assistiu a um congresso. É por essa rede também que se chega aos congressos
+          internacionais da Pueri Cantores.
+        </p>
+        <p>
+          E o pertencimento a uma federação reconhecida pela Santa Sé, que costuma pesar na relação
+          com a diocese, com a prefeitura e com editais de cultura.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ── O QUE OS FILIADOS TÊM EM COMUM ──────────────────────────────────── */}
+  <section class="quadro pb-(--spacing-secao)">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <h2 class="mt-10 text-(length:--text-secao)">O que os filiados têm em comum</h2>
+
+    <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
+      Um retrato dos {totalCorais} corais que já fazem parte. Não é a lista de requisitos formais —
+      essa consta do estatuto — mas dá uma medida razoável de quem se reconhece aqui.
+    </p>
+
+    <ul class="mt-14 grid gap-px bg-papel-borda sm:grid-cols-2">
+      {
+        emComum.map((item) => (
+          <li class="bg-papel p-8 sm:p-10">
+            <h3 class="text-2xl">{item.titulo}</h3>
+            <p class="mt-4 leading-relaxed text-tinta-suave">{item.texto}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <Pendencia titulo="Os requisitos formais dependem do estatuto." class="mt-12">
+      Documentação exigida, anuidade, se existe, e o rito de aprovação da filiação serão publicados
+      aqui quando a diretoria enviar o estatuto vigente. Até lá, o caminho é escrever — a federação
+      responde caso a caso.
+    </Pendencia>
+  </section>
+
+  {/* ── QUANDO ─────────────────────────────────────────────────────────────
+      Números calculados da coleção. Existem para desarmar a objeção mais comum
+      de quem pensa em se filiar: "o nosso coro é novo demais". */}
+  <section class="quadro pb-(--spacing-secao)">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <h2 class="mt-10 text-(length:--text-secao)">É cedo demais para o nosso coro?</h2>
+
+    <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
+      Provavelmente não. Entre os filiados, {porExtenso(filiaramNoMesmoAno)} se filiaram no mesmo
+      ano em que foram fundados, e um esperou {esperaMaxima} anos. Coro recém-nascido e coro
+      octogenário convivem na mesma federação, e o congresso não separa um do outro.
+    </p>
+
+    <p class="mt-8">
+      <a
+        href={rota('/corais')}
+        class="group inline-flex items-center gap-3 border-b border-acento pb-1 transition-colors hover:text-acento-profundo"
+      >
+        Ver quando cada coral se filiou
+        <Seta class="transition-transform duration-500 group-hover:translate-x-1" />
+      </a>
+    </p>
+  </section>
+
+  {/* ── COMO COMEÇAR ────────────────────────────────────────────────────── */}
+  <section class="quadro pb-(--spacing-secao)">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <div class="mt-10 grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-20">
+      <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">Como começar</h2>
+
+      <div>
+        <p class="medida text-lg leading-relaxed text-tinta-suave">
+          Escreva para a federação apresentando o coro. O botão abaixo abre uma mensagem com os
+          campos que a federação precisa saber já preenchidos como roteiro — responda o que souber e
+          apague o resto.
+        </p>
+
+        <p class="mt-10">
+          <a
+            href={escreverFiliacao}
+            class="group inline-flex items-center gap-3 bg-tinta px-8 py-4 text-papel transition-colors hover:bg-acento-profundo"
+          >
+            Apresentar o meu coro
+            <Seta class="transition-transform duration-500 group-hover:translate-x-1" />
+          </a>
+        </p>
+
+        <p class="mt-6 text-sm text-tinta-tenue">
+          Ou escreva diretamente para{' '}
+          <a href={`mailto:${site.contato.email}`} class="underline hover:text-acento-profundo">
+            {site.contato.email}
+          </a>.
+        </p>
+
+        <p class="medida mt-10 text-sm leading-relaxed text-tinta-tenue">
+          Não envie dados pessoais dos cantores — nome completo, data de nascimento, endereço ou
+          telefone de crianças e adolescentes. A federação não precisa deles para avaliar uma
+          filiação, e este site não publica nenhum.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

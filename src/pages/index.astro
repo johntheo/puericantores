@@ -5,6 +5,7 @@ import Base from '~/layouts/Base.astro';
 import CardCoral from '~/components/CardCoral.astro';
 import Seta from '~/components/Seta.astro';
 import { site, rota } from '~/config/site';
+import { porExtenso } from '~/config/extenso';
 import heroFoto from '~/assets/hero-home.jpg';
 
 const corais = await getCollection('corais');
@@ -25,17 +26,6 @@ const maisAntigo = Math.min(...corais.map((c) => c.data.fundacao));
    uma vez e fica errado para sempre. */
 const cidades = new Set(corais.map((c) => c.data.cidade)).size;
 
-/**
- * Números pequenos em prosa se escrevem por extenso. Sem isso a frase mistura
- * "11" com "duas, três, até seis" e denuncia que o número foi injetado por
- * código. Continua calculado — só a grafia muda.
- */
-const PORTA_EXTENSO = [
-  'zero', 'uma', 'duas', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito',
-  'nove', 'dez', 'onze', 'doze', 'treze', 'catorze', 'quinze', 'dezesseis',
-  'dezessete', 'dezoito', 'dezenove', 'vinte',
-];
-const porExtenso = (n: number) => PORTA_EXTENSO[n] ?? String(n);
 ---
 
 <Base titulo={site.assinatura} cabecalhoSobreposto>
@@ -100,7 +90,7 @@ const porExtenso = (n: number) => PORTA_EXTENSO[n] ?? String(n);
           em Petrópolis). O vínculo com a Santa Sé continua, no rodapé, onde
           credencial institucional pertence. */}
       <p data-apoio class="medida mt-10 text-lg leading-relaxed text-papel/80 sm:text-xl">
-        Em {porExtenso(cidades)} cidades, meninos e meninas ensaiam duas, três, até seis vezes por
+        Em {porExtenso(cidades, 'f')} cidades, meninos e meninas ensaiam duas, três, até seis vezes por
         semana — e cantam na missa de domingo. O mais antigo desses coros faz isso desde {maisAntigo}.
       </p>
 
