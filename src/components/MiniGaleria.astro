@@ -1,5 +1,6 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
+import Lightbox from '~/components/Lightbox.astro';
 import type { ImageMetadata } from 'astro';
 
 /**
@@ -16,6 +17,13 @@ interface Props {
 
 const { fotos, nomeCoral } = Astro.props;
 const suficiente = fotos.length >= 2;
+
+// Versão grande para a tela cheia, com o mesmo tamanho usado na página Galeria.
+const grandes = suficiente
+  ? await Promise.all(
+      fotos.map(async (src) => (await getImage({ src, width: 1800, format: 'webp', quality: 82 })).src)
+    )
+  : [];
 ---
 
 {
@@ -31,17 +39,28 @@ const suficiente = fotos.length >= 2;
         <ul class="grid grid-cols-2 gap-4">
           {fotos.map((foto, i) => (
             <li>
-              <Image
-                src={foto}
-                alt={`${nomeCoral} — fotografia ${i + 1}`}
-                widths={[400, 800, 1200]}
-                sizes="(min-width: 768px) 32vw, 46vw"
-                class="foto aspect-4/3 w-full object-cover"
-              />
+              <button
+                type="button"
+                data-lightbox
+                data-grupo="coral"
+                data-full={grandes[i]}
+                data-legenda={nomeCoral}
+                class="group block w-full cursor-zoom-in overflow-hidden bg-papel-fundo"
+              >
+                <Image
+                  src={foto}
+                  alt={`${nomeCoral} — fotografia ${i + 1}`}
+                  widths={[400, 800, 1200]}
+                  sizes="(min-width: 768px) 32vw, 46vw"
+                  class="foto aspect-4/3 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                />
+              </button>
             </li>
           ))}
         </ul>
       </div>
+
+      <Lightbox />
     </section>
   )
 }

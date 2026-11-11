@@ -161,6 +161,27 @@ import Seta from '~/components/Seta.astro';
       if (e.target === dialogo) dialogo.close();
     });
 
+    // Deslizar o dedo na foto navega, como em qualquer galeria de celular.
+    // Só gesto predominantemente horizontal e de pelo menos 40px conta, para
+    // não confundir com toque ou com rolagem vertical.
+    let inicioX = 0;
+    let inicioY = 0;
+    imagem.parentElement!.addEventListener(
+      'touchstart',
+      (e) => {
+        inicioX = e.touches[0]!.clientX;
+        inicioY = e.touches[0]!.clientY;
+      },
+      { passive: true }
+    );
+    imagem.parentElement!.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0]!.clientX - inicioX;
+      const dy = e.changedTouches[0]!.clientY - inicioY;
+      if (atuais.length > 1 && Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+        mostrar(dx < 0 ? indice + 1 : indice - 1);
+      }
+    });
+
     dialogo.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowRight') {
         e.preventDefault();
