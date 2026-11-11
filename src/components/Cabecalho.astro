@@ -15,7 +15,12 @@ const atual = Astro.url.pathname;
 <header
   class:list={[
     'top-0 z-40 w-full',
-    sobreposto ? 'absolute text-papel' : 'sticky bg-papel/85 text-tinta backdrop-blur-sm',
+    /* O véu fica num pseudo-elemento: `backdrop-filter` no próprio header vira
+       bloco de contenção dos filhos `fixed`, e o painel do menu mobile
+       encolhia para a altura do cabeçalho em toda página sem foto. */
+    sobreposto
+      ? 'absolute text-papel'
+      : 'sticky text-tinta before:absolute before:inset-0 before:-z-10 before:bg-papel/85 before:backdrop-blur-sm',
   ]}
 >
   <div class="quadro flex items-center justify-between gap-6 py-5">
