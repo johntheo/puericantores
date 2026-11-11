@@ -1,0 +1,46 @@
+---
+/**
+ * Troca de idioma: siglas sempre visíveis, idioma atual sublinhado como o item
+ * ativo da navegação. Leva à mesma página no outro idioma — os caminhos não se
+ * traduzem, então basta trocar o prefixo. Decidido no protótipo (variante A,
+ * branch `prototype/seletor-idioma`).
+ *
+ * Sem bandeiras: idioma não é país.
+ */
+import { rota } from '~/config/site';
+import { textos } from '~/i18n';
+import { idiomas, dadosIdioma, paginaAtual } from '~/i18n/idiomas';
+
+interface Props {
+  /** No painel do menu do celular o seletor é maior. */
+  grande?: boolean;
+}
+
+const { grande = false } = Astro.props;
+const { idioma: atual, t } = textos(Astro.currentLocale);
+const caminho = paginaAtual(Astro);
+---
+
+<ul class:list={['flex items-center', grande ? 'gap-3 text-base' : 'gap-1 text-sm']} aria-label={t.comum.idioma}>
+  {
+    idiomas.map((i, n) => (
+      <li class="flex items-center gap-1">
+        {n > 0 && <span aria-hidden="true" class="opacity-40">·</span>}
+        <a
+          href={rota(caminho, i)}
+          hreflang={dadosIdioma[i].html}
+          lang={dadosIdioma[i].html}
+          title={dadosIdioma[i].nome}
+          aria-current={i === atual ? 'true' : undefined}
+          class:list={[
+            'px-1 transition-opacity hover:opacity-60',
+            i === atual ? 'font-semibold underline decoration-acento decoration-2 underline-offset-8' : 'opacity-70',
+          ]}
+        >
+          <span aria-hidden="true">{dadosIdioma[i].sigla}</span>
+          <span class="sr-only">{dadosIdioma[i].nome}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>

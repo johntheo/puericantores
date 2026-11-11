@@ -34,17 +34,34 @@ const corais = defineCollection({
        * Histórico reescrito em registro editorial comum, 150 a 250 palavras.
        * Fonte: PDF que cada coral anexou ao cadastro. Cada coral revisa o seu
        * antes da publicação.
+       *
+       * Um campo por idioma. EN e ES são obrigatórios quando o histórico não
+       * está pendente — a regra fica no `superRefine` abaixo, e é ela que faz
+       * o build falhar quando falta tradução (ver docs/adr/0001).
        */
-      historico: z.string(),
+      historico: z.object({
+        pt: z.string(),
+        en: z.string().optional(),
+        es: z.string().optional(),
+      }),
 
       /**
        * Marca que o histórico ainda não foi reescrito a partir do PDF de
-       * origem. Páginas assim exibem aviso e não vão ao ar.
+       * origem. Páginas assim exibem aviso e não vão ao ar. Histórico
+       * pendente não se traduz.
        */
       historicoPendente: z.boolean().default(false),
 
-      /** Frase de uma linha para o card no diretório e na home. */
-      resumo: z.string().max(180),
+      /**
+       * Frase de uma linha para o card no diretório e na home. Obrigatória
+       * nos três idiomas, mesmo com histórico pendente: o card sempre aparece.
+       * Tradução tem folga sobre o PT, que é a medida do layout.
+       */
+      resumo: z.object({
+        pt: z.string().max(180),
+        en: z.string().max(220),
+        es: z.string().max(220),
+      }),
 
       foto: image().optional(),
       /** Crédito da fotografia, quando informado. */
@@ -85,6 +102,18 @@ const corais = defineCollection({
 
       /** Aparece entre os corais em destaque na home. */
       destaque: z.boolean().default(false),
+    })
+    .superRefine((coral, ctx) => {
+      if (coral.historicoPendente) return;
+      for (const idioma of ['en', 'es'] as const) {
+        if (!coral.historico[idioma]) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ['historico', idioma],
+            message: `Falta a tradução do histórico (${idioma}). Ver docs/guia-de-traducao.md.`,
+          });
+        }
+      }
     }),
 });
 

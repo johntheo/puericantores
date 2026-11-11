@@ -1,5 +1,8 @@
 ---
 import Seta from '~/components/Seta.astro';
+import { textos } from '~/i18n';
+
+const { t } = textos(Astro.currentLocale);
 
 /**
  * Visualizador em tela cheia para as galerias.
@@ -18,7 +21,8 @@ import Seta from '~/components/Seta.astro';
 
 <dialog
   id="lightbox"
-  aria-label="Visualizador de fotografias"
+  aria-label={t.comum.lightbox.rotulo}
+  data-de={t.comum.lightbox.contador}
   class="fixed inset-0 m-0 h-full max-h-full w-full max-w-full bg-transparent p-0 backdrop:bg-tinta/95"
 >
   <div class="relative flex h-full w-full flex-col bg-tinta/95">
@@ -42,7 +46,7 @@ import Seta from '~/components/Seta.astro';
         >
           <path d="M6 6l12 12M18 6L6 18" />
         </svg>
-        <span class="sr-only">Fechar</span>
+        <span class="sr-only">{t.comum.lightbox.fechar}</span>
       </button>
     </div>
 
@@ -62,7 +66,7 @@ import Seta from '~/components/Seta.astro';
         class="absolute left-6 hidden size-12 place-items-center border border-papel/25 bg-tinta/60 text-papel transition-colors hover:border-papel sm:grid"
       >
         <Seta sentido="esquerda" tamanho={22} />
-        <span class="sr-only">Fotografia anterior</span>
+        <span class="sr-only">{t.comum.lightbox.anterior}</span>
       </button>
 
       <button
@@ -71,7 +75,7 @@ import Seta from '~/components/Seta.astro';
         class="absolute right-6 hidden size-12 place-items-center border border-papel/25 bg-tinta/60 text-papel transition-colors hover:border-papel sm:grid"
       >
         <Seta tamanho={22} />
-        <span class="sr-only">Próxima fotografia</span>
+        <span class="sr-only">{t.comum.lightbox.proxima}</span>
       </button>
     </div>
 
@@ -85,7 +89,7 @@ import Seta from '~/components/Seta.astro';
           class="grid size-12 place-items-center border border-papel/25 text-papel"
         >
           <Seta sentido="esquerda" tamanho={22} />
-          <span class="sr-only">Fotografia anterior</span>
+          <span class="sr-only">{t.comum.lightbox.anterior}</span>
         </button>
         <button
           type="button"
@@ -93,7 +97,7 @@ import Seta from '~/components/Seta.astro';
           class="grid size-12 place-items-center border border-papel/25 text-papel"
         >
           <Seta tamanho={22} />
-          <span class="sr-only">Próxima fotografia</span>
+          <span class="sr-only">{t.comum.lightbox.proxima}</span>
         </button>
       </div>
     </div>
@@ -135,7 +139,9 @@ import Seta from '~/components/Seta.astro';
       imagem.src = alvo.dataset.full ?? '';
       imagem.alt = alvo.dataset.legenda ?? '';
       legenda.textContent = alvo.dataset.legenda ?? '';
-      contador.textContent = `${indice + 1} de ${total}`;
+      contador.textContent = (dialogo.dataset.de ?? '')
+        .replace('{i}', String(indice + 1))
+        .replace('{n}', String(total));
 
       // Com uma foto só não há para onde navegar.
       const soUma = total < 2;

@@ -2,6 +2,12 @@
 import { getCollection } from 'astro:content';
 import Base from '~/layouts/Base.astro';
 import CardCoral from '~/components/CardCoral.astro';
+import { textos } from '~/i18n';
+import { caminhosIdioma } from '~/i18n/idiomas';
+
+export const getStaticPaths = caminhosIdioma;
+
+const { t } = textos(Astro.currentLocale);
 
 const corais = (await getCollection('corais')).sort(
   (a, b) =>
@@ -12,24 +18,29 @@ const ufs = [...new Set(corais.map((c) => c.data.uf))].sort();
 ---
 
 <Base
-  titulo="Os corais"
-  descricao={`Os ${corais.length} coros de meninos e meninas filiados à federação, em ${ufs.length} estados brasileiros.`}
+  titulo={t.corais.titulo}
+  descricao={t.corais.descricao(corais.length, ufs.length)}
 >
   <section class="quadro pt-20 pb-14 sm:pt-28">
-    <h1 class="text-(length:--text-titulo)">Os corais filiados</h1>
+    <h1 class="text-(length:--text-titulo)">{t.corais.h1}</h1>
 
-    <p class="mt-5 text-tinta-tenue">{corais.length} corais · {ufs.length} estados</p>
+    <p class="mt-5 text-tinta-tenue">{t.corais.resumo(corais.length, ufs.length)}</p>
 
     {/* Filtro puramente client-side sobre um grid já renderizado: nenhum
         conteúdo depende de JS para existir, só a ocultação. */}
-    <div class="mt-12 flex flex-wrap gap-2" role="group" aria-label="Filtrar por estado" id="filtro">
+    <div class="mt-12 flex flex-wrap gap-2" role="group"
+      aria-label={t.corais.filtrar}
+      id="filtro"
+      data-um={t.corais.contagemUm}
+      data-varios={t.corais.contagemVarios}
+    >
       <button
         type="button"
         data-uf="todos"
         aria-pressed="true"
         class="filtro-btn border border-tinta bg-tinta px-4 py-2 text-sm text-papel"
       >
-        Todos
+        {t.corais.todos}
       </button>
       {
         ufs.map((uf) => (
@@ -91,7 +102,9 @@ const ufs = [...new Set(corais.map((c) => c.data.uf))].sort();
       contagem.textContent =
         uf === 'todos'
           ? ''
-          : `${visiveis} ${visiveis === 1 ? 'coral' : 'corais'} em ${uf}.`;
+          : (visiveis === 1 ? filtro.dataset.um : filtro.dataset.varios)!
+              .replace('{n}', String(visiveis))
+              .replace('{uf}', uf);
     };
 
     for (const b of botoes) {

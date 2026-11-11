@@ -2,6 +2,9 @@
 import { getCollection } from 'astro:content';
 import Base from '~/layouts/Base.astro';
 import Brasao from '~/components/Brasao.astro';
+import Linhas from '~/components/Linhas.astro';
+import { textos, numero, data } from '~/i18n';
+import { caminhosIdioma } from '~/i18n/idiomas';
 import { site, rota } from '~/config/site';
 import {
   internacional,
@@ -11,6 +14,15 @@ import {
   congressosRegionais,
   congressosFuturos,
 } from '~/config/federacao';
+
+export const getStaticPaths = caminhosIdioma;
+
+const { idioma, t } = textos(Astro.currentLocale);
+const f = t.federacao;
+const r = (caminho: string) => rota(caminho, idioma);
+
+/** Cidade brasileira fica como está; lugar estrangeiro vem traduzido. */
+const lugar = (local: string) => (f.lugares as Record<string, string>)[local] ?? local;
 
 const corais = await getCollection('corais');
 
@@ -22,20 +34,17 @@ const fundacoesConhecidas = corais.flatMap((c) => (c.data.fundacao ? [c.data.fun
 const maisAntigo = Math.min(...fundacoesConhecidas);
 const maisNovo = Math.max(...fundacoesConhecidas);
 
-const numero = (n: number) => n.toLocaleString('pt-BR');
 ---
 
 <Base
-  titulo="A federação"
-  descricao={`A Federação Nacional dos Meninos Cantores do Brasil reúne ${totalCorais} coros de meninos e meninas em ${estados} estados, dentro da Pueri Cantores internacional.`}
+  titulo={f.titulo}
+  descricao={f.descricao(totalCorais, estados)}
 >
   <section class="quadro pt-20 pb-14 sm:pt-28">
-    <h1 class="text-(length:--text-titulo)">A federação</h1>
+    <h1 class="text-(length:--text-titulo)">{f.titulo}</h1>
 
     <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
-      A {site.razaoSocial} reúne os coros de meninos e meninas do Brasil que cantam a liturgia e o
-      grande repertório coral. É o braço brasileiro da Pueri Cantores, federação internacional
-      reconhecida pela Santa Sé.
+      {f.abertura(site.razaoSocial)}
     </p>
   </section>
 
@@ -45,27 +54,11 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
 
     <div class="mt-10 grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-20">
       <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">
-        O que é ser<br />um coro Pueri&nbsp;Cantores
+        <Linhas linhas={f.significa.titulo} />
       </h2>
 
       <div class="medida space-y-6 text-lg leading-relaxed text-tinta-suave">
-        <p>
-          Um coro Pueri Cantores não é um coro infantil que às vezes canta na igreja. É um coro que
-          existe para a liturgia. Para isso, precisa ensinar música de verdade a crianças que em
-          geral nunca tiveram acesso a ela.
-        </p>
-        <p>
-          Os coros oferecem formação musical e serviço à liturgia. Há quem ensaie uma vez por
-          semana e quem ensaie seis. Há coros mantidos por uma província franciscana e coros
-          mantidos pelas famílias dos próprios cantores. O mais antigo canta desde {maisAntigo}; o
-          mais novo, desde {maisNovo}. O que os aproxima é a combinação de rigor musical, formação
-          humana e serviço à celebração.
-        </p>
-        <p>
-          A federação existe para sustentar esse trabalho: reúne os coros em congressos, representa
-          o Brasil na federação internacional e serve de referência para quem quer começar um coro
-          novo.
-        </p>
+        {f.significa.paragrafos({ maisAntigo, maisNovo }).map((p) => <p>{p}</p>)}
       </div>
     </div>
   </section>
@@ -76,37 +69,25 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
 
     <div class="mt-10 grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-20">
       <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">
-        Uma federação<br />pontifícia.
+        <Linhas linhas={f.mundo.titulo} />
       </h2>
 
       <div>
         <div class="medida space-y-6 text-lg leading-relaxed text-tinta-suave">
           <p>
-            Uma longa tradição europeia de corais de meninos cantando a liturgia ganhou forma
-            institucional no início do século XX, com o motu próprio <i>Tra le sollecitudini</i>, em
-            que São Pio X pedia a renovação da música na Igreja. Em resposta, Monsenhor
-            {internacional.fundador} fundou em Paris, em 1907, os Pequenos Cantores da Cruz de Madeira
-            (<i lang="fr">Petits Chanteurs de la Croix de Bois</i>), que cantaram pela paz em muitos
-            países depois da Primeira Guerra Mundial. A Segunda Guerra interrompeu sua atividade, mas
-            não os destruiu.
+            {f.mundo.p1.antes} <i lang="it">{f.mundo.p1.documento}</i>{f.mundo.p1.meio(internacional.fundador)}<i
+              lang="fr">{f.mundo.p1.nomeFrances}</i
+            >{f.mundo.p1.depois}
           </p>
+          <p>{f.mundo.p2(internacional.fundacao)}</p>
           <p>
-            Em julho de 1944, o arcebispo de Paris, cardeal Suhard, aprovou a fundação de uma
-            organização internacional dos Pueri Cantores como “um elemento de beleza musical na
-            Igreja, um trabalho de educação cristã e atividade apostólica a serviço da liturgia”. A
-            data oficial de fundação é 11 de novembro de {internacional.fundacao}, quando trezentos
-            meninos cantores regidos por Maillet deram o primeiro concerto na igreja de Santo
-            Eustáquio, em Paris. O primeiro congresso internacional aconteceu na mesma cidade, em
-            1947, com noventa coros europeus, seguido pelos de Roma, em 1949 e 1951.
-          </p>
-          <p>
-            Em {internacional.estatutoChancelado} a Santa Sé aprovou o estatuto da federação, que
-            passou a ser reconhecida como movimento eclesial, sob a jurisdição do Pontifício Conselho
-            para os Leigos. As reformas do estatuto de 1995 e 2001 permitiram a entrada de meninas.
-            Hoje há coros de meninos, de meninas e mistos em {internacional.paises} países de todos os
-            continentes, com aproximadamente {numero(internacional.cantores)} cantores. A tarefa
-            principal continua sendo cantar a liturgia, e os valores cristãos são a base da vida e
-            da conduta de seus membros.
+            {
+              f.mundo.p3({
+                estatuto: internacional.estatutoChancelado,
+                paises: internacional.paises,
+                cantores: numero(internacional.cantores, idioma),
+              })
+            }
           </p>
         </div>
 
@@ -117,7 +98,7 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
             rel="noopener noreferrer"
             class="border-b border-acento pb-1 transition-colors hover:text-acento-profundo"
           >
-            Federação internacional Pueri Cantores
+            {f.mundo.link}
           </a>
         </p>
       </div>
@@ -129,25 +110,13 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
     <span class="fio" data-fio-scroll aria-hidden="true"></span>
 
     <div class="mt-10 grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-20">
-      <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">No Brasil</h2>
+      <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">{f.brasil.titulo}</h2>
 
       <div>
         <div class="medida space-y-6 text-lg leading-relaxed text-tinta-suave">
-          <p>
-            A {site.razaoSocial} foi fundada em 1967 por Frei Leto, pelo padre José Maria
-            Wisniewski e pelo maestro João Lucas Rodrigues. Seu objetivo é fomentar, entre crianças,
-            adolescentes e jovens, o canto coral e a formação artístico-cultural, com foco no canto
-            litúrgico. É filiada à Federação Internacional Pueri Cantores, com sede em Roma.
-          </p>
-          <p>
-            Hoje reúne {totalCorais} coros federados de {estados} estados. A cada três anos realiza um
-            Congresso Nacional e, entre um nacional e outro, dois Congressos Regionais, alternados
-            entre o Sudeste (Rio de Janeiro e Minas Gerais) e o Sul (Paraná, Santa Catarina e Rio
-            Grande do Sul).
-          </p>
-          <p>
-            O presidente é {diretoria.executiva[0].nome}, maestro dos Pequenos Cantores de Passos.
-          </p>
+          <p>{f.brasil.p1(site.razaoSocial)}</p>
+          <p>{f.brasil.p2(totalCorais, estados)}</p>
+          <p>{f.brasil.p3(diretoria.executiva[0].nome)}</p>
         </div>
       </div>
     </div>
@@ -159,17 +128,15 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
   <section class="quadro pb-(--spacing-secao)">
     <span class="fio" data-fio-scroll aria-hidden="true"></span>
 
-    <h2 class="mt-10 text-(length:--text-secao)">Congressos</h2>
+    <h2 class="mt-10 text-(length:--text-secao)">{f.congressos.titulo}</h2>
 
     <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
-      O congresso nacional é o encontro que dá forma à federação: os coros se hospedam nas paróquias
-      da cidade anfitriã e cantam juntos ao fim de alguns dias de ensaio. Acontece de três em três
-      anos.
+      {f.congressos.texto}
     </p>
 
     <div class="mt-14 grid gap-14 md:grid-cols-3 md:gap-12">
       <div>
-        <h3 class="text-xl">Nacionais</h3>
+        <h3 class="text-xl">{f.congressos.nacionais}</h3>
 
         <ul class="mt-6">
           {
@@ -177,13 +144,13 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
               <li class="border-t border-papel-borda py-5">
                 <p class="flex flex-wrap items-baseline gap-x-4">
                   <span data-numerico class="font-display text-3xl leading-none">{c.ano}</span>
-                  <span class="text-tinta-suave">{c.edicao} Congresso Nacional</span>
+                  <span class="text-tinta-suave">{f.congressos.nacional(c.edicao)}</span>
                 </p>
-                <p class="mt-2 text-sm text-tinta-suave">{c.local}</p>
+                <p class="mt-2 text-sm text-tinta-suave">{lugar(c.local)}</p>
                 {c.nota && (
                   <p class="mt-2 text-sm text-tinta-tenue">
-                    {c.futuro && <span class="text-acento-profundo">Ainda por vir. </span>}
-                    {c.nota}
+                    {c.futuro && <span class="text-acento-profundo">{f.congressos.aindaPorVir} </span>}
+                    {f.notas[c.nota]}
                   </p>
                 )}
               </li>
@@ -193,7 +160,7 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
       </div>
 
       <div>
-        <h3 class="text-xl">O Brasil nos internacionais</h3>
+        <h3 class="text-xl">{f.congressos.internacionais}</h3>
 
         <ul class="mt-6">
           {
@@ -202,11 +169,11 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
                 <p class="flex flex-wrap items-baseline gap-x-4">
                   <span data-numerico class="font-display text-3xl leading-none">{c.ano}</span>
                   <span class="text-tinta-suave">
-                    {c.edicao ? `${c.edicao} Congresso Internacional` : 'Congresso Internacional'}
+                    {f.congressos.internacional(c.edicao)}
                   </span>
                 </p>
-                <p class="mt-2 text-sm text-tinta-suave">{c.local}</p>
-                {c.nota && <p class="mt-2 text-sm text-tinta-tenue">{c.nota}</p>}
+                <p class="mt-2 text-sm text-tinta-suave">{lugar(c.local)}</p>
+                {c.nota && <p class="mt-2 text-sm text-tinta-tenue">{f.notas[c.nota]}</p>}
               </li>
             ))
           }
@@ -214,15 +181,15 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
       </div>
 
       <div>
-        <h3 class="text-xl">Regionais</h3>
+        <h3 class="text-xl">{f.congressos.regionais}</h3>
 
         <ul class="mt-6">
           {
             congressosRegionais.map((c) => (
               <li class="border-t border-papel-borda py-5">
                 <p class="font-display text-3xl leading-none">{c.ano}</p>
-                <p class="mt-2 text-sm text-tinta-suave">{c.local}</p>
-                {c.nota && <p class="mt-2 text-sm text-tinta-tenue">{c.nota}</p>}
+                <p class="mt-2 text-sm text-tinta-suave">{lugar(c.local)}</p>
+                {c.nota && <p class="mt-2 text-sm text-tinta-tenue">{f.notas[c.nota]}</p>}
               </li>
             ))
           }
@@ -236,15 +203,15 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
   <section class="quadro pb-(--spacing-secao)">
     <span class="fio" data-fio-scroll aria-hidden="true"></span>
 
-    <h2 class="mt-10 text-(length:--text-secao)">Próximos encontros</h2>
+    <h2 class="mt-10 text-(length:--text-secao)">{f.congressos.proximos}</h2>
 
     <ul class="mt-10 grid gap-6 md:grid-cols-2">
       {
         congressosFuturos.map((c) => (
           <li class="border-t border-papel-borda py-5">
             <p class="font-display text-3xl leading-none">{c.ano}</p>
-            <p class="mt-2 text-lg">{c.local}</p>
-            {c.nota && <p class="mt-2 text-sm leading-relaxed text-tinta-tenue">{c.nota}</p>}
+            <p class="mt-2 text-lg">{lugar(c.local)}</p>
+            {c.nota && <p class="mt-2 text-sm leading-relaxed text-tinta-tenue">{f.notas[c.nota]}</p>}
           </li>
         ))
       }
@@ -255,30 +222,32 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
   <section class="quadro pb-(--spacing-secao)">
     <span class="fio" data-fio-scroll aria-hidden="true"></span>
 
-    <h2 class="mt-10 text-(length:--text-secao)">Diretoria</h2>
+    <h2 class="mt-10 text-(length:--text-secao)">{f.diretoria.titulo}</h2>
 
-    <p class="mt-4 text-sm text-tinta-tenue">Mandato: {diretoria.mandato}.</p>
+    <p class="mt-4 text-sm text-tinta-tenue">
+      {f.diretoria.mandato(data(diretoria.mandato.inicio, idioma), data(diretoria.mandato.fim, idioma))}
+    </p>
 
     <div class="mt-10 grid gap-12 md:grid-cols-2">
       <div>
-        <h3 class="text-xl">Diretoria executiva</h3>
+        <h3 class="text-xl">{f.diretoria.executiva}</h3>
         <ul class="mt-6 grid gap-5 sm:grid-cols-2">
           {diretoria.executiva.map((pessoa) => (
             <li>
               <p class="font-display text-2xl leading-tight">{pessoa.nome}</p>
-              <p class="mt-1 text-sm text-tinta-tenue">{pessoa.cargo}</p>
+              <p class="mt-1 text-sm text-tinta-tenue">{f.diretoria.cargos[pessoa.cargo]}</p>
             </li>
           ))}
         </ul>
       </div>
 
       <div>
-        <h3 class="text-xl">Conselho Fiscal</h3>
-        <p class="mt-6 text-sm uppercase tracking-[0.12em] text-tinta-tenue">Titulares</p>
+        <h3 class="text-xl">{f.diretoria.conselhoFiscal}</h3>
+        <p class="mt-6 text-sm uppercase tracking-[0.12em] text-tinta-tenue">{f.diretoria.titulares}</p>
         <ul class="mt-3 space-y-2">
           {diretoria.conselhoFiscal.titulares.map((nome) => <li>{nome}</li>)}
         </ul>
-        <p class="mt-6 text-sm uppercase tracking-[0.12em] text-tinta-tenue">Suplentes</p>
+        <p class="mt-6 text-sm uppercase tracking-[0.12em] text-tinta-tenue">{f.diretoria.suplentes}</p>
         <ul class="mt-3 space-y-2">
           {diretoria.conselhoFiscal.suplentes.map((nome) => <li>{nome}</li>)}
         </ul>
@@ -296,16 +265,16 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
 
       <div class="flex flex-wrap gap-x-10 gap-y-4">
         <a
-          href={rota('/corais')}
+          href={r('/corais')}
           class="border-b border-acento pb-1 text-lg transition-colors hover:text-acento-profundo"
         >
-          Os {totalCorais} corais filiados
+          {f.chamadas.corais(totalCorais)}
         </a>
         <a
-          href={rota('/filiacao')}
+          href={r('/filiacao')}
           class="border-b border-transparent pb-1 text-lg text-tinta-suave transition-colors hover:border-papel-borda hover:text-tinta"
         >
-          Como se filiar
+          {f.chamadas.filiar}
         </a>
       </div>
     </div>

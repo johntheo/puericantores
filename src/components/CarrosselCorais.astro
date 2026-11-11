@@ -3,6 +3,7 @@ import { rota } from '~/config/site';
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import Seta from '~/components/Seta.astro';
+import { textos } from '~/i18n';
 
 /**
  * Carrossel com todos os corais filiados, no pé da página de cada coral.
@@ -23,6 +24,7 @@ interface Props {
 
 const { corais, atual } = Astro.props;
 const outros = corais.filter((c) => c.id !== atual);
+const { idioma, t } = textos(Astro.currentLocale);
 ---
 
 <section class="pt-(--spacing-secao) pb-20" aria-labelledby="titulo-carrossel">
@@ -30,7 +32,7 @@ const outros = corais.filter((c) => c.id !== atual);
     <span class="fio" data-fio-scroll aria-hidden="true"></span>
 
     <div class="mt-10 mb-8 flex flex-wrap items-end justify-between gap-6">
-      <h2 id="titulo-carrossel" class="text-(length:--text-secao)">Os outros corais</h2>
+      <h2 id="titulo-carrossel" class="text-(length:--text-secao)">{t.comum.carrossel.titulo}</h2>
 
       <div class="flex gap-2">
         <button
@@ -39,7 +41,7 @@ const outros = corais.filter((c) => c.id !== atual);
           class="grid size-11 place-items-center border border-papel-borda transition-colors hover:border-tinta disabled:opacity-30 disabled:hover:border-papel-borda"
         >
           <Seta sentido="esquerda" />
-          <span class="sr-only">Corais anteriores</span>
+          <span class="sr-only">{t.comum.carrossel.anteriores}</span>
         </button>
         <button
           type="button"
@@ -47,7 +49,7 @@ const outros = corais.filter((c) => c.id !== atual);
           class="grid size-11 place-items-center border border-papel-borda transition-colors hover:border-tinta disabled:opacity-30 disabled:hover:border-papel-borda"
         >
           <Seta />
-          <span class="sr-only">Próximos corais</span>
+          <span class="sr-only">{t.comum.carrossel.proximos}</span>
         </button>
       </div>
     </div>
@@ -64,31 +66,31 @@ const outros = corais.filter((c) => c.id !== atual);
   <ul
     data-carrossel
     tabindex="0"
-    aria-label="Corais filiados à federação"
+    aria-label={t.comum.carrossel.rotulo}
     class="flex cursor-grab snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth px-[clamp(1.25rem,5vw,4rem)] scroll-pl-[clamp(1.25rem,5vw,4rem)] scroll-pr-[clamp(1.25rem,5vw,4rem)] pb-4 [scrollbar-width:none] select-none active:cursor-grabbing [&::-webkit-scrollbar]:hidden"
   >
     {
       outros.map((coral) => (
         <li class="w-[76vw] shrink-0 snap-start sm:w-[42vw] lg:w-[26vw] xl:w-[22rem]">
-          <a href={rota(`/corais/${coral.id}`)} class="group block">
+          <a href={rota(`/corais/${coral.id}`, idioma)} class="group block">
             <div class="overflow-hidden bg-papel-fundo">
               {coral.data.foto ? (
                 <Image
                   src={coral.data.foto}
-                  alt={`${coral.data.nome}, em ${coral.data.cidade}`}
+                  alt={t.comum.fotoDe(coral.data.nome, coral.data.cidade)}
                   widths={[400, 800]}
                   sizes="(min-width: 1280px) 22rem, (min-width: 640px) 42vw, 76vw"
                   class="foto aspect-4/3 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                 />
               ) : (
                 <div class="grid aspect-4/3 place-items-center px-6 text-center text-tinta-tenue">
-                  <span class="font-display text-2xl italic">Imagem em breve</span>
+                  <span class="font-display text-2xl italic">{t.comum.imagemEmBreve}</span>
                 </div>
               )}
             </div>
             <h3 class="mt-4 text-xl leading-tight">{coral.data.nomeCurto ?? coral.data.nome}</h3>
             <p class="mt-1 text-sm text-tinta-tenue">
-              {coral.data.cidade} · {coral.data.uf}{coral.data.fundacao && ` · desde ${coral.data.fundacao}`}
+              {coral.data.cidade} · {coral.data.uf}{coral.data.fundacao && ` · ${t.comum.desde(coral.data.fundacao)}`}
             </p>
           </a>
         </li>

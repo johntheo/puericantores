@@ -5,13 +5,27 @@
   "uf": "RJ",
   "fundacao": 1942,
   "filiacao": 1967,
-  "resumo": "O coro de meninos mais antigo do Brasil ainda em atividade. Oitenta e três anos, dezoito álbuns e turnês por oito países.",
-  "historico": "Fundado em 15 de agosto de 1942 por Frei Leto Bienias, o Coral dos Canarinhos de Petrópolis é o coro de meninos mais antigo do Brasil ainda em atividade. Em oito décadas tornou-se referência do canto coral brasileiro, defendendo com igual empenho o repertório nacional e o grande repertório internacional.\n\nO trabalho artístico é inseparável do social. Meninos de todas as classes recebem gratuitamente formação musical, acompanhamento humano e alimentação. São dezoito álbuns gravados, entre eles Reflexos do Brasil, dedicado à música sacra contemporânea, e uma coletânea de canções natalinas alemãs editada na Alemanha em trezentas mil cópias.\n\nOs Canarinhos cantaram para o Papa João Paulo II no Brasil e no Vaticano, e ocuparam palcos como a Sala São Paulo, a Sala Cecília Meireles e o Theatro Municipal do Rio de Janeiro. Interpretaram a Paixão segundo São João e o Oratório de Natal, de Bach, e a Nona Sinfonia de Beethoven. Em turnê, já se apresentaram na Venezuela, Argentina, Portugal, Alemanha, República Tcheca, Áustria, Itália e Estados Unidos.\n\nSob direção do maestro Marco Aurélio Lischt desde 1998, o coral integra as obras da Província Franciscana da Imaculada Conceição do Brasil.",
+  "resumo": {
+    "pt": "O coro de meninos mais antigo do Brasil ainda em atividade. Oitenta e três anos, dezoito álbuns e turnês por oito países.",
+    "en": "Brazil's oldest boys' choir still active. Eighty-three years, eighteen albums and tours in eight countries.",
+    "es": "El coro de niños más antiguo de Brasil aún en actividad. Ochenta y tres años, dieciocho álbumes y giras por ocho países."
+  },
+  "historico": {
+    "pt": "Fundado em 15 de agosto de 1942 por Frei Leto Bienias, o Coral dos Canarinhos de Petrópolis é o coro de meninos mais antigo do Brasil ainda em atividade. Em oito décadas tornou-se referência do canto coral brasileiro, defendendo com igual empenho o repertório nacional e o grande repertório internacional.\n\nO trabalho artístico é inseparável do social. Meninos de todas as classes recebem gratuitamente formação musical, acompanhamento humano e alimentação. São dezoito álbuns gravados, entre eles Reflexos do Brasil, dedicado à música sacra contemporânea, e uma coletânea de canções natalinas alemãs editada na Alemanha em trezentas mil cópias.\n\nOs Canarinhos cantaram para o Papa João Paulo II no Brasil e no Vaticano, e ocuparam palcos como a Sala São Paulo, a Sala Cecília Meireles e o Theatro Municipal do Rio de Janeiro. Interpretaram a Paixão segundo São João e o Oratório de Natal, de Bach, e a Nona Sinfonia de Beethoven. Em turnê, já se apresentaram na Venezuela, Argentina, Portugal, Alemanha, República Tcheca, Áustria, Itália e Estados Unidos.\n\nSob direção do maestro Marco Aurélio Lischt desde 1998, o coral integra as obras da Província Franciscana da Imaculada Conceição do Brasil.",
+    "en": "Founded on August 15, 1942, by Friar Leto Bienias, the Coral dos Canarinhos de Petrópolis is Brazil's oldest boys' choir still active. Over eight decades it has become a reference for Brazilian choral singing, championing the national repertoire and the great international repertoire with equal commitment.\n\nIts artistic work is inseparable from its social work. Boys from every background receive musical training, personal support and meals free of charge. It has recorded eighteen albums, among them Reflexos do Brasil, devoted to contemporary sacred music, and a collection of German Christmas songs released in Germany in three hundred thousand copies.\n\nThe Canarinhos have sung for Pope John Paul II in Brazil and at the Vatican, and have performed on stages such as Sala São Paulo, Sala Cecília Meireles and the Theatro Municipal do Rio de Janeiro. They have performed Bach's St. John Passion and Christmas Oratorio, and Beethoven's Ninth Symphony. On tour, they have appeared in Venezuela, Argentina, Portugal, Germany, the Czech Republic, Austria, Italy and the United States.\n\nLed by conductor Marco Aurélio Lischt since 1998, the choir is part of the works of the Franciscan Province of the Immaculate Conception of Brazil.",
+    "es": "Fundado el 15 de agosto de 1942 por fray Leto Bienias, el Coral dos Canarinhos de Petrópolis es el coro de niños más antiguo de Brasil aún en actividad. En ocho décadas se convirtió en referencia del canto coral brasileño, defendiendo con igual empeño el repertorio nacional y el gran repertorio internacional.\n\nEl trabajo artístico es inseparable del social. Niños de todas las clases reciben gratuitamente formación musical, acompañamiento humano y alimentación. Son dieciocho álbumes grabados, entre ellos Reflexos do Brasil, dedicado a la música sacra contemporánea, y una colección de canciones navideñas alemanas editada en Alemania en trescientas mil copias.\n\nLos Canarinhos cantaron para el papa Juan Pablo II en Brasil y en el Vaticano, y ocuparon escenarios como la Sala São Paulo, la Sala Cecília Meireles y el Theatro Municipal de Río de Janeiro. Interpretaron la Pasión según San Juan y el Oratorio de Navidad, de Bach, y la Novena Sinfonía de Beethoven. En gira, se han presentado en Venezuela, Argentina, Portugal, Alemania, República Checa, Austria, Italia y Estados Unidos.\n\nBajo la dirección del maestro Marco Aurélio Lischt desde 1998, el coro integra las obras de la Provincia Franciscana de la Inmaculada Concepción de Brasil."
+  },
   "historicoPendente": false,
   "foto": "../../assets/corais/canarinhos-de-petropolis.jpg",
   "equipe": [
-    { "nome": "Marco Aurélio Lischt", "cargo": "Regente" },
-    { "nome": "Frei Marcos Antônio de Andrade", "cargo": "Presidente" }
+    {
+      "nome": "Marco Aurélio Lischt",
+      "cargo": "Regente"
+    },
+    {
+      "nome": "Frei Marcos Antônio de Andrade",
+      "cargo": "Presidente"
+    }
   ],
   "contato": {
     "instagram": "https://instagram.com/canarinhosdepetropolis"

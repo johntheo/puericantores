@@ -2,8 +2,14 @@
   "nome": "Puer Singers",
   "cidade": "Belo Horizonte",
   "uf": "MG",
-  "resumo": "Coro filiado de Belo Horizonte, Minas Gerais. Informações detalhadas em breve.",
-  "historico": "Esta página será atualizada com a história, a equipe e outros detalhes do coral.",
+  "resumo": {
+    "pt": "Coro filiado de Belo Horizonte, Minas Gerais. Informações detalhadas em breve.",
+    "en": "Member choir from Belo Horizonte, Minas Gerais. Detailed information coming soon.",
+    "es": "Coro afiliado de Belo Horizonte, Minas Gerais. Información detallada próximamente."
+  },
+  "historico": {
+    "pt": "Esta página será atualizada com a história, a equipe e outros detalhes do coral."
+  },
   "historicoPendente": true,
   "equipe": [],
   "contato": {},
