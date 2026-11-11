@@ -55,7 +55,7 @@ const atual = paginaAtual(Astro);
     id="menu-mobile"
     data-menu-painel
     hidden
-    class="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-papel text-tinta"
+    class="fixed inset-0 z-50 flex flex-col overflow-y-auto overscroll-contain bg-papel text-tinta"
   >
     <div class="quadro flex items-center justify-between gap-6 py-5">
       <a href={rota('/', idioma)} class="flex items-center gap-3" aria-label={t.comum.inicio(site.assinatura)}>

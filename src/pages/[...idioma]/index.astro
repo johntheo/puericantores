@@ -110,7 +110,7 @@ const cidades = new Set(corais.map((c) => c.data.cidade)).size;
           class="group inline-flex items-center gap-3 border-b border-papel/40 pb-1 text-lg transition-colors hover:border-papel"
         >
           {t.inicio.conhecer(totalCorais)}
-          <Seta class="transition-transform duration-500 group-hover:translate-x-1" />
+          <Seta class="transition-transform duration-500 motion-safe:group-hover:translate-x-1" />
         </a>
         <a
           href={r('/filiacao')}
@@ -120,7 +120,7 @@ const cidades = new Set(corais.map((c) => c.data.cidade)).size;
         </a>
       </div>
 
-      <p data-apoio class="mt-14 text-xs text-papel/45">
+      <p data-apoio class="mt-14 text-xs text-papel/60">
         {t.inicio.legendaHero}
       </p>
     </div>
