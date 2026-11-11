@@ -1,5 +1,5 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from '~/layouts/Base.astro';
 import MiniGaleria from '~/components/MiniGaleria.astro';
@@ -7,17 +7,15 @@ import CarrosselCorais from '~/components/CarrosselCorais.astro';
 import Icone, { type NomeIcone } from '~/components/Icone.astro';
 
 export async function getStaticPaths() {
-  const corais = (await getCollection('corais')).sort((a, b) => a.data.fundacao - b.data.fundacao);
+  const corais = (await getCollection('corais')).sort(
+    (a, b) =>
+      (a.data.fundacao ?? Number.POSITIVE_INFINITY) - (b.data.fundacao ?? Number.POSITIVE_INFINITY)
+  );
 
   return corais.map((coral) => ({
     params: { slug: coral.id },
     props: { coral, corais },
   }));
-}
-
-interface Props {
-  coral: CollectionEntry<'corais'>;
-  corais: CollectionEntry<'corais'>[];
 }
 
 const { coral, corais } = Astro.props;
@@ -60,15 +58,21 @@ const canais = [
 <Base titulo={nome} descricao={resumo} cabecalhoSobreposto>
   <section class="relative min-h-[92svh] overflow-hidden bg-tinta">
     <div class="absolute inset-0 -top-[5%] h-[110%]" data-motion="parallax">
-      <Image
-        src={foto}
-        alt={`${nome}, em ${cidade}`}
-        widths={[800, 1400, 2000, 2400]}
-        sizes="100vw"
-        loading="eager"
-        fetchpriority="high"
-        class="foto h-full w-full object-cover"
-      />
+      {foto ? (
+        <Image
+          src={foto}
+          alt={`${nome}, em ${cidade}`}
+          widths={[800, 1400, 2000, 2400]}
+          sizes="100vw"
+          loading="eager"
+          fetchpriority="high"
+          class="foto h-full w-full object-cover"
+        />
+      ) : (
+        <div class="grid h-full place-items-center bg-tinta px-8 text-center text-papel/70">
+          <span class="font-display text-4xl italic">Imagem em breve</span>
+        </div>
+      )}
     </div>
 
     {/* A de baixo sustenta o contraste do nome; a de cima existe porque o
@@ -89,16 +93,24 @@ const canais = [
 
       <p class="mt-5 text-papel/75">{cidade} · {uf}</p>
 
-      <dl class="mt-10 flex flex-wrap gap-x-14 gap-y-5">
-        <div>
-          <dt class="text-sm text-papel/60">Fundado em</dt>
-          <dd data-numerico class="mt-1 font-display text-3xl">{fundacao}</dd>
-        </div>
-        <div>
-          <dt class="text-sm text-papel/60">Filiado desde</dt>
-          <dd data-numerico class="mt-1 font-display text-3xl">{filiacao}</dd>
-        </div>
-      </dl>
+      {
+        (fundacao || filiacao) && (
+          <dl class="mt-10 flex flex-wrap gap-x-14 gap-y-5">
+            {fundacao && (
+              <div>
+                <dt class="text-sm text-papel/60">Fundado em</dt>
+                <dd data-numerico class="mt-1 font-display text-3xl">{fundacao}</dd>
+              </div>
+            )}
+            {filiacao && (
+              <div>
+                <dt class="text-sm text-papel/60">Filiado desde</dt>
+                <dd data-numerico class="mt-1 font-display text-3xl">{filiacao}</dd>
+              </div>
+            )}
+          </dl>
+        )
+      }
 
       {
         canais.length > 0 && (
@@ -125,7 +137,7 @@ const canais = [
     </div>
   </section>
 
-  {/* QUEM CONDUZ — apenas nome e cargo. Contato pessoal fica no cadastro da
+  {/* QUEM CONDUZ, apenas nome e cargo. Contato pessoal fica no cadastro da
       federação e não é publicável (BRIEFING.md, seção 3). */}
   {
     equipe.length > 0 && (
@@ -162,10 +174,9 @@ const canais = [
                cadastro não for reescrito e revisado pelo próprio coro, a
                página diz isso com todas as letras. */
             <div class="border border-papel-borda px-6 py-5">
-              <p class="font-medium">Histórico em preparação.</p>
+              <p class="font-medium">Informações em breve.</p>
               <p class="mt-2 max-w-[52ch] text-sm leading-relaxed text-tinta-suave">
-                O texto será redigido a partir do documento que o coral enviou à federação e
-                revisado pela própria regência antes de ir ao ar.
+                Esta página será atualizada com a história, a equipe e outros detalhes do coral.
               </p>
             </div>
           ) : (

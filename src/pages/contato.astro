@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '~/layouts/Base.astro';
-import Pendencia from '~/components/Pendencia.astro';
 import Seta from '~/components/Seta.astro';
 import Icone, { type NomeIcone } from '~/components/Icone.astro';
 import { site, rota } from '~/config/site';
@@ -12,7 +11,7 @@ const corais = (await getCollection('corais')).sort((a, b) =>
 );
 
 /* Só os corais que publicam algum canal próprio. Quem não publica não aparece
-   nesta lista com um vazio ao lado — aparece no diretório, como todos. */
+   nesta lista com um vazio ao lado; aparece no diretório, como todos. */
 const comCanal = corais.filter((c) => Object.keys(c.data.contato).length > 0);
 
 const caminhos = [
@@ -63,8 +62,8 @@ const canaisDoCoral = (contato: (typeof corais)[number]['data']['contato']) =>
 
     <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
       A federação é conduzida por voluntários que também regem, ensaiam e viajam com seus coros. A
-      resposta pode não ser imediata — mas escolher o assunto certo abaixo ajuda a mensagem a chegar
-      a quem cuida dele.
+      resposta pode não ser imediata. Escolher o assunto certo abaixo ajuda a mensagem a chegar a
+      quem cuida dele.
     </p>
 
     <p class="mt-10 font-display text-3xl">
@@ -77,7 +76,7 @@ const canaisDoCoral = (contato: (typeof corais)[number]['data']['contato']) =>
   {/* ── CAMINHOS ────────────────────────────────────────────────────────────
       Cada cartão abre o cliente de e-mail com assunto e roteiro prontos. A
       alternativa seria um formulário hospedado por terceiro, que exigiria
-      conta, chave e um endpoint recebendo dado de menor — ver a nota em
+      conta, chave e um endpoint recebendo dado de menor, ver a nota em
       src/config/federacao.ts. */}
   <section class="quadro pb-(--spacing-secao)">
     <span class="fio" data-fio-scroll aria-hidden="true"></span>
@@ -126,7 +125,7 @@ const canaisDoCoral = (contato: (typeof corais)[number]['data']['contato']) =>
 
     <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
       Aula, audição, convite para cantar: fale direto com o coro. Estes são os canais que cada um
-      mantém — os demais estão no <a href={rota('/corais')} class="underline hover:text-acento-profundo">diretório</a>.
+      mantém. Os demais estão no <a href={rota('/corais')} class="underline hover:text-acento-profundo">diretório</a>.
     </p>
 
     <ul class="mt-12 grid gap-x-12 gap-y-8 sm:grid-cols-2">
@@ -147,7 +146,7 @@ const canaisDoCoral = (contato: (typeof corais)[number]['data']['contato']) =>
                     href={canal.href}
                     rel="noopener noreferrer"
                     target={canal.href.startsWith('mailto:') ? undefined : '_blank'}
-                    title={`${coral.data.nomeCurto ?? coral.data.nome} — ${canal.rotulo}`}
+                    title={`${coral.data.nomeCurto ?? coral.data.nome}, ${canal.rotulo}`}
                     class="grid size-10 place-items-center border border-papel-borda text-tinta-suave transition-colors hover:border-tinta hover:text-tinta"
                   >
                     <Icone nome={canal.icone} tamanho={18} />
@@ -186,15 +185,26 @@ const canaisDoCoral = (contato: (typeof corais)[number]['data']['contato']) =>
         </dd>
       </div>
       <div>
+        <dt class="text-sm text-tinta-tenue">Telefone</dt>
+        <dd class="mt-2 text-lg">
+          <a href={`tel:${site.contato.telefone.replace(/\D/g, '')}`} class="underline hover:text-acento-profundo">
+            {site.contato.telefone}
+          </a>
+        </dd>
+      </div>
+      <div>
+        <dt class="text-sm text-tinta-tenue">Sede</dt>
+        <dd class="mt-2 text-lg">{site.contato.sede}<br />CEP {site.contato.cep}</dd>
+      </div>
+      <div>
+        <dt class="text-sm text-tinta-tenue">CNPJ</dt>
+        <dd class="mt-2 text-lg">{site.contato.cnpj}</dd>
+      </div>
+      <div>
         <dt class="text-sm text-tinta-tenue">Federação internacional</dt>
         <dd class="mt-2 text-lg">Pueri Cantores</dd>
       </div>
     </dl>
 
-    <Pendencia titulo="Faltam CNPJ, sede e redes da federação." class="mt-12">
-      O e-mail acima é o canal que a federação usa hoje. CNPJ, endereço da sede e os perfis
-      institucionais em redes sociais entram assim que a diretoria os confirmar — e o e-mail
-      definitivo, se for outro, troca em um só lugar do código.
-    </Pendencia>
   </section>
 </Base>

@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '~/layouts/Base.astro';
-import Pendencia from '~/components/Pendencia.astro';
 import Seta from '~/components/Seta.astro';
 import { site, rota } from '~/config/site';
 import { escrever } from '~/config/federacao';
@@ -13,22 +12,26 @@ const totalCorais = corais.length;
 const estados = new Set(corais.map((c) => c.data.uf)).size;
 
 /* A distância entre fundar e filiar-se, medida nos próprios filiados. É o dado
-   que responde à pergunta que todo coro interessado faz primeiro — "é cedo
-   demais para nós?" — e ele sai da coleção, não de opinião. */
-const esperas = corais.map((c) => c.data.filiacao - c.data.fundacao);
+   que responde à pergunta que todo coro interessado faz primeiro: "é cedo
+   demais para nós?" O dado sai da coleção, não de opinião. */
+const esperas = corais.flatMap((c) =>
+  c.data.filiacao !== undefined && c.data.fundacao !== undefined
+    ? [c.data.filiacao - c.data.fundacao]
+    : []
+);
 const filiaramNoMesmoAno = esperas.filter((n) => n <= 0).length;
 const esperaMaxima = Math.max(...esperas);
 
 const escreverFiliacao = escrever(site.contato.email, 'filiacao');
 
-/* Observado nos 12 filiados, não extraído de estatuto. A página diz isso com
+/* Observado nos coros com perfil publicado, não extraído de estatuto. A página diz isso com
    todas as letras: enquanto o documento não chega, descrever o que os coros
    têm em comum é honesto; chamar isso de "requisito" não seria. */
 const emComum = [
   {
     titulo: 'Um coro de crianças e jovens',
     texto:
-      'Coros de meninos, de meninas ou mistos. A faixa etária varia bastante entre os filiados — há coros que recebem a partir dos cinco anos e coros em que ex-cantores adultos continuam nos naipes graves.',
+      'Coros de meninos, de meninas ou mistos. A faixa etária varia bastante entre os filiados. Há coros que recebem a partir dos cinco anos e coros em que ex-cantores adultos continuam nos naipes graves.',
   },
   {
     titulo: 'Canto na liturgia',
@@ -57,7 +60,7 @@ const emComum = [
 
     <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
       A federação recebe coros de crianças e jovens que cantam a liturgia. São hoje {totalCorais} em
-      {estados} estados — e a porta continua aberta.
+      {estados} estados. A porta continua aberta.
     </p>
   </section>
 
@@ -98,8 +101,8 @@ const emComum = [
     <h2 class="mt-10 text-(length:--text-secao)">O que os filiados têm em comum</h2>
 
     <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
-      Um retrato dos {totalCorais} corais que já fazem parte. Não é a lista de requisitos formais —
-      essa consta do estatuto — mas dá uma medida razoável de quem se reconhece aqui.
+      Um retrato dos {totalCorais} corais que já fazem parte. Não é a lista de requisitos formais;
+      ela consta do estatuto. O retrato ajuda a entender quem se reconhece aqui.
     </p>
 
     <ul class="mt-14 grid gap-px bg-papel-borda sm:grid-cols-2">
@@ -113,11 +116,13 @@ const emComum = [
       }
     </ul>
 
-    <Pendencia titulo="Os requisitos formais dependem do estatuto." class="mt-12">
-      Documentação exigida, anuidade, se existe, e o rito de aprovação da filiação serão publicados
-      aqui quando a diretoria enviar o estatuto vigente. Até lá, o caminho é escrever — a federação
-      responde caso a caso.
-    </Pendencia>
+    <div class="medida mt-12 border border-papel-borda px-6 py-5 text-sm leading-relaxed text-tinta-suave">
+      <strong class="font-medium text-tinta">O regimento interno estabelece três pontos básicos.</strong>
+      O coro deve cumprir sua função litúrgica, cantando ao menos uma vez por mês em uma celebração
+      eucarística; a admissão precisa ser aprovada pela Assembleia Geral; e cada coro deve contar
+      com um conselheiro espiritual, obrigatoriamente um padre. O coro admitido recebe um certificado
+      de admissão.
+    </div>
   </section>
 
   {/* ── QUANDO ─────────────────────────────────────────────────────────────
@@ -155,7 +160,7 @@ const emComum = [
       <div>
         <p class="medida text-lg leading-relaxed text-tinta-suave">
           Escreva para a federação apresentando o coro. O botão abaixo abre uma mensagem com os
-          campos que a federação precisa saber já preenchidos como roteiro — responda o que souber e
+          campos que a federação precisa saber já preenchidos como roteiro. Responda o que souber e
           apague o resto.
         </p>
 
@@ -177,7 +182,7 @@ const emComum = [
         </p>
 
         <p class="medida mt-10 text-sm leading-relaxed text-tinta-tenue">
-          Não envie dados pessoais dos cantores — nome completo, data de nascimento, endereço ou
+          Não envie dados pessoais dos cantores, como nome completo, data de nascimento, endereço ou
           telefone de crianças e adolescentes. A federação não precisa deles para avaliar uma
           filiação, e este site não publica nenhum.
         </p>

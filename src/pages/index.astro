@@ -12,14 +12,18 @@ const corais = await getCollection('corais');
 
 const destaques = corais
   .filter((c) => c.data.destaque)
-  .sort((a, b) => a.data.fundacao - b.data.fundacao);
+  .sort(
+    (a, b) =>
+      (a.data.fundacao ?? Number.POSITIVE_INFINITY) - (b.data.fundacao ?? Number.POSITIVE_INFINITY)
+  );
 
 /* Calculado da própria coleção, para não envelhecer sozinho quando entrar
    coral novo. O total de cantores é a exceção: vem da planilha de cadastro,
    não é auditado, e por isso aparece arredondado e datado. */
 const totalCorais = corais.length;
 const estados = new Set(corais.map((c) => c.data.uf)).size;
-const maisAntigo = Math.min(...corais.map((c) => c.data.fundacao));
+const fundacoesConhecidas = corais.flatMap((c) => (c.data.fundacao ? [c.data.fundacao] : []));
+const maisAntigo = Math.min(...fundacoesConhecidas);
 
 /* Onze, não doze: Petrópolis tem dois corais filiados. Calculado em vez de
    escrito à mão justamente porque é o tipo de número que alguém digita errado
@@ -82,16 +86,16 @@ const cidades = new Set(corais.map((c) => c.data.cidade)).size;
         </span>
       </h1>
 
-      {/* Concreto de propósito. A versão anterior — "cantam a liturgia e o
+      {/* Concreto de propósito. A versão anterior, "cantam a liturgia e o
           grande repertório coral, reunidos numa federação reconhecida pela
-          Santa Sé" — descrevia a categoria, não esta federação: qualquer
+          Santa Sé", descrevia a categoria, não esta federação: qualquer
           entidade coral do mundo poderia assiná-la. Os números de ensaio saem
           do cadastro dos corais (de uma vez por semana em Florianópolis a seis
           em Petrópolis). O vínculo com a Santa Sé continua, no rodapé, onde
           credencial institucional pertence. */}
       <p data-apoio class="medida mt-10 text-lg leading-relaxed text-papel/80 sm:text-xl">
         Em {porExtenso(cidades, 'f')} cidades, meninos e meninas ensaiam duas, três, até seis vezes por
-        semana — e cantam na missa de domingo. O mais antigo desses coros faz isso desde {maisAntigo}.
+        semana. Aos domingos, cantam na missa. O mais antigo desses coros faz isso desde {maisAntigo}.
       </p>
 
       <div data-apoio class="mt-10 flex flex-wrap items-center gap-x-10 gap-y-4">
@@ -127,13 +131,13 @@ const cidades = new Set(corais.map((c) => c.data.cidade)).size;
         <p>
           Um coro de meninos não se mede só pelo que soa. Mede-se pelas horas de ensaio, pela
           disciplina aprendida cedo, pela criança que descobre que a própria voz importa dentro de
-          um conjunto. É esse trabalho — artístico, litúrgico e social ao mesmo tempo — que a
+          um conjunto. É esse trabalho, artístico, litúrgico e social ao mesmo tempo, que a
           federação existe para sustentar.
         </p>
         <p>
           Nossos corais ensaiam em paróquias, mosteiros e escolas de música espalhados pelo país.
-          Alguns nasceram há mais de oitenta anos, outros há dois. Todos oferecem formação musical
-          gratuita.
+          Alguns nasceram há mais de oitenta anos, outros há dois. A formação musical é parte
+          central desse trabalho.
         </p>
 
         <p class="pt-2">
@@ -203,18 +207,16 @@ const cidades = new Set(corais.map((c) => c.data.cidade)).size;
 
       <div>
         <p class="medida text-lg leading-relaxed text-tinta-suave">
-          A Pueri Cantores nasceu na França do entreguerras e hoje reúne coros infantojuvenis em
-          dezenas de países, sob reconhecimento da Santa Sé. Seus congressos internacionais juntam
+          A Pueri Cantores nasceu em Paris, em 1944, e hoje reúne coros infantojuvenis em
+          35 países, sob reconhecimento da Santa Sé. Seus congressos internacionais juntam
           milhares de jovens cantores para cantar a mesma liturgia em línguas diferentes. Os corais
           brasileiros participam dessa rede por meio desta federação.
         </p>
 
-        {/* Pendências 1 e 2 do briefing: fundação da FNMCB e histórico
-            institucional dependem dos documentos da diretoria. */}
         <p class="mt-10 border border-papel-borda px-5 py-4 text-sm text-tinta-suave">
-          <strong class="font-medium text-tinta">A revisar antes de publicar.</strong> O ano de
-          fundação da federação brasileira e o histórico institucional aguardam os documentos da
-          diretoria. O cadastro sugere que a federação já existia em 1967.
+          <strong class="font-medium text-tinta">No Brasil, desde 1967.</strong> A Federação
+          Nacional dos Meninos Cantores do Brasil promove o canto coral e a formação artístico-cultural,
+          com atenção especial ao canto litúrgico.
         </p>
       </div>
     </div>

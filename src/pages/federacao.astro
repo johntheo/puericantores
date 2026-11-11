@@ -1,10 +1,16 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '~/layouts/Base.astro';
-import Pendencia from '~/components/Pendencia.astro';
 import Brasao from '~/components/Brasao.astro';
 import { site, rota } from '~/config/site';
-import { internacional, congressosNacionais, congressosInternacionais } from '~/config/federacao';
+import {
+  internacional,
+  diretoria,
+  congressosNacionais,
+  congressosInternacionais,
+  congressosRegionais,
+  congressosFuturos,
+} from '~/config/federacao';
 
 const corais = await getCollection('corais');
 
@@ -12,8 +18,9 @@ const corais = await getCollection('corais');
    institucional envelhece na primeira filiação nova e ninguém percebe. */
 const totalCorais = corais.length;
 const estados = new Set(corais.map((c) => c.data.uf)).size;
-const maisAntigo = Math.min(...corais.map((c) => c.data.fundacao));
-const maisNovo = Math.max(...corais.map((c) => c.data.fundacao));
+const fundacoesConhecidas = corais.flatMap((c) => (c.data.fundacao ? [c.data.fundacao] : []));
+const maisAntigo = Math.min(...fundacoesConhecidas);
+const maisNovo = Math.max(...fundacoesConhecidas);
 
 const numero = (n: number) => n.toLocaleString('pt-BR');
 ---
@@ -44,11 +51,11 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
       <div class="medida space-y-6 text-lg leading-relaxed text-tinta-suave">
         <p>
           Um coro Pueri Cantores não é um coro infantil que às vezes canta na igreja. É um coro que
-          existe para a liturgia — e que, para dar conta dela, precisa ensinar música de verdade a
-          crianças que em geral nunca tiveram acesso a ela.
+          existe para a liturgia. Para isso, precisa ensinar música de verdade a crianças que em
+          geral nunca tiveram acesso a ela.
         </p>
         <p>
-          Nos {totalCorais} coros filiados esse ensino é gratuito. Há quem ensaie uma vez por
+          Os coros oferecem formação musical e serviço à liturgia. Há quem ensaie uma vez por
           semana e quem ensaie seis. Há coros mantidos por uma província franciscana e coros
           mantidos pelas famílias dos próprios cantores. O mais antigo canta desde {maisAntigo}; o
           mais novo, desde {maisNovo}. O que os aproxima é a combinação de rigor musical, formação
@@ -75,22 +82,31 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
       <div>
         <div class="medida space-y-6 text-lg leading-relaxed text-tinta-suave">
           <p>
-            A Pueri Cantores nasceu na França do fim da Segunda Guerra. Em 11 de novembro
-            de {internacional.fundacao}, o padre {internacional.fundador} reuniu em Paris trezentos
-            meninos cantores num único concerto — a data que a federação internacional guarda como
-            sua fundação, e o gesto de reconstrução que ela nunca deixou de reivindicar. O primeiro
-            congresso internacional aconteceu em Paris, em 1947, com noventa coros europeus.
+            Uma longa tradição europeia de corais de meninos cantando a liturgia ganhou forma
+            institucional no início do século XX, com o motu próprio <i>Tra le sollecitudini</i>, em
+            que São Pio X pedia a renovação da música na Igreja. Em resposta, Monsenhor
+            {internacional.fundador} fundou em Paris, em 1907, os Pequenos Cantores da Cruz de Madeira
+            (<i lang="fr">Petits Chanteurs de la Croix de Bois</i>), que cantaram pela paz em muitos
+            países depois da Primeira Guerra Mundial. A Segunda Guerra interrompeu sua atividade, mas
+            não os destruiu.
           </p>
           <p>
-            Em {internacional.estatutoChancelado} a Secretaria de Estado da Santa Sé chancelou o
-            estatuto da federação, que hoje está vinculada ao Dicastério para os Leigos, a Família e
-            a Vida. São cerca de {numero(internacional.coros)} coros em {internacional.paises} países,
-            somando por volta de {numero(internacional.cantores)} crianças e jovens.
+            Em julho de 1944, o arcebispo de Paris, cardeal Suhard, aprovou a fundação de uma
+            organização internacional dos Pueri Cantores como “um elemento de beleza musical na
+            Igreja, um trabalho de educação cristã e atividade apostólica a serviço da liturgia”. A
+            data oficial de fundação é 11 de novembro de {internacional.fundacao}, quando trezentos
+            meninos cantores regidos por Maillet deram o primeiro concerto na igreja de Santo
+            Eustáquio, em Paris. O primeiro congresso internacional aconteceu na mesma cidade, em
+            1947, com noventa coros europeus, seguido pelos de Roma, em 1949 e 1951.
           </p>
           <p>
-            Periodicamente esses coros se encontram num congresso internacional para cantar a mesma
-            liturgia em línguas diferentes. Os corais brasileiros participam dessa rede por meio
-            desta federação.
+            Em {internacional.estatutoChancelado} a Santa Sé aprovou o estatuto da federação, que
+            passou a ser reconhecida como movimento eclesial, sob a jurisdição do Pontifício Conselho
+            para os Leigos. As reformas do estatuto de 1995 e 2001 permitiram a entrada de meninas.
+            Hoje há coros de meninos, de meninas e mistos em {internacional.paises} países de todos os
+            continentes, com aproximadamente {numero(internacional.cantores)} cantores. A tarefa
+            principal continua sendo cantar a liturgia, e os valores cristãos são a base da vida e
+            da conduta de seus membros.
           </p>
         </div>
 
@@ -118,32 +134,28 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
       <div>
         <div class="medida space-y-6 text-lg leading-relaxed text-tinta-suave">
           <p>
-            A federação brasileira já existia em 1967, ano em que o Coral dos Canarinhos de
-            Petrópolis consta como filiado fundador. O maestro João Lucas Rodrigues, que fundara em
-            Sete Lagoas o Coral Dom Silvério quatro anos antes, é lembrado pelo próprio coro como um
-            dos fundadores da federação.
+            A {site.razaoSocial} foi fundada em 1967 por Frei Leto, pelo padre José Maria
+            Wisniewski e pelo maestro João Lucas Rodrigues. Seu objetivo é fomentar, entre crianças,
+            adolescentes e jovens, o canto coral e a formação artístico-cultural, com foco no canto
+            litúrgico. É filiada à Federação Internacional Pueri Cantores, com sede em Roma.
           </p>
           <p>
-            Hoje são {totalCorais} corais filiados em {estados} estados, de Novo Hamburgo a
-            Petrópolis. A federação organiza congressos nacionais e regionais, e é por ela que os
-            coros brasileiros chegam aos congressos internacionais.
+            Hoje reúne {totalCorais} coros federados de {estados} estados. A cada três anos realiza um
+            Congresso Nacional e, entre um nacional e outro, dois Congressos Regionais, alternados
+            entre o Sudeste (Rio de Janeiro e Minas Gerais) e o Sul (Paraná, Santa Catarina e Rio
+            Grande do Sul).
+          </p>
+          <p>
+            O presidente é {diretoria.executiva[0].nome}, maestro dos Pequenos Cantores de Passos.
           </p>
         </div>
-
-        <Pendencia titulo="Falta o essencial desta seção." class="mt-8">
-          O ano de fundação da federação, o histórico institucional e a composição da diretoria
-          vigente dependem dos documentos que a diretoria ainda não enviou — estatuto, histórico e
-          ata de eleição. O que está escrito acima é o que se pode afirmar a partir do cadastro dos
-          corais, e não substitui o registro oficial.
-        </Pendencia>
       </div>
     </div>
   </section>
 
   {/* ── CONGRESSOS ──────────────────────────────────────────────────────────
-      A relação abaixo foi reconstruída dos históricos que os corais anexaram
-      ao cadastro. Não é a lista oficial — é o que se pode documentar hoje, e
-      diz isso ao leitor. Ver src/config/federacao.ts. */}
+      Relação enviada pela federação em novembro de 2026, com as fontes
+      anotadas em src/config/federacao.ts. */}
   <section class="quadro pb-(--spacing-secao)">
     <span class="fio" data-fio-scroll aria-hidden="true"></span>
 
@@ -155,7 +167,7 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
       anos.
     </p>
 
-    <div class="mt-14 grid gap-14 md:grid-cols-2 md:gap-20">
+    <div class="mt-14 grid gap-14 md:grid-cols-3 md:gap-12">
       <div>
         <h3 class="text-xl">Nacionais</h3>
 
@@ -200,13 +212,43 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
           }
         </ul>
       </div>
+
+      <div>
+        <h3 class="text-xl">Regionais</h3>
+
+        <ul class="mt-6">
+          {
+            congressosRegionais.map((c) => (
+              <li class="border-t border-papel-borda py-5">
+                <p class="font-display text-3xl leading-none">{c.ano}</p>
+                <p class="mt-2 text-sm text-tinta-suave">{c.local}</p>
+                {c.nota && <p class="mt-2 text-sm text-tinta-tenue">{c.nota}</p>}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
 
-    <Pendencia titulo="Relação incompleta." class="mt-12">
-      Estas edições foram reconstruídas a partir dos históricos enviados pelos corais. Os corais
-      citam congressos desde os anos 1960, e as edições anteriores a 2017 entram aqui assim que a
-      diretoria fornecer a relação oficial.
-    </Pendencia>
+  </section>
+
+  {/* ── PRÓXIMOS ENCONTROS ───────────────────────────────────────────────── */}
+  <section class="quadro pb-(--spacing-secao)">
+    <span class="fio" data-fio-scroll aria-hidden="true"></span>
+
+    <h2 class="mt-10 text-(length:--text-secao)">Próximos encontros</h2>
+
+    <ul class="mt-10 grid gap-6 md:grid-cols-2">
+      {
+        congressosFuturos.map((c) => (
+          <li class="border-t border-papel-borda py-5">
+            <p class="font-display text-3xl leading-none">{c.ano}</p>
+            <p class="mt-2 text-lg">{c.local}</p>
+            {c.nota && <p class="mt-2 text-sm leading-relaxed text-tinta-tenue">{c.nota}</p>}
+          </li>
+        ))
+      }
+    </ul>
   </section>
 
   {/* ── DIRETORIA ───────────────────────────────────────────────────────── */}
@@ -215,10 +257,34 @@ const numero = (n: number) => n.toLocaleString('pt-BR');
 
     <h2 class="mt-10 text-(length:--text-secao)">Diretoria</h2>
 
-    <Pendencia titulo="Aguardando a ata de eleição." class="mt-8">
-      A composição da diretoria vigente será publicada com nome e cargo de cada membro, como nas
-      páginas dos corais. Nenhum dado pessoal além disso vai ao ar.
-    </Pendencia>
+    <p class="mt-4 text-sm text-tinta-tenue">Mandato: {diretoria.mandato}.</p>
+
+    <div class="mt-10 grid gap-12 md:grid-cols-2">
+      <div>
+        <h3 class="text-xl">Diretoria executiva</h3>
+        <ul class="mt-6 grid gap-5 sm:grid-cols-2">
+          {diretoria.executiva.map((pessoa) => (
+            <li>
+              <p class="font-display text-2xl leading-tight">{pessoa.nome}</p>
+              <p class="mt-1 text-sm text-tinta-tenue">{pessoa.cargo}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xl">Conselho Fiscal</h3>
+        <p class="mt-6 text-sm uppercase tracking-[0.12em] text-tinta-tenue">Titulares</p>
+        <ul class="mt-3 space-y-2">
+          {diretoria.conselhoFiscal.titulares.map((nome) => <li>{nome}</li>)}
+        </ul>
+        <p class="mt-6 text-sm uppercase tracking-[0.12em] text-tinta-tenue">Suplentes</p>
+        <ul class="mt-3 space-y-2">
+          {diretoria.conselhoFiscal.suplentes.map((nome) => <li>{nome}</li>)}
+        </ul>
+      </div>
+    </div>
+
   </section>
 
   {/* ── CHAMADAS ────────────────────────────────────────────────────────── */}

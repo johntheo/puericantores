@@ -9,7 +9,7 @@ import Seta from '~/components/Seta.astro';
  *
  * Substitui o antigo bloco "próximo coral", que só oferecia uma saída e
  * obrigava a percorrer a federação inteira em sequência para chegar num coro
- * específico. Aqui os doze estão à mão.
+ * específico. Aqui todos os corais cadastrados estão à mão.
  *
  * A rolagem é nativa, com scroll-snap: funciona sem JavaScript, com o dedo no
  * celular, com a roda do mouse e com Tab, porque cada item é um link de
@@ -72,17 +72,23 @@ const outros = corais.filter((c) => c.id !== atual);
         <li class="w-[76vw] shrink-0 snap-start sm:w-[42vw] lg:w-[26vw] xl:w-[22rem]">
           <a href={rota(`/corais/${coral.id}`)} class="group block">
             <div class="overflow-hidden bg-papel-fundo">
-              <Image
-                src={coral.data.foto}
-                alt={`${coral.data.nome}, em ${coral.data.cidade}`}
-                widths={[400, 800]}
-                sizes="(min-width: 1280px) 22rem, (min-width: 640px) 42vw, 76vw"
-                class="foto aspect-4/3 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-              />
+              {coral.data.foto ? (
+                <Image
+                  src={coral.data.foto}
+                  alt={`${coral.data.nome}, em ${coral.data.cidade}`}
+                  widths={[400, 800]}
+                  sizes="(min-width: 1280px) 22rem, (min-width: 640px) 42vw, 76vw"
+                  class="foto aspect-4/3 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                />
+              ) : (
+                <div class="grid aspect-4/3 place-items-center px-6 text-center text-tinta-tenue">
+                  <span class="font-display text-2xl italic">Imagem em breve</span>
+                </div>
+              )}
             </div>
             <h3 class="mt-4 text-xl leading-tight">{coral.data.nomeCurto ?? coral.data.nome}</h3>
             <p class="mt-1 text-sm text-tinta-tenue">
-              {coral.data.cidade} · {coral.data.uf} · desde {coral.data.fundacao}
+              {coral.data.cidade} · {coral.data.uf}{coral.data.fundacao && ` · desde ${coral.data.fundacao}`}
             </p>
           </a>
         </li>

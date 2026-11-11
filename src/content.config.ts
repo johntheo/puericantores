@@ -26,9 +26,9 @@ const corais = defineCollection({
       uf: z.enum(['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO']),
 
       /** Ano de fundação do coro. */
-      fundacao: z.number().int().min(1800).max(2100),
+      fundacao: z.number().int().min(1800).max(2100).optional(),
       /** Ano de entrada na federação. */
-      filiacao: z.number().int().min(1800).max(2100),
+      filiacao: z.number().int().min(1800).max(2100).optional(),
 
       /**
        * Histórico reescrito em registro editorial comum, 150 a 250 palavras.
@@ -46,7 +46,7 @@ const corais = defineCollection({
       /** Frase de uma linha para o card no diretório e na home. */
       resumo: z.string().max(180),
 
-      foto: image(),
+      foto: image().optional(),
       /** Crédito da fotografia, quando informado. */
       fotoCredito: z.string().optional(),
 

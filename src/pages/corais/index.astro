@@ -3,7 +3,10 @@ import { getCollection } from 'astro:content';
 import Base from '~/layouts/Base.astro';
 import CardCoral from '~/components/CardCoral.astro';
 
-const corais = (await getCollection('corais')).sort((a, b) => a.data.fundacao - b.data.fundacao);
+const corais = (await getCollection('corais')).sort(
+  (a, b) =>
+    (a.data.fundacao ?? Number.POSITIVE_INFINITY) - (b.data.fundacao ?? Number.POSITIVE_INFINITY)
+);
 
 const ufs = [...new Set(corais.map((c) => c.data.uf))].sort();
 ---

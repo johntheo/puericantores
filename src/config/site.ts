@@ -31,8 +31,11 @@ export const site = {
   levantamento: 'levantamento de 2026',
 
   contato: {
-    // PENDÊNCIA #6 e #7 do BRIEFING: e-mail institucional e endereço da sede.
     email: 'puericantoresbrasil@gmail.com',
+    telefone: '(35) 99109-3401',
+    sede: 'Rua Santos Dumont, 355, Petrópolis - RJ',
+    cep: '25625-090',
+    cnpj: '32.002.172/0001-90',
   },
 } as const;
 

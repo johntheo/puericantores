@@ -1,0 +1,22 @@
+{
+  "nome": "Coral Mater Verbi – Meninos Cantores da Academia",
+  "nomeCurto": "Mater Verbi",
+  "cidade": "Juiz de Fora",
+  "uf": "MG",
+  "fundacao": 1953,
+  "filiacao": 1967,
+  "resumo": "O coral mais antigo de Juiz de Fora. Canta desde 1953 no Colégio Academia e é sócio cofundador da federação.",
+  "historico": "O Coral Mater Verbi nasceu em 11 de julho de 1953, quando o padre José Maria Wisniewski, SVD, reuniu um coro de meninos no Colégio Academia, em Juiz de Fora. É o coral mais antigo da cidade e um dos mais tradicionais coros de meninos cantores do Brasil.\n\nA razão de sua fundação foi louvar a Deus nas missas da Igreja Católica. Desde então, mais de novecentos meninos, adolescentes e jovens passaram pelo grupo, que lhes oferece formação cristã e artística. O coro é formado exclusivamente por alunos dos ensinos fundamental e médio do Colégio Cristo Redentor Academia de Comércio: um grupo amador que trabalha com seriedade e disciplina profissional.\n\nÉ membro da Federação Internacional dos Pueri Cantores desde a criação e sócio cofundador da Federação Nacional dos Meninos Cantores do Brasil. O repertório reúne obras sacras, eruditas, populares e folclóricas.\n\nO coral gravou dois LPs e três CDs e já se apresentou na Argentina, no Uruguai, na Alemanha, na Itália e na Áustria, além de vários estados brasileiros. Recebeu a Bênção Apostólica de João Paulo II em 1979 e em 2003, e do papa Francisco em 2018.\n\nConquistou o primeiro e o segundo lugares em edições do Concurso Nacional de Canto Coral do Jornal do Brasil e, no II Concurso Nacional Funarte de Canto Coral, o segundo lugar na categoria infantil e o prêmio de melhor interpretação da peça de confronto.\n\nO regente, Diego Pedrosa Frizero, é ex-menino cantor do próprio coral.",
+  "historicoPendente": false,
+  "foto": "../../assets/corais/mater-verbi-meninos-cantores.jpg",
+  "galeria": [
+    "../../assets/corais/mater-verbi-meninos-cantores-2.jpg",
+    "../../assets/corais/mater-verbi-meninos-cantores-3.jpg",
+    "../../assets/corais/mater-verbi-meninos-cantores-4.jpg"
+  ],
+  "equipe": [
+    { "nome": "Diego Pedrosa Frizero", "cargo": "Regente" }
+  ],
+  "contato": { "email": "coral@academia.com.br" },
+  "destaque": false
+}

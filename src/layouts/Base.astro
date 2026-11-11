@@ -57,7 +57,7 @@ const ehPreview = import.meta.env.PUBLIC_PREVIEW === 'true';
         document.documentElement.classList.add('js');
         setTimeout(function () {
           document.documentElement.classList.remove('js');
-        }, 4000);
+        }, 1800);
       }
     </script>
   </head>
@@ -80,6 +80,7 @@ const ehPreview = import.meta.env.PUBLIC_PREVIEW === 'true';
 
     <script>
       import '~/scripts/motion';
+      import '~/scripts/analytics';
     </script>
   </body>
 </html>

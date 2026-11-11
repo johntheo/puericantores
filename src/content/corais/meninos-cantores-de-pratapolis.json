@@ -1,0 +1,17 @@
+{
+  "nome": "Meninos Cantores de Pratápolis",
+  "cidade": "Pratápolis",
+  "uf": "MG",
+  "fundacao": 2013,
+  "filiacao": 2016,
+  "resumo": "Nascido em 2013 na Paróquia do Divino Espírito Santo, oferece formação musical gratuita a crianças e jovens de oito a dezessete anos.",
+  "historico": "O Coral Meninos Cantores do Divino Espírito Santo de Pratápolis foi fundado em 7 de janeiro de 2013, a partir de um sonho do então pároco da cidade, padre Aloísio Miguel Alves, e do esforço conjunto da comunidade. O objetivo era oferecer a crianças e jovens crescimento humano, cultural e espiritual. Desde o início, as atividades são semanais e gratuitas: musicalização, instrumento, teoria musical, técnica vocal e canto coral.\n\nA regência e a direção artística estão, desde a fundação, com o maestro Rildo Batista Andrade.\n\nEm julho de 2015 o coral cantou a missa semanal transmitida pela Rede Vida de Televisão, à qual voltou em setembro de 2022, em São José do Rio Preto. Em julho de 2016 passou a integrar a Federação Nacional dos Meninos Cantores do Brasil. Desde então esteve no XLI Congresso Internacional Pueri Cantores, no Rio de Janeiro, em janeiro de 2017; no congresso regional de Juiz de Fora, em 2018; nos congressos nacionais de Campo Largo, em 2019, e de Passos, em outubro de 2022; e no regional de Sete Lagoas, em 2023.\n\nEm outubro de 2019 foi criada a Associação Meninos Cantores do Divino Espírito Santo de Pratápolis, entidade sem fins econômicos que atende crianças e jovens de 8 a 17 anos, sem qualquer discriminação e de forma totalmente gratuita.\n\nO coral canta nas celebrações solenes da Paróquia do Divino Espírito Santo, é convidado para celebrações em toda a região e participa das datas cívicas da cidade.",
+  "historicoPendente": false,
+  "foto": "../../assets/corais/meninos-cantores-de-pratapolis.jpg",
+  "equipe": [
+    { "nome": "Rildo Batista Andrade", "cargo": "Regente" },
+    { "nome": "Maria dos Reis Silva", "cargo": "Presidente" }
+  ],
+  "contato": {},
+  "destaque": false
+}

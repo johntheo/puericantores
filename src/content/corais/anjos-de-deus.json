@@ -1,0 +1,20 @@
+{
+  "nome": "Coral Anjos de Deus",
+  "nomeCurto": "Anjos de Deus",
+  "cidade": "Alfenas",
+  "uf": "MG",
+  "fundacao": 2009,
+  "filiacao": 2025,
+  "resumo": "Coral infantojuvenil de Alfenas, aberto a crianças a partir de seis anos e dedicado ao canto coral e à formação musical.",
+  "historico": "A história do Coral Anjos de Deus começa em 2009, quando Lucília Maria Bastos Bernardes de Oliveira foi convidada a formar um coral de crianças na Igreja São Pedro, em Alfenas. Em 2011, o grupo foi acolhido pelo padre Reinaldo na Matriz Nossa Senhora Aparecida e passou a assumir a missa dominical das 8h30.\n\nDepois da interrupção causada pela pandemia, o coral retomou as atividades presenciais em janeiro de 2022. Os ensaios passaram a acontecer no Casarão da Farmácia Bernardes, e o grupo voltou a servir a liturgia uma vez por mês, no terceiro sábado, na Matriz São José e Dores, onde foi acolhido pelos padres Weberton e Riva.\n\nO coral é aberto a todas as crianças que desejam cantar, a partir dos seis anos, sem custo para as famílias. Seu trabalho valoriza o desenvolvimento musical, a escuta, o respeito e a aprendizagem coletiva por meio da voz. Ao longo dos anos, centenas de crianças e jovens já participaram do grupo.\n\nA tradição da Cantata de Natal nas janelas do Casarão da Farmácia Bernardes começou em 1997 e segue como um dos momentos mais esperados do ano. O repertório é preparado ao longo dos meses, com obras adequadas às vozes de crianças e jovens e temas que celebram a fé. A regência é de Lucília Maria Bastos Bernardes de Oliveira.",
+  "historicoPendente": false,
+  "foto": "../../assets/corais/anjos-de-deus.jpg",
+  "equipe": [
+    {
+      "nome": "Lucília Maria Bastos Bernardes de Oliveira",
+      "cargo": "Regente"
+    }
+  ],
+  "contato": {},
+  "destaque": false
+}

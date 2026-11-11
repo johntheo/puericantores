@@ -6,8 +6,8 @@
  * pendência marcada na página, que é o comportamento correto para um site
  * institucional que a diretoria vai assinar.
  *
- * Quando os documentos da federação chegarem (estatuto, histórico, ata da
- * diretoria), é este arquivo que cresce; as páginas não mudam.
+ * Quando novos documentos da federação chegarem, é este arquivo que cresce;
+ * as páginas não mudam.
  */
 
 /* ------------------------------------------------------------------ */
@@ -25,10 +25,34 @@ export const internacional = {
   fundacao: 1944,
   /** Ano em que a Secretaria de Estado da Santa Sé chancelou o estatuto. */
   estatutoChancelado: 1965,
-  paises: 43,
-  coros: 1000,
+  paises: 35,
   cantores: 40000,
   site: 'https://www.puericantores.org',
+} as const;
+
+/* ------------------------------------------------------------------ */
+/* Diretoria                                                          */
+/* ------------------------------------------------------------------ */
+
+/** Fonte: Ata da Assembleia Geral Ordinária de 26 de julho de 2025. */
+export const diretoria = {
+  mandato: '31 de julho de 2025 a 31 de julho de 2028',
+  executiva: [
+    { cargo: 'Presidente', nome: 'Messias Donizete Faleiros' },
+    { cargo: 'Vice-presidente', nome: 'Eric Vinícius de Aguiar Lana' },
+    { cargo: 'Secretário', nome: 'Djeison Engelke Borges' },
+    { cargo: 'Vice-secretária', nome: 'Giseli Linhares' },
+    { cargo: 'Tesoureiro', nome: 'Felipe Terra do Carmo' },
+    { cargo: 'Vice-tesoureiro', nome: 'Filipe Nolasco Pedrosa' },
+  ],
+  conselhoFiscal: {
+    titulares: [
+      'Otávio Luiz Ribeiro Bretas',
+      'Amauri Artimos da Matta',
+      'Marco Aurélio Lischt dos Santos',
+    ],
+    suplentes: ['Paulo Sezerino', 'Diego Pedrosa Frizero', 'Damiana Zago'],
+  },
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -49,20 +73,39 @@ interface Congresso {
 /**
  * Congressos nacionais.
  *
- * Reconstruídos a partir dos históricos que os próprios corais anexaram ao
- * cadastro — fonte primária, não pesquisa de internet:
+ * Fonte: relação "Congressos Federação Pueri Cantores Brasil", enviada pela
+ * federação em novembro de 2026.
  *
- *   XVI   Campo Largo 2019    · histórico dos Canarinhos de Campo Largo
- *   XVII  Passos/Cássia 2022  · idem, e é o congresso das fotos da galeria
- *   XVIII Santa Luzia 2025    · registrado em ATIVOS-EXTERNOS.md
- *   XIX   Cássia 2028         · histórico dos Pequenos Cantores de Cássia
+ * Os numerais XVI a XVIII vêm dos históricos dos corais (Campo Largo e Cássia).
+ * As edições anteriores ficam sem numeral: a relação oficial não os traz, e
+ * numeral deduzido por contagem é o tipo de erro que ninguém revisaria depois.
  *
- * A lista começa em 2019 porque é daí para cá que há registro documental em
- * mãos. As edições anteriores existem — os corais citam congressos desde os
- * anos 1960 — e entram quando a diretoria enviar a relação oficial.
+ * Em 2017 a relação lista o Rio de Janeiro, mas era o XLI Congresso
+ * Internacional, que já aparece na coluna própria. Fica fora daqui para não
+ * contar duas vezes.
+ *
+ * 2027 e 2028 ficam de fora até a federação definir as sedes.
  */
+const nacional = (ano: number, local: string): Congresso => ({ edicao: '', ano, local });
+
 export const congressosNacionais: Congresso[] = [
+  nacional(1968, 'Petrópolis, Rio de Janeiro'),
+  nacional(1974, 'Juiz de Fora, Minas Gerais'),
+  nacional(1977, 'Belo Horizonte, Minas Gerais'),
+  nacional(1980, 'Divinópolis, Minas Gerais'),
+  nacional(1983, 'Juiz de Fora, Minas Gerais'),
+  nacional(1986, 'Xaxim, Santa Catarina'),
+  nacional(1989, 'Novo Hamburgo, Rio Grande do Sul'),
+  nacional(1992, 'Petrópolis, Rio de Janeiro'),
+  nacional(1995, 'Sete Lagoas, Minas Gerais'),
+  nacional(1998, 'Itajaí, Santa Catarina'),
+  nacional(2001, 'Belo Horizonte, Santa Luzia e Itabirito, Minas Gerais'),
+  nacional(2004, 'Novo Hamburgo, Rio Grande do Sul'),
+  nacional(2007, 'Petrópolis, Rio de Janeiro'),
+  nacional(2010, 'Xaxim, Santa Catarina'),
+  nacional(2013, 'Sete Lagoas, Minas Gerais'),
   { edicao: 'XVI', ano: 2019, local: 'Campo Largo, Paraná' },
+  { edicao: '', ano: 2020, local: 'Online', nota: 'Edição virtual.' },
   {
     edicao: 'XVII',
     ano: 2022,
@@ -70,13 +113,6 @@ export const congressosNacionais: Congresso[] = [
     nota: 'As fotografias da galeria são desta edição.',
   },
   { edicao: 'XVIII', ano: 2025, local: 'Santa Luzia, Minas Gerais' },
-  {
-    edicao: 'XIX',
-    ano: 2028,
-    local: 'Cássia, Minas Gerais',
-    nota: 'Anunciado para julho, com os Pequenos Cantores de Cássia como anfitriões.',
-    futuro: true,
-  },
 ];
 
 /**
@@ -99,6 +135,51 @@ export const congressosInternacionais: Congresso[] = [
   },
   { edicao: 'XLIV', ano: 2023, local: 'Roma, Itália' },
   { edicao: '', ano: 2025, local: 'Munique, Alemanha' },
+  { edicao: '', ano: 2027, local: 'Espanha', nota: 'Previsto para julho.' },
+];
+
+/**
+ * Fonte: relação enviada pela federação em novembro de 2026. A data de 2026
+ * vem da Ata da Assembleia Geral Ordinária de 26 de julho de 2025.
+ */
+const regional = (ano: number, local: string): Congresso => ({ edicao: '', ano, local });
+
+export const congressosRegionais: Congresso[] = [
+  regional(1987, 'Belo Horizonte, Minas Gerais'),
+  regional(1993, 'Xaxim, Santa Catarina'),
+  regional(1994, 'Cássia, Minas Gerais'),
+  regional(1994, 'Porto Alegre, Rio Grande do Sul'),
+  regional(1996, 'Santa Luzia, Minas Gerais'),
+  regional(1996, 'Itajaí, Santa Catarina'),
+  regional(1997, 'Novo Hamburgo, Rio Grande do Sul'),
+  regional(1999, 'Campo Largo, Paraná'),
+  regional(2000, 'Campinas, São Paulo'),
+  regional(2000, 'Xaxim, Santa Catarina'),
+  regional(2002, 'Itajaí, Santa Catarina'),
+  regional(2003, 'Olímpia, São Paulo'),
+  regional(2003, 'Juiz de Fora, Minas Gerais'),
+  regional(2006, 'Campinas, São Paulo'),
+  regional(2009, 'Campo Largo, Paraná'),
+  regional(2011, 'Nova Erechim, Santa Catarina'),
+  regional(2012, 'Cássia, Minas Gerais'),
+  regional(2014, 'Campo Largo, Paraná'),
+  regional(2015, 'Petrópolis, Rio de Janeiro'),
+  regional(2016, 'Itajaí, Santa Catarina'),
+  regional(2018, 'Juiz de Fora, Minas Gerais'),
+  regional(2023, 'Sete Lagoas, Minas Gerais'),
+  regional(2024, 'Campo Largo, Paraná'),
+  { edicao: '', ano: 2026, local: 'Pratápolis, Minas Gerais', nota: '15 a 19 de julho.' },
+];
+
+/** Fonte: Ata da Assembleia Geral Ordinária de 26 de julho de 2025. */
+export const congressosFuturos: Congresso[] = [
+  {
+    edicao: '',
+    ano: 2026,
+    local: 'São Miguelito, Panamá',
+    nota: 'Congresso Latino-Americano, de 17 a 21 de dezembro. Data sujeita a confirmação.',
+    futuro: true,
+  },
 ];
 
 /* ------------------------------------------------------------------ */

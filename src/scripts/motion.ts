@@ -53,7 +53,7 @@ function comporFrontispicio() {
   setTimeout(() => {
     if (t.progress() < 1) t.progress(1);
     liberar();
-  }, 3000);
+  }, 1800);
 
   // 1. Os fios abrem do centro para fora, como a régua de uma página de rosto.
   t.fromTo(
@@ -78,7 +78,7 @@ function comporFrontispicio() {
   t.fromTo(
     linhas,
     { y: 0, yPercent: 105 },
-    { y: 0, yPercent: 0, duration: 1, stagger: 0.08 },
+    { y: 0, yPercent: 0, duration: 0.65, stagger: 0.05 },
     0.35
   );
 
@@ -94,7 +94,7 @@ function comporFrontispicio() {
   }
 
   // 5. Subtítulo e chamada, por último e discretos.
-  t.fromTo(apoio, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 }, 0.8);
+  t.fromTo(apoio, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.06 }, 0.65);
 
   return t;
 }
@@ -187,10 +187,10 @@ function iniciar() {
   ScrollTrigger.refresh();
 }
 
-// Esperar as fontes evita que o frontispício se componha com a fonte de
-// fallback e depois a quebra de linha mude sozinha quando a serifa chega.
-if (document.fonts?.ready) {
-  document.fonts.ready.then(iniciar);
-} else {
-  iniciar();
-}
+// A animação começa sem esperar pelas fontes. Esperar `document.fonts.ready`
+// deixava o título invisível em redes lentas, porque o CSS inicial do
+// frontispício o mantém atrás da máscara. Quando as fontes terminarem, só
+// atualizamos os gatilhos de rolagem para acompanhar qualquer mudança de
+// medida.
+iniciar();
+document.fonts?.ready?.then(() => ScrollTrigger.refresh());
