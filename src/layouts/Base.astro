@@ -1,6 +1,8 @@
 ---
 import '~/styles/global.css';
 import { site, rota } from '~/config/site';
+import { textos } from '~/i18n';
+import { idiomas, dadosIdioma, paginaAtual } from '~/i18n/idiomas';
 import Cabecalho from '~/components/Cabecalho.astro';
 import Rodape from '~/components/Rodape.astro';
 
@@ -9,30 +11,56 @@ interface Props {
   descricao?: string;
   /** Cabeçalho sobreposto a uma foto de tela cheia, em vez de sobre papel. */
   cabecalhoSobreposto?: boolean;
+  /** Falso para páginas que não devem ir aos buscadores, como a 404. */
+  indexar?: boolean;
 }
 
-const { titulo, descricao = site.descricao, cabecalhoSobreposto = false } = Astro.props;
+const { idioma, t } = textos(Astro.currentLocale);
+const { titulo, descricao = t.comum.descricao, cabecalhoSobreposto = false, indexar = true } = Astro.props;
 
 const tituloCompleto = titulo === site.assinatura ? titulo : `${titulo} · ${site.assinatura}`;
-const canonica = new URL(Astro.url.pathname, Astro.site ?? site.dominio);
+const origem = Astro.site ?? site.dominio;
+const canonica = new URL(Astro.url.pathname, origem);
+
+/* hreflang não é nativo do Astro: cada página lista as três versões, e quem
+   não fala nenhum dos três cai no português (x-default). Toda página indexável
+   existe nos três idiomas — o build falha antes de faltar uma. A que não vai
+   aos buscadores (a 404, única e trilíngue) não lista alternativas. */
+const caminho = paginaAtual(Astro);
+const alternativas = !indexar ? [] : idiomas.map((i) => ({
+  hreflang: dadosIdioma[i].html,
+  href: new URL(rota(caminho, i), origem).href,
+}));
+const imagemCompartilhamento = new URL(rota('/og.png'), origem).href;
 
 const ehPreview = import.meta.env.PUBLIC_PREVIEW === 'true';
 ---
 
 <!doctype html>
-<html lang="pt-BR">
+<html lang={dadosIdioma[idioma].html}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{tituloCompleto}</title>
     <meta name="description" content={descricao} />
     <link rel="canonical" href={canonica} />
+    {alternativas.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    {alternativas[0] && <link rel="alternate" hreflang="x-default" href={alternativas[0].href} />}
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.assinatura} />
     <meta property="og:title" content={tituloCompleto} />
     <meta property="og:description" content={descricao} />
-    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale" content={dadosIdioma[idioma].og} />
+    {idiomas
+      .filter((i) => i !== idioma)
+      .map((i) => <meta property="og:locale:alternate" content={dadosIdioma[i].og} />)}
+    <meta property="og:url" content={canonica} />
+    <meta property="og:image" content={imagemCompartilhamento} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={site.assinatura} />
+    <meta name="twitter:card" content="summary_large_image" />
 
     {/* Só o escudo, sem a faixa: na aba do navegador a faixa vira um borrão. */}
     <link rel="icon" href={rota('/favicon.svg')} type="image/svg+xml" />
@@ -41,7 +69,7 @@ const ehPreview = import.meta.env.PUBLIC_PREVIEW === 'true';
     {/* No preview da diretoria o site fica fora dos buscadores. Ele carrega
         fotografias de terceiro ainda sem autorização e conteúdo institucional
         não validado — nada disso deve ser indexado antes do lançamento. */}
-    {ehPreview && <meta name="robots" content="noindex, nofollow" />}
+    {(ehPreview || !indexar) && <meta name="robots" content="noindex, nofollow" />}
 
     {/* Prepara o frontispício antes da primeira pintura, para que ele se
         componha em vez de piscar.

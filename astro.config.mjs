@@ -24,12 +24,21 @@ const { site: SITE, base: BASE } = DESTINOS[ALVO] ?? DESTINOS.firebase;
 export default defineConfig({
   site: SITE,
   base: BASE,
-  integrations: [sitemap()],
+  /* Igual ao `trailingSlash: false` do firebase.json. Sem isto os helpers de
+     URL do Astro geram `/en/corais/` e todo link passa por um redirect. */
+  trailingSlash: 'never',
 
-  // i18n configurado sem prefixo: adicionar 'en' depois é tradução, não refatoração.
+  integrations: [
+    sitemap({
+      // O sitemap não lê o bloco `i18n` abaixo: a lista se repete aqui.
+      i18n: { defaultLocale: 'pt-br', locales: { 'pt-br': 'pt-BR', en: 'en', es: 'es' } },
+    }),
+  ],
+
+  // Português na raiz, inglês e espanhol com prefixo. Ver docs/wayfinder/i18n.
   i18n: {
     defaultLocale: 'pt-br',
-    locales: ['pt-br'],
+    locales: ['pt-br', 'en', 'es'],
     routing: { prefixDefaultLocale: false },
   },
 

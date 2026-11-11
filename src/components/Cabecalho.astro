@@ -2,6 +2,9 @@
 import { site, navegacao, rota } from '~/config/site';
 import Brasao from '~/components/Brasao.astro';
 import MenuMobile from '~/components/MenuMobile.astro';
+import SeletorIdioma from '~/components/SeletorIdioma.astro';
+import { textos } from '~/i18n';
+import { paginaAtual } from '~/i18n/idiomas';
 
 interface Props {
   /** Sobre foto de tela cheia o cabeçalho fica branco e sem fundo. */
@@ -9,7 +12,8 @@ interface Props {
 }
 
 const { sobreposto = false } = Astro.props;
-const atual = Astro.url.pathname;
+const { idioma, t } = textos(Astro.currentLocale);
+const atual = paginaAtual(Astro);
 ---
 
 <header
@@ -24,31 +28,32 @@ const atual = Astro.url.pathname;
   ]}
 >
   <div class="quadro flex items-center justify-between gap-6 py-5">
-    <a href={rota("/")} class="flex items-center gap-3" aria-label={`${site.assinatura} — início`}>
+    <a href={rota('/', idioma)} class="flex items-center gap-3" aria-label={t.comum.inicio(site.assinatura)}>
       <Brasao tamanho={44} titulo="" />
       <span class="font-display text-lg leading-none tracking-tight sm:text-xl">
         {site.assinatura}
       </span>
     </a>
 
-    <nav aria-label="Navegação principal" class="hidden items-center gap-8 md:flex">
+    <nav aria-label={t.comum.navPrincipal} class="hidden items-center gap-8 md:flex">
       {
-        navegacao.map(({ href, rotulo }) => {
+        navegacao.map(({ href, chave }) => {
           const ativo = atual === href || atual.startsWith(`${href}/`);
           return (
             <a
-              href={rota(href)}
+              href={rota(href, idioma)}
               aria-current={ativo ? 'page' : undefined}
               class:list={[
                 'text-sm transition-opacity hover:opacity-60',
                 ativo && 'underline decoration-acento decoration-2 underline-offset-8',
               ]}
             >
-              {rotulo}
+              {t.comum.navegacao[chave]}
             </a>
           );
         })
       }
+      <SeletorIdioma />
     </nav>
 
     <MenuMobile sobreposto={sobreposto} />

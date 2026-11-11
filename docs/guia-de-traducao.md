@@ -42,3 +42,19 @@ Nomes de eventos. Ex.: "XVIII National Congress (XVIII Congresso Nacional)".
 
 "Meninos cantores" como categoria vira termo neutro: três coros filiados são
 femininos ou mistos. Dentro de nome próprio, fica como está.
+
+## Onde está o texto
+
+- Páginas e interface: `src/i18n/pt.ts` (origem), `en.ts`, `es.ts`. Mesma
+  estrutura nos três; chave faltando em `en`/`es` quebra o build.
+- Corais: campos `resumo` e `historico` de cada `src/content/corais/*.json`,
+  com `pt`, `en` e `es`. Histórico pendente não se traduz.
+- Nomes de cidades brasileiras em `src/config/federacao.ts` não se traduzem;
+  lugares estrangeiros e notas dos congressos estão no dicionário.
+
+## Atualizar traduções defasadas
+
+1. `npm run traducoes:checar` lista as chaves cujo português mudou.
+2. Traduza cada uma em `en` e `es`, seguindo este guia.
+3. `npm run traducoes:marcar` registra que estão em dia.
+4. `npm run build` para conferir.

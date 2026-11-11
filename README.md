@@ -16,9 +16,12 @@ npm run dev      # http://localhost:4321
 | Comando | O que faz |
 |---|---|
 | `npm run dev` | Servidor local com recarga automática |
-| `npm run build` | Gera o site estático em `dist/` |
+| `npm run build` | Confere tipos e traduções e gera o site estático em `dist/` |
 | `npm run preview` | Serve o `dist/` para conferir o build |
 | `npm run check` | Verifica tipos e templates |
+| `npm run traducoes:checar` | Lista textos em português que mudaram depois da tradução (o build já roda isto) |
+| `npm run traducoes:marcar` | Registra as traduções como em dia. Só depois de traduzir |
+| `npm test` | Testes do verificador de traduções |
 | `npm run shots` | Captura as telas em desktop e celular, e acusa transbordo horizontal e erro de console |
 
 ### Publicar

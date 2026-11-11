@@ -4,7 +4,15 @@ import Base from '~/layouts/Base.astro';
 import Seta from '~/components/Seta.astro';
 import { site, rota } from '~/config/site';
 import { escrever } from '~/config/federacao';
-import { porExtenso } from '~/config/extenso';
+import Linhas from '~/components/Linhas.astro';
+import { textos } from '~/i18n';
+import { caminhosIdioma } from '~/i18n/idiomas';
+import { internacional } from '~/config/federacao';
+
+export const getStaticPaths = caminhosIdioma;
+
+const { idioma, t } = textos(Astro.currentLocale);
+const f = t.filiacao;
 
 const corais = await getCollection('corais');
 
@@ -22,45 +30,32 @@ const esperas = corais.flatMap((c) =>
 const filiaramNoMesmoAno = esperas.filter((n) => n <= 0).length;
 const esperaMaxima = Math.max(...esperas);
 
-const escreverFiliacao = escrever(site.contato.email, 'filiacao');
+const escreverFiliacao = escrever(site.contato.email, t.emails.filiacao);
 
-/* Observado nos coros com perfil publicado, não extraído de estatuto. A página diz isso com
+/* O retrato do que os filiados têm em comum (no dicionário) é observado nos
+   coros com perfil publicado, não extraído de estatuto. A página diz isso com
    todas as letras: enquanto o documento não chega, descrever o que os coros
    têm em comum é honesto; chamar isso de "requisito" não seria. */
-const emComum = [
-  {
-    titulo: 'Um coro de crianças e jovens',
-    texto:
-      'Coros de meninos, de meninas ou mistos. A faixa etária varia bastante entre os filiados. Há coros que recebem a partir dos cinco anos e coros em que ex-cantores adultos continuam nos naipes graves.',
-  },
-  {
-    titulo: 'Canto na liturgia',
-    texto:
-      'Todos os filiados cantam regularmente na missa. Alguns assumem a parte musical de celebrações duas vezes por mês, outros cantam toda semana. É o que distingue um coro Pueri Cantores de um coro infantil de concerto.',
-  },
-  {
-    titulo: 'Ensino musical gratuito',
-    texto:
-      'Nenhum dos corais filiados cobra do cantor. O ensino se sustenta por instituição mantenedora, editais públicos, cachês, doações ou pelas próprias famílias.',
-  },
-  {
-    titulo: 'Uma instituição por trás',
-    texto:
-      'Paróquia, província religiosa, colégio, associação cultural ou instituto de música. Vários filiados são reconhecidos de utilidade pública no município ou no estado.',
-  },
-];
 ---
 
 <Base
-  titulo="Filiação"
-  descricao="Como um coro de meninos ou meninas se filia à Federação Nacional dos Meninos Cantores do Brasil."
+  titulo={f.titulo}
+  descricao={f.descricao}
 >
   <section class="quadro pt-20 pb-14 sm:pt-28">
-    <h1 class="text-(length:--text-titulo)">Filiar-se à federação</h1>
+    <h1 class="text-(length:--text-titulo)">{f.h1}</h1>
 
     <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
-      A federação recebe coros de crianças e jovens que cantam a liturgia. São hoje {totalCorais} em
-      {estados} estados. A porta continua aberta.
+      {f.abertura(totalCorais, estados)}
+    </p>
+
+    {/* Federação nacional: só coros do Brasil se filiam. Dito nos três
+        idiomas, porque a página em EN e ES atrai coros de fora. */}
+    <p class="medida mt-6 text-sm leading-relaxed text-tinta-tenue">
+      {f.soBrasil.antes}{' '}
+      <a href={internacional.site} target="_blank" rel="noopener noreferrer" class="underline hover:text-acento-profundo"
+        >{f.soBrasil.link}</a
+      >{f.soBrasil.depois}
     </p>
   </section>
 
@@ -70,26 +65,11 @@ const emComum = [
 
     <div class="mt-10 grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-20">
       <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">
-        O que muda<br />para o seu coro
+        <Linhas linhas={f.muda.titulo} />
       </h2>
 
       <div class="medida space-y-6 text-lg leading-relaxed text-tinta-suave">
-        <p>
-          O congresso, principalmente. De três em três anos os coros filiados se reúnem numa cidade
-          anfitriã, ensaiam juntos por alguns dias e cantam uma celebração comum. Para um coro
-          pequeno do interior, é a diferença entre cantar sempre para a mesma comunidade e cantar ao
-          lado de centenas de outras crianças que fazem a mesma coisa.
-        </p>
-        <p>
-          Depois, a rede. Os históricos dos filiados estão cheios de visitas de um coro a outro,
-          regentes que se formaram em cursos oferecidos por corais mais antigos, coros que nasceram
-          porque alguém assistiu a um congresso. É por essa rede também que se chega aos congressos
-          internacionais da Pueri Cantores.
-        </p>
-        <p>
-          E o pertencimento a uma federação reconhecida pela Santa Sé, que costuma pesar na relação
-          com a diocese, com a prefeitura e com editais de cultura.
-        </p>
+        {f.muda.paragrafos.map((p) => <p>{p}</p>)}
       </div>
     </div>
   </section>
@@ -98,16 +78,15 @@ const emComum = [
   <section class="quadro pb-(--spacing-secao)">
     <span class="fio" data-fio-scroll aria-hidden="true"></span>
 
-    <h2 class="mt-10 text-(length:--text-secao)">O que os filiados têm em comum</h2>
+    <h2 class="mt-10 text-(length:--text-secao)">{f.comum.titulo}</h2>
 
     <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
-      Um retrato dos {totalCorais} corais que já fazem parte. Não é a lista de requisitos formais;
-      ela consta do estatuto. O retrato ajuda a entender quem se reconhece aqui.
+      {f.comum.texto(totalCorais)}
     </p>
 
     <ul class="mt-14 grid gap-px bg-papel-borda sm:grid-cols-2">
       {
-        emComum.map((item) => (
+        f.comum.itens.map((item) => (
           <li class="bg-papel p-8 sm:p-10">
             <h3 class="text-2xl">{item.titulo}</h3>
             <p class="mt-4 leading-relaxed text-tinta-suave">{item.texto}</p>
@@ -117,11 +96,8 @@ const emComum = [
     </ul>
 
     <div class="medida mt-12 border border-papel-borda px-6 py-5 text-sm leading-relaxed text-tinta-suave">
-      <strong class="font-medium text-tinta">O regimento interno estabelece três pontos básicos.</strong>
-      O coro deve cumprir sua função litúrgica, cantando ao menos uma vez por mês em uma celebração
-      eucarística; a admissão precisa ser aprovada pela Assembleia Geral; e cada coro deve contar
-      com um conselheiro espiritual, obrigatoriamente um padre. O coro admitido recebe um certificado
-      de admissão.
+      <strong class="font-medium text-tinta">{f.comum.regimento}</strong>{' '}
+      {f.comum.regimentoTexto}
     </div>
   </section>
 
@@ -131,20 +107,18 @@ const emComum = [
   <section class="quadro pb-(--spacing-secao)">
     <span class="fio" data-fio-scroll aria-hidden="true"></span>
 
-    <h2 class="mt-10 text-(length:--text-secao)">É cedo demais para o nosso coro?</h2>
+    <h2 class="mt-10 text-(length:--text-secao)">{f.cedo.titulo}</h2>
 
     <p class="medida mt-6 text-lg leading-relaxed text-tinta-suave">
-      Provavelmente não. Entre os filiados, {porExtenso(filiaramNoMesmoAno)} se filiaram no mesmo
-      ano em que foram fundados, e um esperou {esperaMaxima} anos. Coro recém-nascido e coro
-      octogenário convivem na mesma federação, e o congresso não separa um do outro.
+      {f.cedo.texto({ mesmoAno: filiaramNoMesmoAno, esperaMaxima })}
     </p>
 
     <p class="mt-8">
       <a
-        href={rota('/corais')}
+        href={rota('/corais', idioma)}
         class="group inline-flex items-center gap-3 border-b border-acento pb-1 transition-colors hover:text-acento-profundo"
       >
-        Ver quando cada coral se filiou
+        {f.cedo.link}
         <Seta class="transition-transform duration-500 group-hover:translate-x-1" />
       </a>
     </p>
@@ -155,13 +129,11 @@ const emComum = [
     <span class="fio" data-fio-scroll aria-hidden="true"></span>
 
     <div class="mt-10 grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-20">
-      <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">Como começar</h2>
+      <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">{f.comecar.titulo}</h2>
 
       <div>
         <p class="medida text-lg leading-relaxed text-tinta-suave">
-          Escreva para a federação apresentando o coro. O botão abaixo abre uma mensagem com os
-          campos que a federação precisa saber já preenchidos como roteiro. Responda o que souber e
-          apague o resto.
+          {f.comecar.texto}
         </p>
 
         <p class="mt-10">
@@ -169,22 +141,20 @@ const emComum = [
             href={escreverFiliacao}
             class="group inline-flex items-center gap-3 bg-tinta px-8 py-4 text-papel transition-colors hover:bg-acento-profundo"
           >
-            Apresentar o meu coro
+            {f.comecar.botao}
             <Seta class="transition-transform duration-500 group-hover:translate-x-1" />
           </a>
         </p>
 
         <p class="mt-6 text-sm text-tinta-tenue">
-          Ou escreva diretamente para{' '}
+          {f.comecar.ouEscreva}{' '}
           <a href={`mailto:${site.contato.email}`} class="underline hover:text-acento-profundo">
             {site.contato.email}
-          </a>.
+          </a>. {t.comum.responde}
         </p>
 
         <p class="medida mt-10 text-sm leading-relaxed text-tinta-tenue">
-          Não envie dados pessoais dos cantores, como nome completo, data de nascimento, endereço ou
-          telefone de crianças e adolescentes. A federação não precisa deles para avaliar uma
-          filiação, e este site não publica nenhum.
+          {f.comecar.dados}
         </p>
       </div>
     </div>

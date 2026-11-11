@@ -1,6 +1,9 @@
 ---
 import { site, navegacao, rota } from '~/config/site';
 import Brasao from '~/components/Brasao.astro';
+import { textos } from '~/i18n';
+
+const { idioma, t } = textos(Astro.currentLocale);
 
 const ano = new Date().getFullYear();
 ---
@@ -24,11 +27,11 @@ const ano = new Date().getFullYear();
       </a>
     </div>
 
-    <nav aria-label="Rodapé" class="flex flex-col gap-3 md:text-right">
+    <nav aria-label={t.comum.navRodape} class="flex flex-col gap-3 md:text-right">
       {
-        navegacao.map(({ href, rotulo }) => (
-          <a href={rota(href)} class="text-sm transition-opacity hover:opacity-60">
-            {rotulo}
+        navegacao.map(({ href, chave }) => (
+          <a href={rota(href, idioma)} class="text-sm transition-opacity hover:opacity-60">
+            {t.comum.navegacao[chave]}
           </a>
         ))
       }
@@ -37,8 +40,7 @@ const ano = new Date().getFullYear();
 
   <div class="quadro border-t border-papel-borda py-6">
     <p class="text-xs text-tinta-tenue">
-      © {ano} {site.razaoSocial}. Membro da Pueri Cantores, federação internacional de pueris
-      cantores reconhecida pela Santa Sé.
+      © {ano} {site.razaoSocial}. {t.comum.membro}
     </p>
   </div>
 </footer>

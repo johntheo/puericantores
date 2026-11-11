@@ -1,3 +1,5 @@
+import type { Dicionario } from '~/i18n/pt';
+
 /**
  * Fatos institucionais, com procedência.
  *
@@ -36,7 +38,8 @@ export const internacional = {
 
 /** Fonte: Ata da Assembleia Geral Ordinária de 26 de julho de 2025. */
 export const diretoria = {
-  mandato: '31 de julho de 2025 a 31 de julho de 2028',
+  /** Datas ISO; cada idioma as escreve por extenso. */
+  mandato: { inicio: '2025-07-31', fim: '2028-07-31' },
   executiva: [
     { cargo: 'Presidente', nome: 'Messias Donizete Faleiros' },
     { cargo: 'Vice-presidente', nome: 'Eric Vinícius de Aguiar Lana' },
@@ -63,9 +66,10 @@ interface Congresso {
   /** Numeral da edição, como o próprio evento se identifica. */
   edicao: string;
   ano: number;
+  /** Cidade brasileira, como está; lugar estrangeiro é traduzido pelo dicionário. */
   local: string;
-  /** Uma linha de contexto, quando há fato a acrescentar. */
-  nota?: string;
+  /** Uma linha de contexto, quando há fato a acrescentar. Chave do dicionário. */
+  nota?: keyof Dicionario['federacao']['notas'];
   /** Ainda não aconteceu: a página trata como anúncio, não como histórico. */
   futuro?: boolean;
 }
@@ -105,12 +109,12 @@ export const congressosNacionais: Congresso[] = [
   nacional(2010, 'Xaxim, Santa Catarina'),
   nacional(2013, 'Sete Lagoas, Minas Gerais'),
   { edicao: 'XVI', ano: 2019, local: 'Campo Largo, Paraná' },
-  { edicao: '', ano: 2020, local: 'Online', nota: 'Edição virtual.' },
+  { edicao: '', ano: 2020, local: 'Online', nota: 'virtual' },
   {
     edicao: 'XVII',
     ano: 2022,
     local: 'Passos e Cássia, Minas Gerais',
-    nota: 'As fotografias da galeria são desta edição.',
+    nota: 'fotosGaleria',
   },
   { edicao: 'XVIII', ano: 2025, local: 'Santa Luzia, Minas Gerais' },
 ];
@@ -131,11 +135,11 @@ export const congressosInternacionais: Congresso[] = [
     edicao: 'XLI',
     ano: 2017,
     local: 'Rio de Janeiro',
-    nota: 'O único congresso internacional dos Pueri Cantores realizado no Brasil.',
+    nota: 'unicoNoBrasil',
   },
   { edicao: 'XLIV', ano: 2023, local: 'Roma, Itália' },
   { edicao: '', ano: 2025, local: 'Munique, Alemanha' },
-  { edicao: '', ano: 2027, local: 'Espanha', nota: 'Previsto para julho.' },
+  { edicao: '', ano: 2027, local: 'Espanha', nota: 'previstoJulho' },
 ];
 
 /**
@@ -168,7 +172,7 @@ export const congressosRegionais: Congresso[] = [
   regional(2018, 'Juiz de Fora, Minas Gerais'),
   regional(2023, 'Sete Lagoas, Minas Gerais'),
   regional(2024, 'Campo Largo, Paraná'),
-  { edicao: '', ano: 2026, local: 'Pratápolis, Minas Gerais', nota: '15 a 19 de julho.' },
+  { edicao: '', ano: 2026, local: 'Pratápolis, Minas Gerais', nota: 'pratapolis' },
 ];
 
 /** Fonte: Ata da Assembleia Geral Ordinária de 26 de julho de 2025. */
@@ -177,7 +181,7 @@ export const congressosFuturos: Congresso[] = [
     edicao: '',
     ano: 2026,
     local: 'São Miguelito, Panamá',
-    nota: 'Congresso Latino-Americano, de 17 a 21 de dezembro. Data sujeita a confirmação.',
+    nota: 'latinoAmericano',
     futuro: true,
   },
 ];
@@ -196,56 +200,13 @@ export const congressosFuturos: Congresso[] = [
  *
  * O corpo pré-preenchido é o que faz isso funcionar de verdade: sem ele, o
  * remetente encara uma janela em branco e a federação recebe uma linha só.
+ * Assunto e roteiro vêm do dicionário (`emails`), no idioma do visitante; em
+ * EN e ES o assunto traz `[EN]`/`[ES]` para a federação separar na caixa.
+ *
+ * Monta o `mailto:` com tudo já codificado.
  */
-export const assuntos = {
-  filiacao: {
-    assunto: 'Interesse em filiação',
-    corpo: [
-      'Nome do coral:',
-      'Cidade e estado:',
-      'Ano de fundação:',
-      'Instituição mantenedora (paróquia, escola, associação):',
-      'Número de cantores e faixa etária:',
-      'Nome do regente:',
-      'Nome e cargo de quem responde:',
-      'Telefone ou e-mail para retorno:',
-      '',
-      'Conte um pouco sobre o coro:',
-    ].join('\n'),
-  },
-  imprensa: {
-    assunto: 'Imprensa',
-    corpo: [
-      'Veículo:',
-      'Pauta:',
-      'Prazo:',
-      'Material necessário (fotos, entrevista, dados):',
-      '',
-      'Mensagem:',
-    ].join('\n'),
-  },
-  fotos: {
-    assunto: 'Envio de fotografias',
-    corpo: [
-      'Coral:',
-      'Ocasião e data das fotos:',
-      'Autoria da fotografia:',
-      '',
-      'Mensagem:',
-    ].join('\n'),
-  },
-  geral: {
-    assunto: 'Contato pelo site',
-    corpo: '',
-  },
-} as const;
-
-/** Monta o `mailto:` de um assunto, com tudo já codificado. */
-export const escrever = (
-  email: string,
-  chave: keyof typeof assuntos
-) => {
-  const { assunto, corpo } = assuntos[chave];
+export const escrever = (email: string, { assunto, campos }: Dicionario['emails']['geral']) => {
+  const corpo = campos.join('\n');
   const parametros = new URLSearchParams({ subject: assunto });
   if (corpo) parametros.set('body', corpo);
 

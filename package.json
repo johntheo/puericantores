@@ -5,12 +5,15 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro check && node scripts/checa-traducoes.mjs && astro build",
     "preview": "astro preview",
     "check": "astro check",
     "shots": "node scripts/capturar.mjs",
-    "deploy:preview": "astro build && firebase hosting:channel:deploy diretoria --expires 30d",
-    "deploy": "astro build && firebase deploy --only hosting"
+    "deploy:preview": "npm run build && firebase hosting:channel:deploy diretoria --expires 30d",
+    "deploy": "npm run build && firebase deploy --only hosting",
+    "traducoes:checar": "node scripts/checa-traducoes.mjs",
+    "traducoes:marcar": "node scripts/checa-traducoes.mjs --marcar",
+    "test": "node --test \"scripts/*.test.mjs\""
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.6.0",
@@ -32,5 +35,8 @@
     "esbuild@0.25.12": true,
     "esbuild@0.27.7": true,
     "sharp@0.34.5": true
+  },
+  "engines": {
+    "node": ">=23.6"
   }
 }

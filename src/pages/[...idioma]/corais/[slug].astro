@@ -5,6 +5,8 @@ import Base from '~/layouts/Base.astro';
 import MiniGaleria from '~/components/MiniGaleria.astro';
 import CarrosselCorais from '~/components/CarrosselCorais.astro';
 import Icone, { type NomeIcone } from '~/components/Icone.astro';
+import { textos } from '~/i18n';
+import { idiomas, dadosIdioma } from '~/i18n/idiomas';
 
 export async function getStaticPaths() {
   const corais = (await getCollection('corais')).sort(
@@ -12,13 +14,16 @@ export async function getStaticPaths() {
       (a.data.fundacao ?? Number.POSITIVE_INFINITY) - (b.data.fundacao ?? Number.POSITIVE_INFINITY)
   );
 
-  return corais.map((coral) => ({
-    params: { slug: coral.id },
-    props: { coral, corais },
-  }));
+  return idiomas.flatMap((idioma) =>
+    corais.map((coral) => ({
+      params: { idioma: dadosIdioma[idioma].prefixo, slug: coral.id },
+      props: { coral, corais },
+    }))
+  );
 }
 
 const { coral, corais } = Astro.props;
+const { idioma, t } = textos(Astro.currentLocale);
 const {
   nome,
   nomeCurto,
@@ -36,32 +41,33 @@ const {
   contato,
 } = coral.data;
 
-const paragrafos = historico.split('\n\n').filter(Boolean);
+// Histórico pendente não tem tradução: a página mostra o aviso, não o texto.
+const paragrafos = (historico[idioma] ?? '').split('\n\n').filter(Boolean);
 
 /* Os canais do coral sobem para o cabeçalho, junto de cidade e datas: é
    informação de identificação, não uma seção de conteúdo. A antiga secção
    "Onde encontrar" carregava dois links no meio de um vazio enorme. */
 const canais = [
-  { icone: 'site' as const, rotulo: 'Site', href: contato.site },
+  { icone: 'site' as const, rotulo: t.comum.canais.site, href: contato.site },
   { icone: 'instagram' as const, rotulo: 'Instagram', href: contato.instagram },
   { icone: 'facebook' as const, rotulo: 'Facebook', href: contato.facebook },
   { icone: 'twitter' as const, rotulo: 'X', href: contato.twitter },
   { icone: 'youtube' as const, rotulo: 'YouTube', href: contato.youtube },
   {
     icone: 'email' as const,
-    rotulo: 'E-mail',
+    rotulo: t.comum.canais.email,
     href: contato.email ? `mailto:${contato.email}` : undefined,
   },
 ].filter((c): c is { icone: NomeIcone; rotulo: string; href: string } => Boolean(c.href));
 ---
 
-<Base titulo={nome} descricao={resumo} cabecalhoSobreposto>
+<Base titulo={nome} descricao={resumo[idioma]} cabecalhoSobreposto>
   <section class="relative min-h-[92svh] overflow-hidden bg-tinta">
     <div class="absolute inset-0 -top-[5%] h-[110%]" data-motion="parallax">
       {foto ? (
         <Image
           src={foto}
-          alt={`${nome}, em ${cidade}`}
+          alt={t.comum.fotoDe(nome, cidade)}
           widths={[800, 1400, 2000, 2400]}
           sizes="100vw"
           loading="eager"
@@ -70,7 +76,7 @@ const canais = [
         />
       ) : (
         <div class="grid h-full place-items-center bg-tinta px-8 text-center text-papel/70">
-          <span class="font-display text-4xl italic">Imagem em breve</span>
+          <span class="font-display text-4xl italic">{t.comum.imagemEmBreve}</span>
         </div>
       )}
     </div>
@@ -98,13 +104,13 @@ const canais = [
           <dl class="mt-10 flex flex-wrap gap-x-14 gap-y-5">
             {fundacao && (
               <div>
-                <dt class="text-sm text-papel/60">Fundado em</dt>
+                <dt class="text-sm text-papel/60">{t.coral.fundadoEm}</dt>
                 <dd data-numerico class="mt-1 font-display text-3xl">{fundacao}</dd>
               </div>
             )}
             {filiacao && (
               <div>
-                <dt class="text-sm text-papel/60">Filiado desde</dt>
+                <dt class="text-sm text-papel/60">{t.coral.filiadoDesde}</dt>
                 <dd data-numerico class="mt-1 font-display text-3xl">{filiacao}</dd>
               </div>
             )}
@@ -133,7 +139,7 @@ const canais = [
         )
       }
 
-      {fotoCredito && <p class="mt-10 text-xs text-papel/50">Fotografia: {fotoCredito}</p>}
+      {fotoCredito && <p class="mt-10 text-xs text-papel/50">{t.coral.fotografia(fotoCredito)}</p>}
     </div>
   </section>
 
@@ -145,13 +151,13 @@ const canais = [
         <span class="fio" data-fio-scroll aria-hidden="true" />
 
         <div class="mt-10 grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-20">
-          <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">Quem conduz</h2>
+          <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">{t.coral.quemConduz}</h2>
 
           <ul class="grid gap-x-10 gap-y-8 sm:grid-cols-2">
             {equipe.map((pessoa) => (
               <li>
                 <p class="font-display text-2xl leading-tight">{pessoa.nome}</p>
-                <p class="mt-1 text-sm text-tinta-tenue">{pessoa.cargo}</p>
+                <p class="mt-1 text-sm text-tinta-tenue">{t.comum.cargos[pessoa.cargo]}</p>
               </li>
             ))}
           </ul>
@@ -165,7 +171,7 @@ const canais = [
     <span class="fio" data-fio-scroll aria-hidden="true"></span>
 
     <div class="mt-10 grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-20">
-      <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">História</h2>
+      <h2 class="text-(length:--text-secao) md:sticky md:top-28 md:self-start">{t.coral.historia}</h2>
 
       <div>
         {
@@ -174,9 +180,9 @@ const canais = [
                cadastro não for reescrito e revisado pelo próprio coro, a
                página diz isso com todas as letras. */
             <div class="border border-papel-borda px-6 py-5">
-              <p class="font-medium">Informações em breve.</p>
+              <p class="font-medium">{t.coral.emBreve}</p>
               <p class="mt-2 max-w-[52ch] text-sm leading-relaxed text-tinta-suave">
-                Esta página será atualizada com a história, a equipe e outros detalhes do coral.
+                {t.coral.emBreveTexto}
               </p>
             </div>
           ) : (

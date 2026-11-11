@@ -2,8 +2,14 @@
   "nome": "Coral Mater Ecclesiae",
   "cidade": "Santa Luzia",
   "uf": "MG",
-  "resumo": "Coro filiado de Santa Luzia, Minas Gerais. Informações detalhadas em breve.",
-  "historico": "Esta página será atualizada com a história, a equipe e outros detalhes do coral.",
+  "resumo": {
+    "pt": "Coro filiado de Santa Luzia, Minas Gerais. Informações detalhadas em breve.",
+    "en": "Member choir from Santa Luzia, Minas Gerais. Detailed information coming soon.",
+    "es": "Coro afiliado de Santa Luzia, Minas Gerais. Información detallada próximamente."
+  },
+  "historico": {
+    "pt": "Esta página será atualizada com a história, a equipe e outros detalhes do coral."
+  },
   "historicoPendente": true,
   "equipe": [],
   "contato": {},

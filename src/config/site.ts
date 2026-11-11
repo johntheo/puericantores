@@ -1,3 +1,6 @@
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { dadosIdioma, type Idioma } from '~/i18n/idiomas';
+
 /**
  * Identidade institucional em um lugar só.
  *
@@ -19,17 +22,6 @@ export const site = {
 
   dominio: 'https://puericantores.com.br',
 
-  descricao:
-    'Federação que reúne os coros de meninos e meninas do Brasil filiados à Pueri Cantores, ' +
-    'federação internacional de pueris cantores reconhecida pela Santa Sé.',
-
-  /**
-   * Data do levantamento dos números agregados. Eles vêm da planilha de
-   * cadastro, não de auditoria — por isso são publicados arredondados e
-   * datados. Ver BRIEFING.md, seção 2.
-   */
-  levantamento: 'levantamento de 2026',
-
   contato: {
     email: 'puericantoresbrasil@gmail.com',
     telefone: '(35) 99109-3401',
@@ -40,23 +32,24 @@ export const site = {
 } as const;
 
 /**
- * Prefixa uma rota interna com a base do deploy.
+ * Link interno, no idioma pedido.
  *
- * Existe porque o site pode ser servido de uma subpasta — hoje o preview da
- * diretoria fica em `/puericantores/` no GitHub Pages. O Astro reescreve os
- * caminhos de imagem e de CSS sozinho, mas NÃO reescreve `href`: sem isto,
- * todo link interno apontaria para a raiz do domínio e daria 404.
- *
- * Quando o domínio próprio entrar, `BASE_URL` volta a ser `/` e nada muda.
+ * Único helper de link do site. Por dentro usa o do Astro, que já cuida da
+ * base do deploy (o preview no GitHub Pages fica em `/puericantores/`) e do
+ * prefixo do idioma. Nunca envolva `getRelativeLocaleUrl` em outra função que
+ * também some a base: o prefixo sairia duplicado.
  */
-export const rota = (caminho: string) =>
-  `${import.meta.env.BASE_URL}/${caminho}`.replace(/\/{2,}/g, '/');
+export const rota = (caminho: string, idioma: Idioma = 'pt') =>
+  getRelativeLocaleUrl(dadosIdioma[idioma].locale, caminho.replace(/^\/+/, ''))
+    // Para a raiz do idioma o Astro devolve `/en/` mesmo com `trailingSlash:
+    // 'never'`; o Firebase (`trailingSlash: false`) redirecionaria.
+    .replace(/(.)\/$/, '$1');
 
-/** Rotas da navegação principal, na ordem de exibição. */
+/** Rotas da navegação principal, na ordem de exibição. O rótulo vem do dicionário. */
 export const navegacao = [
-  { href: '/federacao', rotulo: 'A federação' },
-  { href: '/corais', rotulo: 'Os corais' },
-  { href: '/galeria', rotulo: 'Galeria' },
-  { href: '/filiacao', rotulo: 'Filiação' },
-  { href: '/contato', rotulo: 'Contato' },
+  { href: '/federacao', chave: 'federacao' },
+  { href: '/corais', chave: 'corais' },
+  { href: '/galeria', chave: 'galeria' },
+  { href: '/filiacao', chave: 'filiacao' },
+  { href: '/contato', chave: 'contato' },
 ] as const;

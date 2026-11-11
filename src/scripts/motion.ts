@@ -134,7 +134,7 @@ function contarNumeros() {
       scrollTrigger: { trigger: alvo, start: 'top 92%' },
       onUpdate: () => {
         const n = Math.round(contador.n);
-        alvo.textContent = bruto ? String(n) : n.toLocaleString('pt-BR');
+        alvo.textContent = bruto ? String(n) : n.toLocaleString(document.documentElement.lang);
       },
     });
   }

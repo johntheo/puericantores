@@ -1,0 +1,9 @@
+---
+/** Título que quebra linha: o dicionário guarda as linhas, não o `<br />`. */
+interface Props {
+  linhas: readonly string[];
+}
+const { linhas } = Astro.props;
+---
+
+{linhas.map((linha, i) => (<>{i > 0 && <br />}{linha}</>))}

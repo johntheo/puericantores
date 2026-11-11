@@ -1,4 +1,5 @@
 ---
+import { textos } from '~/i18n';
 /**
  * Conjunto de ícones do site.
  *
@@ -26,9 +27,10 @@ const { nome, tamanho = 20, class: classe = '' } = Astro.props;
 const traçado = new Set<NomeIcone>(['site', 'email']);
 const eTraco = traçado.has(nome);
 
+const { t } = textos(Astro.currentLocale);
 const rotulos: Record<NomeIcone, string> = {
-  site: 'Site',
-  email: 'E-mail',
+  site: t.comum.canais.site,
+  email: t.comum.canais.email,
   instagram: 'Instagram',
   facebook: 'Facebook',
   twitter: 'X',

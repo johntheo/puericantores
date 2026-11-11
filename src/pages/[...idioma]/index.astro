@@ -4,9 +4,16 @@ import { Image } from 'astro:assets';
 import Base from '~/layouts/Base.astro';
 import CardCoral from '~/components/CardCoral.astro';
 import Seta from '~/components/Seta.astro';
+import Linhas from '~/components/Linhas.astro';
 import { site, rota } from '~/config/site';
-import { porExtenso } from '~/config/extenso';
+import { textos } from '~/i18n';
+import { caminhosIdioma } from '~/i18n/idiomas';
 import heroFoto from '~/assets/hero-home.jpg';
+
+export const getStaticPaths = caminhosIdioma;
+
+const { idioma, t } = textos(Astro.currentLocale);
+const r = (caminho: string) => rota(caminho, idioma);
 
 const corais = await getCollection('corais');
 
@@ -48,7 +55,7 @@ const cidades = new Set(corais.map((c) => c.data.cidade)).size;
     <div class="absolute inset-0" data-motion="respiro">
       <Image
         src={heroFoto}
-        alt="Centenas de coralistas reunidos no XVII Congresso Nacional Pueri Cantores, em Passos, Minas Gerais"
+        alt={t.inicio.heroAlt}
         widths={[800, 1280]}
         sizes="100vw"
         loading="eager"
@@ -77,11 +84,11 @@ const cidades = new Set(corais.map((c) => c.data.cidade)).size;
 
       <h1 class="mt-8">
         <span class="linha">
-          <span class="block text-(length:--text-monumental)">Federação Nacional</span>
+          <span class="block text-(length:--text-monumental)">{t.inicio.titulo}</span>
         </span>
         <span class="linha">
           <span class="mt-3 block text-(length:--text-secao) italic text-papel/75">
-            dos Meninos Cantores do Brasil
+            {t.inicio.subtitulo}
           </span>
         </span>
       </h1>
@@ -94,28 +101,27 @@ const cidades = new Set(corais.map((c) => c.data.cidade)).size;
           em Petrópolis). O vínculo com a Santa Sé continua, no rodapé, onde
           credencial institucional pertence. */}
       <p data-apoio class="medida mt-10 text-lg leading-relaxed text-papel/80 sm:text-xl">
-        Em {porExtenso(cidades, 'f')} cidades, meninos e meninas ensaiam duas, três, até seis vezes por
-        semana. Aos domingos, cantam na missa. O mais antigo desses coros faz isso desde {maisAntigo}.
+        {t.inicio.apoio({ cidades, maisAntigo })}
       </p>
 
       <div data-apoio class="mt-10 flex flex-wrap items-center gap-x-10 gap-y-4">
         <a
-          href={rota("/corais")}
+          href={r('/corais')}
           class="group inline-flex items-center gap-3 border-b border-papel/40 pb-1 text-lg transition-colors hover:border-papel"
         >
-          Conhecer os {totalCorais} corais
+          {t.inicio.conhecer(totalCorais)}
           <Seta class="transition-transform duration-500 group-hover:translate-x-1" />
         </a>
         <a
-          href={rota("/filiacao")}
+          href={r('/filiacao')}
           class="border-b border-transparent pb-1 text-papel/70 transition-colors hover:border-papel/50 hover:text-papel"
         >
-          Como se filiar
+          {t.inicio.comoFiliar}
         </a>
       </div>
 
       <p data-apoio class="mt-14 text-xs text-papel/45">
-        XVII Congresso Nacional Pueri Cantores · Passos, Minas Gerais, 2022
+        {t.inicio.legendaHero}
       </p>
     </div>
   </section>
@@ -125,27 +131,17 @@ const cidades = new Set(corais.map((c) => c.data.cidade)).size;
     <span class="fio" data-fio-scroll aria-hidden="true"></span>
 
     <div class="mt-10 grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-20">
-      <h2 class="text-(length:--text-titulo) md:sticky md:top-28 md:self-start">Cantar é<br />formar gente.</h2>
+      <h2 class="text-(length:--text-titulo) md:sticky md:top-28 md:self-start"><Linhas linhas={t.inicio.oQueE.titulo} /></h2>
 
       <div class="medida space-y-6 text-lg leading-relaxed text-tinta-suave">
-        <p>
-          Um coro de meninos não se mede só pelo que soa. Mede-se pelas horas de ensaio, pela
-          disciplina aprendida cedo, pela criança que descobre que a própria voz importa dentro de
-          um conjunto. É esse trabalho, artístico, litúrgico e social ao mesmo tempo, que a
-          federação existe para sustentar.
-        </p>
-        <p>
-          Nossos corais ensaiam em paróquias, mosteiros e escolas de música espalhados pelo país.
-          Alguns nasceram há mais de oitenta anos, outros há dois. A formação musical é parte
-          central desse trabalho.
-        </p>
+        {t.inicio.oQueE.paragrafos.map((p) => <p>{p}</p>)}
 
         <p class="pt-2">
           <a
-            href={rota("/federacao")}
+            href={r('/federacao')}
             class="border-b border-acento pb-1 text-tinta transition-colors hover:text-acento-profundo"
           >
-            Nossa história
+            {t.inicio.oQueE.historia}
           </a>
         </p>
       </div>
@@ -164,17 +160,17 @@ const cidades = new Set(corais.map((c) => c.data.cidade)).size;
         class="text-[1.9em] leading-none"
         data-motion="numero"
         data-valor={totalCorais}>{totalCorais}</span
-      > coros em <span class="text-[1.9em] leading-none" data-motion="numero" data-valor={estados}
+      > {t.inicio.numeros.coros} <span class="text-[1.9em] leading-none" data-motion="numero" data-valor={estados}
         >{estados}</span
-      > estados. Mais de <span
+      > {t.inicio.numeros.estados} <span
         class="text-[1.9em] leading-none"
         data-motion="numero"
         data-valor={700}>700</span
-      > meninos e meninas.
+      > {t.inicio.numeros.cantores}
     </p>
 
     <p class="mt-10 text-xs text-tinta-tenue">
-      Dados informados pelos corais filiados, {site.levantamento}.
+      {t.inicio.numeros.fonte(t.comum.levantamento)}
     </p>
   </section>
 
@@ -183,13 +179,13 @@ const cidades = new Set(corais.map((c) => c.data.cidade)).size;
     <span class="fio" data-fio-scroll aria-hidden="true"></span>
 
     <div class="mt-10 mb-14 flex flex-wrap items-end justify-between gap-6">
-      <h2 class="text-(length:--text-titulo)">De Novo Hamburgo<br />a Petrópolis.</h2>
+      <h2 class="text-(length:--text-titulo)"><Linhas linhas={t.inicio.corais.titulo} /></h2>
 
       <a
-        href={rota("/corais")}
+        href={r('/corais')}
         class="border-b border-acento pb-1 transition-colors hover:text-acento-profundo"
       >
-        Ver os {totalCorais} corais
+        {t.inicio.corais.ver(totalCorais)}
       </a>
     </div>
 
@@ -203,20 +199,16 @@ const cidades = new Set(corais.map((c) => c.data.cidade)).size;
     <span class="fio" data-fio-scroll aria-hidden="true"></span>
 
     <div class="mt-10 grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-20">
-      <h2 class="text-(length:--text-titulo) md:sticky md:top-28 md:self-start">Uma federação<br />pontifícia.</h2>
+      <h2 class="text-(length:--text-titulo) md:sticky md:top-28 md:self-start"><Linhas linhas={t.inicio.mundo.titulo} /></h2>
 
       <div>
         <p class="medida text-lg leading-relaxed text-tinta-suave">
-          A Pueri Cantores nasceu em Paris, em 1944, e hoje reúne coros infantojuvenis em
-          35 países, sob reconhecimento da Santa Sé. Seus congressos internacionais juntam
-          milhares de jovens cantores para cantar a mesma liturgia em línguas diferentes. Os corais
-          brasileiros participam dessa rede por meio desta federação.
+          {t.inicio.mundo.texto}
         </p>
 
         <p class="mt-10 border border-papel-borda px-5 py-4 text-sm text-tinta-suave">
-          <strong class="font-medium text-tinta">No Brasil, desde 1967.</strong> A Federação
-          Nacional dos Meninos Cantores do Brasil promove o canto coral e a formação artístico-cultural,
-          com atenção especial ao canto litúrgico.
+          <strong class="font-medium text-tinta">{t.inicio.mundo.destaque}</strong>{' '}
+          {t.inicio.mundo.destaqueTexto}
         </p>
       </div>
     </div>
@@ -227,23 +219,23 @@ const cidades = new Set(corais.map((c) => c.data.cidade)).size;
     <span class="fio" data-fio-scroll aria-hidden="true"></span>
 
     <div class="mt-16 grid gap-px bg-papel-borda md:grid-cols-2">
-      <a href={rota("/filiacao")} class="group bg-papel p-10 transition-colors hover:bg-papel-fundo sm:p-14">
-        <h3 class="text-3xl">Filiar-se à federação</h3>
+      <a href={r('/filiacao')} class="group bg-papel p-10 transition-colors hover:bg-papel-fundo sm:p-14">
+        <h3 class="text-3xl">{t.inicio.chamadas.filiar.titulo}</h3>
         <p class="mt-4 max-w-[38ch] text-sm leading-relaxed text-tinta-suave">
-          Requisitos, o que muda para o seu coro e como iniciar o processo.
+          {t.inicio.chamadas.filiar.texto}
         </p>
         <span class="mt-8 inline-block border-b border-transparent pb-1 text-sm transition-colors group-hover:border-acento">
-          Saiba como
+          {t.inicio.chamadas.filiar.acao}
         </span>
       </a>
 
-      <a href={rota("/imprensa")} class="group bg-papel p-10 transition-colors hover:bg-papel-fundo sm:p-14">
-        <h3 class="text-3xl">Imprensa e apoio</h3>
+      <a href={r('/imprensa')} class="group bg-papel p-10 transition-colors hover:bg-papel-fundo sm:p-14">
+        <h3 class="text-3xl">{t.inicio.chamadas.imprensa.titulo}</h3>
         <p class="mt-4 max-w-[38ch] text-sm leading-relaxed text-tinta-suave">
-          Números, material para publicação e contato para patrocínio.
+          {t.inicio.chamadas.imprensa.texto}
         </p>
         <span class="mt-8 inline-block border-b border-transparent pb-1 text-sm transition-colors group-hover:border-acento">
-          Acessar
+          {t.inicio.chamadas.imprensa.acao}
         </span>
       </a>
     </div>

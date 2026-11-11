@@ -16,6 +16,9 @@
  */
 import { site, navegacao, rota } from '~/config/site';
 import Brasao from '~/components/Brasao.astro';
+import SeletorIdioma from '~/components/SeletorIdioma.astro';
+import { textos } from '~/i18n';
+import { paginaAtual } from '~/i18n/idiomas';
 
 interface Props {
   /** Sobre foto de tela cheia o botão é claro, como o resto do cabeçalho. */
@@ -23,7 +26,8 @@ interface Props {
 }
 
 const { sobreposto = false } = Astro.props;
-const atual = Astro.url.pathname;
+const { idioma, t } = textos(Astro.currentLocale);
+const atual = paginaAtual(Astro);
 ---
 
 <div class="md:hidden" data-menu>
@@ -37,7 +41,7 @@ const atual = Astro.url.pathname;
       sobreposto ? 'text-papel' : 'text-tinta',
     ]}
   >
-    Menu
+    {t.comum.menu}
     <span class="grid gap-[5px]" aria-hidden="true">
       <span class="block h-px w-5 bg-current"></span>
       <span class="block h-px w-5 bg-current"></span>
@@ -54,7 +58,7 @@ const atual = Astro.url.pathname;
     class="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-papel text-tinta"
   >
     <div class="quadro flex items-center justify-between gap-6 py-5">
-      <a href={rota('/')} class="flex items-center gap-3" aria-label={`${site.assinatura} — início`}>
+      <a href={rota('/', idioma)} class="flex items-center gap-3" aria-label={t.comum.inicio(site.assinatura)}>
         <Brasao tamanho={44} titulo="" />
         <span class="font-display text-lg leading-none tracking-tight">{site.assinatura}</span>
       </a>
@@ -64,7 +68,7 @@ const atual = Astro.url.pathname;
         data-menu-fechar
         class="-mr-2 grid size-11 place-items-center text-tinta transition-opacity hover:opacity-60"
       >
-        <span class="sr-only">Fechar menu</span>
+        <span class="sr-only">{t.comum.fecharMenu}</span>
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
           stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
           <path d="m5 5 14 14M19 5 5 19"></path>
@@ -72,23 +76,23 @@ const atual = Astro.url.pathname;
       </button>
     </div>
 
-    <nav aria-label="Navegação principal" class="quadro flex-1 pt-6 pb-12">
+    <nav aria-label={t.comum.navPrincipal} class="quadro flex-1 pt-6 pb-12">
       <ul>
         {
-          navegacao.map(({ href, rotulo }) => {
+          navegacao.map(({ href, chave }) => {
             const ativo = atual === href || atual.startsWith(`${href}/`);
             return (
               <li>
                 <span class="fio" aria-hidden="true" />
                 <a
-                  href={rota(href)}
+                  href={rota(href, idioma)}
                   aria-current={ativo ? 'page' : undefined}
                   class:list={[
                     'block py-5 font-display text-4xl leading-none tracking-tight',
                     ativo && 'text-acento-profundo',
                   ]}
                 >
-                  {rotulo}
+                  {t.comum.navegacao[chave]}
                 </a>
               </li>
             );
@@ -97,6 +101,10 @@ const atual = Astro.url.pathname;
       </ul>
 
       <span class="fio" aria-hidden="true"></span>
+
+      <div class="mt-10">
+        <SeletorIdioma grande />
+      </div>
 
       <a
         href={`mailto:${site.contato.email}`}
