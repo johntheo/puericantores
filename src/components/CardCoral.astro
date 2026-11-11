@@ -34,7 +34,7 @@ const rotulo = nomeCurto ?? nome;
     {/* O acento vermelho da marca aparece só neste traço, que cresce no hover.
         É o único momento de cor da interface fora do brasão. */}
     <span
-      class="absolute bottom-0 left-0 h-[3px] w-full origin-left scale-x-0 bg-acento transition-transform duration-500 ease-out group-hover:scale-x-100"
+      class="absolute bottom-0 left-0 h-[3px] w-full origin-left bg-acento ease-out motion-safe:scale-x-0 motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover:scale-x-100 motion-reduce:opacity-0 motion-reduce:transition-opacity motion-reduce:duration-150 motion-reduce:group-hover:opacity-100"
       aria-hidden="true"></span>
   </div>
 
