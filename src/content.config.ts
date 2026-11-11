@@ -47,7 +47,7 @@ const corais = defineCollection({
 
       /**
        * Marca que o histórico ainda não foi reescrito a partir do PDF de
-       * origem. Páginas assim exibem aviso e não vão ao ar. Histórico
+       * origem. A página vai ao ar com um aviso no lugar do histórico. Histórico
        * pendente não se traduz.
        */
       historicoPendente: z.boolean().default(false),

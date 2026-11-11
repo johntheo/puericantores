@@ -24,6 +24,7 @@ export const es: Dicionario = {
     inicio: (assinatura: string) => `${assinatura} — inicio`,
     menu: 'Menú',
     fecharMenu: 'Cerrar menú',
+    pularConteudo: 'Saltar al contenido',
     idioma: 'Idioma',
     membro: 'Miembro de Pueri Cantores, federación internacional de pequeños cantores reconocida por la Santa Sede.',
     imagemEmBreve: 'Imagen próximamente',

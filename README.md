@@ -169,7 +169,7 @@ animações.
 | 8 | Manual da marca e brasão em PNG de alta resolução, para `/imprensa` |
 
 Onde falta documento, a página **diz que falta**, diz o que falta e diz quem
-destrava — o componente `Pendencia.astro`. Nada de texto inventado ou lorem
+destrava. Nada de texto inventado ou lorem
 ipsum na frente da diretoria.
 
 ### Formulários

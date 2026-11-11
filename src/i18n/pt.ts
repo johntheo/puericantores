@@ -38,6 +38,7 @@ export const pt = {
     inicio: (assinatura: string) => `${assinatura} — início`,
     menu: 'Menu',
     fecharMenu: 'Fechar menu',
+    pularConteudo: 'Pular para o conteúdo',
     idioma: 'Idioma',
     membro: 'Membro da Pueri Cantores, federação internacional de pueris cantores reconhecida pela Santa Sé.',
     imagemEmBreve: 'Imagem em breve',

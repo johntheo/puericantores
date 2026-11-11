@@ -23,6 +23,7 @@ export const en: Dicionario = {
     inicio: (assinatura: string) => `${assinatura} — home`,
     menu: 'Menu',
     fecharMenu: 'Close menu',
+    pularConteudo: 'Skip to content',
     idioma: 'Language',
     membro: 'Member of Pueri Cantores, the international federation of young singers recognized by the Holy See.',
     imagemEmBreve: 'Image coming soon',
