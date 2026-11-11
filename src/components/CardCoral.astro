@@ -23,7 +23,7 @@ const rotulo = nomeCurto ?? nome;
         alt={t.comum.fotoDe(nome, cidade)}
         widths={[400, 800, 1200]}
         sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 92vw"
-        class="foto aspect-4/3 w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+        class="foto aspect-4/3 w-full object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.03]"
       />
     ) : (
       <div class="grid aspect-4/3 place-items-center px-6 text-center text-tinta-tenue">
@@ -34,7 +34,7 @@ const rotulo = nomeCurto ?? nome;
     {/* O acento vermelho da marca aparece só neste traço, que cresce no hover.
         É o único momento de cor da interface fora do brasão. */}
     <span
-      class="absolute bottom-0 left-0 h-[3px] w-0 bg-acento transition-[width] duration-500 ease-out group-hover:w-full"
+      class="absolute bottom-0 left-0 h-[3px] w-full origin-left scale-x-0 bg-acento transition-transform duration-500 ease-out group-hover:scale-x-100"
       aria-hidden="true"></span>
   </div>
 
