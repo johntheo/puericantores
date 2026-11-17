@@ -197,7 +197,9 @@ const canais = [
     </div>
   </section>
 
-  <MiniGaleria fotos={galeria} nomeCoral={nomeCurto ?? nome} />
+  {/* A principal entra na galeria junto das extras: com uma só foto extra
+      a galeria já tem duas e aparece. */}
+  <MiniGaleria fotos={foto && galeria.length ? [foto, ...galeria] : galeria} nomeCoral={nomeCurto ?? nome} />
 
   <CarrosselCorais corais={corais} atual={coral.id} />
 </Base>

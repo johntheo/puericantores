@@ -1,9 +1,16 @@
 {
   "_leia": "IDs do Google Drive extraídos da planilha de cadastro da federação. As chaves 'estatuto' e 'ata' existem APENAS para documentar que foram deliberadamente excluídas (documentos internos, decisão de LGPD no BRIEFING.md secao 3). O script de download IGNORA essas chaves. Não remova essa marcação.",
   "_planilha": "https://docs.google.com/spreadsheets/d/12RG2R7Zs382CDu9tr0YiHP9lmPMk6qLX5lkquU4aSMo",
-  "_baixar": ["historico", "foto", "logo"],
-  "_nunca_baixar": ["estatuto", "ata"],
-
+  "_baixar": [
+    "historico",
+    "foto",
+    "foto2",
+    "logo"
+  ],
+  "_nunca_baixar": [
+    "estatuto",
+    "ata"
+  ],
   "corais": {
     "canarinhos-de-petropolis": {
       "historico": "1On4fwB3mrkgvZh4l83PuIBrETUM4urJC",
@@ -74,10 +81,42 @@
       "ata": "BLOQUEADO"
     },
     "coro-regina-angelorum": {
-      "historico": "1MDh6EKtdp7cYri-rAdfpRMh18bKUYPdC",
+      "historico": "1hkculZHNzRmgSD4rmJhSdSuaayOmR9jp",
       "foto": "1t4MQqJ6SVivyJWiIxitFDztfoWefbysV",
       "estatuto": "BLOQUEADO",
+      "ata": "BLOQUEADO",
+      "historico-1a-resposta": "1MDh6EKtdp7cYri-rAdfpRMh18bKUYPdC",
+      "foto2": "1TXnYjhETn051_IV4ry_WOulRCmCBhn3y",
+      "logo": "15q5Gx3ceWefGJMCSIJ2j72XpCZqGBRoS"
+    },
+    "anjos-de-deus": {
+      "historico": "1V0oyizZ3X8mGNHsvnaT-_tNvdgDzfeHS",
+      "foto": "1Sxouleb0bup7d3AO9U5CL7DEchB4OzGA",
+      "logo": "1zKPQKUDN1Hz1Ygqm00Fazqh5WU2OuaZN",
+      "estatuto": "BLOQUEADO",
       "ata": "BLOQUEADO"
+    },
+    "mater-ecclesiae": {
+      "historico": "1K7B3V2b0kI_IJ4r6N39ZumB9DSobx4q8",
+      "foto": "10wKexxsg_vbi4dNvExR7Yq8y94HoeW27",
+      "logo": "133c2JIC0vb1io_2hB5iG5ee3Mi_VIjOv",
+      "estatuto": "BLOQUEADO",
+      "ata": "BLOQUEADO"
+    },
+    "puer-singers": {
+      "historico": "1xB3VwiIxeLJdsqSGkeok5JSVeCp0Seb9",
+      "foto": "13wmIvShfIZa0LR3LS6dFx1Rv5NgEhKtV",
+      "logo": "13rKkFQk0iSyFCUzVmYtFsLKJG9CTV7rR",
+      "estatuto": "BLOQUEADO",
+      "ata": "BLOQUEADO"
+    },
+    "meninos-cantores-de-pratapolis": {
+      "historico": "1cL5XMSH4E3S1twkBKVm4veCguSoHbwdz",
+      "logo": "1D7DNvKqCu6q5031hFUbd7vm8Y5sn-5C9",
+      "estatuto": "BLOQUEADO",
+      "ata": "BLOQUEADO",
+      "foto2": "12E-xXcck5j5kCszonWKK53XJU0jz94-N"
     }
-  }
+  },
+  "_foto2": "Segunda foto do coral (vai para a galeria como <slug>-2.jpg). A foto principal de Pratápolis veio do formulário do XV Congresso Regional Sul (2024), não da planilha."
 }

@@ -1,17 +1,38 @@
 {
-  "nome": "Coral Mater Ecclesiae",
+  "nome": "Coral Mater Ecclesiæ",
+  "nomeCurto": "Mater Ecclesiæ",
   "cidade": "Santa Luzia",
   "uf": "MG",
+  "fundacao": 1995,
+  "filiacao": 1996,
   "resumo": {
-    "pt": "Coro filiado de Santa Luzia, Minas Gerais. Informações detalhadas em breve.",
-    "en": "Member choir from Santa Luzia, Minas Gerais. Detailed information coming soon.",
-    "es": "Coro afiliado de Santa Luzia, Minas Gerais. Información detallada próximamente."
+    "pt": "Os Meninos Cantores de Santa Luzia, referência na vida cultural da cidade desde 1995, do canto gregoriano ao repertório contemporâneo.",
+    "en": "The Boys Singers of Santa Luzia, a fixture of the town's cultural life since 1995, singing everything from Gregorian chant to contemporary repertoire.",
+    "es": "Los Niños Cantores de Santa Luzia, referencia en la vida cultural de la ciudad desde 1995, del canto gregoriano al repertorio contemporáneo."
   },
   "historico": {
-    "pt": "Esta página será atualizada com a história, a equipe e outros detalhes do coral."
+    "pt": "O Coral Mater Ecclesiæ nasceu em Santa Luzia, Minas Gerais, em 15 de agosto de 1995. Conhecido também como Meninos Cantores de Santa Luzia, tornou-se referência na vida cultural da cidade. O maestro Paulo Ricardo Castro Costa, ele mesmo um ex-menino cantor, é o regente titular e diretor artístico.\n\nPouco depois da fundação, o coral filiou-se à Federação Nacional dos Meninos Cantores do Brasil e à Federação Internacional Pueri Cantores, com sede em Roma. Desde então representa Santa Luzia nos congressos realizados em diversos estados. O repertório vai do canto gregoriano e da música sacra e profana da Renascença a peças contemporâneas de caráter folclórico e popular, com autores como John Rutter, Piazzolla, Carlos Alberto Pinto Fonseca, Tom Jobim e Milton Nascimento.\n\nEm 1999 gravou o primeiro disco, Laudate Pueri Dominum, relançado em edição remasterizada em 2009. Em 2001, durante o XI Congresso Nacional da federação, produziu o CD Missa Solene, lançado em 2002 e remasterizado em 2012.\n\nFiliado aos conselhos municipais dos Direitos da Criança e do Adolescente, de Assistência Social e de Políticas Culturais, o coral desenvolve projetos socioculturais na cidade. Em 2025 sediou em Santa Luzia o XVIII Congresso Nacional da federação.",
+    "en": "Coral Mater Ecclesiæ was born in Santa Luzia, Minas Gerais, on August 15, 1995. Also known as the Boys Singers of Santa Luzia, it has become a reference in the town's cultural life. Conductor Paulo Ricardo Castro Costa, himself a former boy singer, is its principal conductor and artistic director.\n\nShortly after its founding, the choir joined the Federação Nacional dos Meninos Cantores do Brasil and the International Federation Pueri Cantores, based in Rome. Since then it has represented Santa Luzia at congresses held in several states. Its repertoire ranges from Gregorian chant and sacred and secular Renaissance music to contemporary folk and popular pieces, with composers such as John Rutter, Piazzolla, Carlos Alberto Pinto Fonseca, Tom Jobim and Milton Nascimento.\n\nIn 1999 it recorded its first album, Laudate Pueri Dominum, reissued in a remastered edition in 2009. In 2001, during the federation's 11th National Congress, it produced the CD Missa Solene, released in 2002 and remastered in 2012.\n\nA member of the municipal councils for the Rights of Children and Adolescents, Social Assistance and Cultural Policy, the choir runs social and cultural projects in the town. In 2025 it hosted the federation's 18th National Congress in Santa Luzia.",
+    "es": "El Coral Mater Ecclesiæ nació en Santa Luzia, Minas Gerais, el 15 de agosto de 1995. Conocido también como Niños Cantores de Santa Luzia, se convirtió en referencia en la vida cultural de la ciudad. El maestro Paulo Ricardo Castro Costa, él mismo antiguo niño cantor, es su director titular y director artístico.\n\nPoco después de su fundación, el coro se afilió a la Federação Nacional dos Meninos Cantores do Brasil y a la Federación Internacional Pueri Cantores, con sede en Roma. Desde entonces representa a Santa Luzia en los congresos realizados en diversos estados. Su repertorio va del canto gregoriano y la música sacra y profana del Renacimiento a piezas contemporáneas de carácter folclórico y popular, con autores como John Rutter, Piazzolla, Carlos Alberto Pinto Fonseca, Tom Jobim y Milton Nascimento.\n\nEn 1999 grabó su primer disco, Laudate Pueri Dominum, reeditado en versión remasterizada en 2009. En 2001, durante el XI Congreso Nacional de la federación, produjo el CD Missa Solene, lanzado en 2002 y remasterizado en 2012.\n\nAfiliado a los consejos municipales de los Derechos del Niño y del Adolescente, de Asistencia Social y de Políticas Culturales, el coro desarrolla proyectos socioculturales en la ciudad. En 2025 fue sede, en Santa Luzia, del XVIII Congreso Nacional de la federación."
   },
-  "historicoPendente": true,
-  "equipe": [],
-  "contato": {},
+  "historicoPendente": false,
+  "foto": "../../assets/corais/mater-ecclesiae.jpg",
+  "equipe": [
+    {
+      "nome": "Paulo Ricardo Castro Costa",
+      "cargo": "Regente"
+    },
+    {
+      "nome": "Paulo Ricardo Castro Costa",
+      "cargo": "Presidente"
+    },
+    {
+      "nome": "Paulo Antônio de Oliveira Lois Mendes",
+      "cargo": "Preparação vocal"
+    }
+  ],
+  "contato": {
+    "instagram": "https://www.instagram.com/coralmaterecclesiae/"
+  },
   "destaque": false
 }

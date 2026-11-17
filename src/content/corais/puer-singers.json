@@ -2,16 +2,36 @@
   "nome": "Puer Singers",
   "cidade": "Belo Horizonte",
   "uf": "MG",
+  "fundacao": 2010,
+  "filiacao": 2022,
   "resumo": {
-    "pt": "Coro filiado de Belo Horizonte, Minas Gerais. Informações detalhadas em breve.",
-    "en": "Member choir from Belo Horizonte, Minas Gerais. Detailed information coming soon.",
-    "es": "Coro afiliado de Belo Horizonte, Minas Gerais. Información detallada próximamente."
+    "pt": "Os Meninos Cantores de Belo Horizonte, com foco na música antiga e na formação de solistas, do medieval ao contemporâneo.",
+    "en": "The Boys Singers of Belo Horizonte, focused on early music and on training soloists, from the medieval to the contemporary.",
+    "es": "Los Niños Cantores de Belo Horizonte, centrados en la música antigua y en la formación de solistas, de lo medieval a lo contemporáneo."
   },
   "historico": {
-    "pt": "Esta página será atualizada com a história, a equipe e outros detalhes do coral."
+    "pt": "O Coral Puer Singers, Meninos Cantores de Belo Horizonte, foi criado em 2010 pelo maestro Paulo Ricardo Castro Costa. Desde o começo se destacou pela dedicação e pela execução de obras antigas para coro, com um grupo de crianças, adolescentes e jovens. Nos primeiros tempos, os ensaios aconteciam em espaços cedidos e, por vezes, na casa dos próprios integrantes.\n\nA sede sempre foi a capital mineira. Hoje o coral conta com o apoio da Paróquia de Santa Tereza e Santa Terezinha, no bairro Santa Tereza, onde cerca de trinta crianças e adolescentes, em três níveis de formação, são preparados pelo maestro Paulo Ricardo, com Paulo Antônio de Oliveira Lois Mendes como regente auxiliar.\n\nO treino de vozes solistas é marca do grupo desde o início, e para muitos ex-integrantes foi o primeiro passo de uma carreira no canto erudito. O repertório privilegia a música antiga, sem deixar de lado obras do período medieval ao contemporâneo, com atenção especial à música brasileira e sul-americana.\n\nEm 2022 o coral filiou-se à Federação Pueri Cantores Brasil e à Federação Internacional Pueri Cantores. Em dezembro daquele ano fez a primeira turnê internacional, na Itália, que lhe valeu uma moção de aplauso da Assembleia Legislativa de Minas Gerais. Em novembro de 2024 participou do Festival Mario Baeza, da Associação Latino-Americana de Canto Coral, em Villarrica, no Chile, e cantou em concertos em Santiago.",
+    "en": "Coral Puer Singers, the Boys Singers of Belo Horizonte, was created in 2010 by conductor Paulo Ricardo Castro Costa. From the start it stood out for its dedication and its performance of early choral works, with a group of children, adolescents and young people. In the early days rehearsals took place in borrowed spaces and sometimes in the members' own homes.\n\nIts home has always been the state capital. Today the choir is supported by the parish of Santa Tereza e Santa Terezinha, in the Santa Tereza neighborhood, where some thirty children and adolescents, at three levels of training, are prepared by Paulo Ricardo, with Paulo Antônio de Oliveira Lois Mendes as assistant conductor.\n\nTraining solo voices has been a hallmark of the group from the beginning, and for many former members it was the first step toward a career in classical singing. The repertoire favors early music while also covering works from the medieval period to the present, with special attention to Brazilian and South American music.\n\nIn 2022 the choir joined the Federação Pueri Cantores Brasil and the International Federation Pueri Cantores. That December it made its first international tour, in Italy, which earned it a motion of praise from the Legislative Assembly of Minas Gerais. In November 2024 it took part in the Mario Baeza Festival of the Latin American Choral Association, in Villarrica, Chile, and sang in concerts in Santiago.",
+    "es": "El Coral Puer Singers, Niños Cantores de Belo Horizonte, fue creado en 2010 por el maestro Paulo Ricardo Castro Costa. Desde el comienzo se destacó por su dedicación y por la interpretación de obras antiguas para coro, con un grupo de niños, adolescentes y jóvenes. En los primeros tiempos, los ensayos se hacían en espacios cedidos y, a veces, en las casas de los propios integrantes.\n\nSu sede siempre fue la capital minera. Hoy el coro cuenta con el apoyo de la parroquia de Santa Tereza e Santa Terezinha, en el barrio Santa Tereza, donde unos treinta niños y adolescentes, en tres niveles de formación, son preparados por el maestro Paulo Ricardo, con Paulo Antônio de Oliveira Lois Mendes como director auxiliar.\n\nEl entrenamiento de voces solistas es un sello del grupo desde el inicio, y para muchos exintegrantes fue el primer paso de una carrera en el canto lírico. El repertorio privilegia la música antigua, sin dejar de lado obras del período medieval al contemporáneo, con especial atención a la música brasileña y sudamericana.\n\nEn 2022 el coro se afilió a la Federação Pueri Cantores Brasil y a la Federación Internacional Pueri Cantores. En diciembre de ese año hizo su primera gira internacional, en Italia, que le valió una moción de aplauso de la Asamblea Legislativa de Minas Gerais. En noviembre de 2024 participó en el Festival Mario Baeza, de la Asociación Latinoamericana de Canto Coral, en Villarrica, Chile, y cantó en conciertos en Santiago."
   },
-  "historicoPendente": true,
-  "equipe": [],
-  "contato": {},
+  "historicoPendente": false,
+  "foto": "../../assets/corais/puer-singers.jpg",
+  "equipe": [
+    {
+      "nome": "Paulo Ricardo Castro Costa",
+      "cargo": "Regente"
+    },
+    {
+      "nome": "Paulo Ricardo Castro Costa",
+      "cargo": "Presidente"
+    },
+    {
+      "nome": "Paulo Antônio de Oliveira Lois Mendes",
+      "cargo": "Preparação vocal"
+    }
+  ],
+  "contato": {
+    "instagram": "https://www.instagram.com/puersingers/"
+  },
   "destaque": false
 }
