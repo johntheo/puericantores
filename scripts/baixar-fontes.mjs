@@ -13,7 +13,7 @@
 import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
-const PERMITIDO = new Set(['historico', 'foto', 'logo']);
+const PERMITIDO = new Set(['historico', 'foto', 'foto2', 'logo']);
 const DESTINO = 'tmp/fontes';
 
 const fontes = JSON.parse(await readFile('scripts/fontes-drive.json', 'utf8'));
